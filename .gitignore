@@ -1,0 +1,13 @@
+/node_modules/
+/dist/
+/.next/
+/.vinext/
+/pages-dist/
+/work/
+/.openai/
+/.wrangler/
+
+.env*
+*.log
+.DS_Store
+next-env.d.ts
