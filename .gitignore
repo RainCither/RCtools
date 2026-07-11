@@ -1,11 +1,5 @@
 /node_modules/
 /dist/
-/.next/
-/.vinext/
-/pages-dist/
-/work/
-/.openai/
-/.wrangler/
 
 .env*
 *.log

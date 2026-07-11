@@ -29,13 +29,16 @@ jobs:
         run: npm ci
 
       - name: Build static site
+        env:
+          PAGES_BASE_PATH: /
+          PAGES_CUSTOM_DOMAIN: tool.raincither.top
         run: npm run pages:build
 
       - name: Publish main branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd pages-dist
+          cd dist
           git init
           git checkout -b main
           git config user.name "github-actions[bot]"

@@ -76,7 +76,7 @@ export const TOOLS: ToolDefinition[] = [
   {
     id: "color",
     title: "颜色转换",
-    summary: "在 HEX、RGB 与 HSL 颜色之间转换。",
+    summary: "将 HEX 颜色转换为 RGB 与 HSL。",
     category: "dev",
     categoryLabel: "开发",
     mark: "#",

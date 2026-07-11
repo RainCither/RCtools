@@ -12,14 +12,29 @@ export function TimestampTool() {
     const cleanValue = value.trim();
     let date: Date;
 
-    if (/^-?\d{10,13}$/.test(cleanValue)) {
+    if (!cleanValue) {
+      setResult(null);
+      setError("请输入 10/13 位时间戳或可识别的日期时间。");
+      return;
+    }
+
+    if (/^-?\d+$/.test(cleanValue)) {
+      const isSeconds = /^-?\d{10}$/.test(cleanValue);
+      const isMilliseconds = /^-?\d{13}$/.test(cleanValue);
+
+      if (!isSeconds && !isMilliseconds) {
+        setResult(null);
+        setError("时间戳必须是 10 位秒数或 13 位毫秒数。");
+        return;
+      }
+
       const numeric = Number(cleanValue);
-      date = new Date(cleanValue.length <= 10 ? numeric * 1000 : numeric);
+      date = new Date(isSeconds ? numeric * 1000 : numeric);
     } else {
       date = new Date(cleanValue);
     }
 
-    if (!cleanValue || Number.isNaN(date.getTime())) {
+    if (Number.isNaN(date.getTime())) {
       setResult(null);
       setError("请输入 10/13 位时间戳或可识别的日期时间。");
       return;

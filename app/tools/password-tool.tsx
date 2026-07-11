@@ -10,6 +10,31 @@ const PASSWORD_POOLS = {
   symbol: "!@#$%^&*+-_=",
 };
 
+const UINT32_RANGE = 0x1_0000_0000;
+
+function secureRandomIndex(maxExclusive: number) {
+  const unbiasedLimit = Math.floor(UINT32_RANGE / maxExclusive) * maxExclusive;
+  const random = new Uint32Array(1);
+
+  do {
+    crypto.getRandomValues(random);
+  } while (random[0] >= unbiasedLimit);
+
+  return random[0] % maxExclusive;
+}
+
+function randomCharacter(pool: string) {
+  return pool.charAt(secureRandomIndex(pool.length));
+}
+
+function secureShuffle(characters: string[]) {
+  for (let index = characters.length - 1; index > 0; index -= 1) {
+    const target = secureRandomIndex(index + 1);
+    [characters[index], characters[target]] = [characters[target], characters[index]];
+  }
+  return characters;
+}
+
 export function PasswordTool() {
   const [length, setLength] = useState(18);
   const [options, setOptions] = useState({ lower: true, upper: true, number: true, symbol: false });
@@ -17,20 +42,24 @@ export function PasswordTool() {
   const [error, setError] = useState("");
 
   function generate() {
-    const pool = (Object.keys(PASSWORD_POOLS) as Array<keyof typeof PASSWORD_POOLS>)
+    const selectedPools = (Object.keys(PASSWORD_POOLS) as Array<keyof typeof PASSWORD_POOLS>)
       .filter((key) => options[key])
-      .map((key) => PASSWORD_POOLS[key])
-      .join("");
+      .map((key) => PASSWORD_POOLS[key]);
 
-    if (!pool) {
+    if (!selectedPools.length) {
       setPassword("");
       setError("请至少选择一种字符类型。");
       return;
     }
 
-    const random = new Uint32Array(length);
-    crypto.getRandomValues(random);
-    setPassword(Array.from(random, (value) => pool[value % pool.length]).join(""));
+    const combinedPool = selectedPools.join("");
+    const characters = selectedPools.map(randomCharacter);
+
+    while (characters.length < length) {
+      characters.push(randomCharacter(combinedPool));
+    }
+
+    setPassword(secureShuffle(characters).join(""));
     setError("");
   }
 

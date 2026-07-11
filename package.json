@@ -7,14 +7,17 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build",
+    "build": "vite build --config vite.pages.config.ts",
+    "build:server": "vinext build",
     "start": "vinext start",
-    "pages:build": "node scripts/build-pages.mjs",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
-    "test:pages": "npm run pages:build"
+    "pages:build": "npm run build",
+    "typecheck": "tsc --noEmit --incremental false",
+    "test": "npm run typecheck && npm run build:server && node --test tests/rendered-html.test.mjs",
+    "test:pages": "npm run pages:build && node --test tests/pages-build.test.mjs"
   },
   "dependencies": {
     "next": "16.2.6",
+    "postcss": "8.5.14",
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },
@@ -28,6 +31,11 @@
     "typescript": "5.9.3",
     "vinext": "0.0.50",
     "vite": "8.0.13"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "8.5.14"
+    }
   },
   "type": "module"
 }

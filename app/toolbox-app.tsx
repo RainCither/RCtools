@@ -73,6 +73,8 @@ function ToolDialog({
     <dialog
       ref={dialogRef}
       className="tool-dialog"
+      aria-labelledby="tool-dialog-title"
+      aria-describedby="tool-dialog-description"
       onCancel={(event) => {
         event.preventDefault();
         onRequestClose();
@@ -86,8 +88,8 @@ function ToolDialog({
         <header className="dialog-header">
           <div>
             <span className="dialog-kicker">{tool?.categoryLabel}</span>
-            <h2>{tool?.title}</h2>
-            <p>{tool?.summary}</p>
+            <h2 id="tool-dialog-title">{tool?.title}</h2>
+            <p id="tool-dialog-description">{tool?.summary}</p>
           </div>
           <button className="dialog-close" type="button" onClick={onRequestClose} aria-label="关闭窗口">
             ×
@@ -164,7 +166,11 @@ export function ToolboxApp() {
     setActiveTool(toolId);
     setRecent((current) => {
       const next = [toolId, ...current.filter((item) => item !== toolId)].slice(0, 3);
-      window.localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(next));
+      try {
+        window.localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // Storage can be unavailable in private browsing or blocked contexts.
+      }
       return next;
     });
   }
@@ -181,13 +187,14 @@ export function ToolboxApp() {
           <span>工具匣</span>
         </a>
 
-        <label className="search-box header-search" htmlFor="tool-search">
+        <div className="search-box header-search">
           <span className="search-icon" aria-hidden="true" />
           <input
             ref={searchRef}
             id="tool-search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
+            aria-label="搜索工具"
             placeholder="搜索工具或功能…"
             autoComplete="off"
           />
@@ -196,7 +203,7 @@ export function ToolboxApp() {
           ) : (
             <kbd aria-label="快捷键：斜杠">/</kbd>
           )}
-        </label>
+        </div>
       </header>
 
       {!query && category === "all" ? (

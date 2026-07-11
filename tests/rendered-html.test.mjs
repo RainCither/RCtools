@@ -37,6 +37,8 @@ test("server-renders the personal toolbox", async () => {
   assert.match(html, /时间戳转换/);
   assert.match(html, /Base64 编解码/);
   assert.match(html, /本地处理/);
+  assert.match(html, /aria-label="搜索工具"/);
+  assert.match(html, /aria-labelledby="tool-dialog-title"/);
   assert.doesNotMatch(html, /把重复的小事|hero-copy|<h1>/);
   assert.doesNotMatch(html, /自动保存在当前设备|>添加工具</);
   assert.doesNotMatch(html, />扩展<|开发指南|添加一个新工具/);
@@ -100,4 +102,37 @@ test("builds each tool as an independent client chunk", async () => {
       `missing dynamic chunk for ${chunkName}`,
     );
   }
+});
+
+test("guards tool behavior and accessibility contracts", async () => {
+  const [shared, timestamp, password, toolbox, registry] = await Promise.all([
+    readFile(new URL("../app/tools/shared.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/timestamp-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/password-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tool-registry.ts", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(shared, /error \|\| message \|\|/);
+  assert.match(shared, /复制失败/);
+  assert.doesNotMatch(timestamp, /\\d\{10,13\}/);
+  assert.match(timestamp, /时间戳必须是 10 位秒数或 13 位毫秒数/);
+  assert.match(password, /secureRandomIndex/);
+  assert.match(password, /selectedPools\.map\(randomCharacter\)/);
+  assert.match(toolbox, /aria-label="搜索工具"/);
+  assert.match(toolbox, /aria-labelledby="tool-dialog-title"/);
+  assert.doesNotMatch(toolbox, /<label className="search-box header-search"/);
+  assert.match(registry, /将 HEX 颜色转换为 RGB 与 HSL/);
+});
+
+test("keeps Next on the audited PostCSS version", async () => {
+  const [packageSource, lockSource] = await Promise.all([
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../package-lock.json", import.meta.url), "utf8"),
+  ]);
+  const packageJson = JSON.parse(packageSource);
+
+  assert.equal(packageJson.dependencies.postcss, "8.5.14");
+  assert.equal(packageJson.overrides.next.postcss, "8.5.14");
+  assert.doesNotMatch(lockSource, /node_modules\/next\/node_modules\/postcss/);
 });

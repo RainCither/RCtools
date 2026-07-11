@@ -1,0 +1,48 @@
+import assert from "node:assert/strict";
+import { access, readFile, readdir } from "node:fs/promises";
+import test from "node:test";
+
+const projectRoot = new URL("../", import.meta.url);
+
+test("creates only static GitHub Pages output", async () => {
+  await Promise.all([
+    access(new URL("dist/index.html", projectRoot)),
+    access(new URL("dist/favicon.svg", projectRoot)),
+    access(new URL("dist/.nojekyll", projectRoot)),
+    access(new URL("dist/CNAME", projectRoot)),
+  ]);
+
+  const [html, cname] = await Promise.all([
+    readFile(new URL("dist/index.html", projectRoot), "utf8"),
+    readFile(new URL("dist/CNAME", projectRoot), "utf8"),
+  ]);
+  assert.match(html, /<title>工具匣｜常用小工具，一开即用<\/title>/);
+  assert.match(html, /\/assets\/[^"']+\.js/);
+  assert.match(html, /\/favicon\.svg/);
+  assert.doesNotMatch(html, /\/RCtools\//i);
+  assert.doesNotMatch(html, /dist\/server|__vite_rsc|vinext-server/);
+  assert.equal(cname.trim(), "tool.raincither.top");
+});
+
+test("keeps every tool in an independent client chunk", async () => {
+  const assets = await readdir(new URL("dist/assets/", projectRoot));
+  const toolChunks = [
+    "base64-tool",
+    "color-tool",
+    "json-tool",
+    "password-tool",
+    "text-stats-tool",
+    "timestamp-tool",
+  ];
+
+  for (const chunkName of toolChunks) {
+    assert.equal(
+      assets.some(
+        (fileName) =>
+          fileName.startsWith(`${chunkName}-`) && fileName.endsWith(".js"),
+      ),
+      true,
+      `missing dynamic chunk for ${chunkName}`,
+    );
+  }
+});
