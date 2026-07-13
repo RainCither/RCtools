@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CopyButton, ToolStatus } from "./shared";
+import { CopyButton, ToolStatus } from "../shared/tool-ui";
 
 function encodeBase64(value: string) {
   const bytes = new TextEncoder().encode(value);
@@ -16,7 +16,7 @@ function decodeBase64(value: string) {
   return new TextDecoder().decode(bytes);
 }
 
-export function Base64Tool() {
+export default function Base64Tool() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");

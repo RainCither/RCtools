@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ToolStatus } from "./shared";
+import { ToolStatus } from "../shared/tool-ui";
 
-export function TimestampTool() {
+export default function TimestampTool() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<{ local: string; iso: string; seconds: string; milliseconds: string } | null>(null);
   const [error, setError] = useState("");

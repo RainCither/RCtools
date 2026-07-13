@@ -7,14 +7,14 @@ import {
   useRef,
   useState,
 } from "react";
-import { ToolPanel } from "./tool-panels";
+import { preloadTool, ToolPanel } from "./tool-panels";
 import {
   DEFAULT_RECENT,
   findTool,
   TOOL_CATEGORIES,
   TOOLS,
   type CategoryFilter,
-  type ToolDefinition,
+  type RegisteredTool,
   type ToolId,
 } from "./tool-registry";
 
@@ -25,7 +25,7 @@ function ToolCard({
   compact = false,
   onOpen,
 }: {
-  tool: ToolDefinition;
+  tool: RegisteredTool;
   compact?: boolean;
   onOpen: (toolId: ToolId) => void;
 }) {
@@ -33,6 +33,8 @@ function ToolCard({
     <button
       className={compact ? "tool-card tool-card-compact" : "tool-card"}
       type="button"
+      onPointerEnter={() => preloadTool(tool.id)}
+      onFocus={() => preloadTool(tool.id)}
       onClick={() => onOpen(tool.id)}
       aria-label={`打开${tool.title}`}
     >
@@ -158,7 +160,7 @@ export function ToolboxApp() {
   }, [category, deferredQuery]);
 
   const recentTools = useMemo(
-    () => recent.map((toolId) => findTool(toolId)).filter((tool): tool is ToolDefinition => Boolean(tool)),
+    () => recent.map((toolId) => findTool(toolId)).filter((tool): tool is RegisteredTool => Boolean(tool)),
     [recent],
   );
 
@@ -262,7 +264,7 @@ export function ToolboxApp() {
 
       <footer className="site-footer">
         <span>工具匣</span>
-        <p>本地处理 · 无需上传 · 持续扩展</p>
+        <p>雨寒风轻筝音悠</p>
       </footer>
 
       <ToolDialog

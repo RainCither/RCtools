@@ -29,9 +29,11 @@ test("keeps every tool in an independent client chunk", async () => {
   const toolChunks = [
     "base64-tool",
     "color-tool",
+    "glitch-text-tool",
     "json-tool",
     "password-tool",
     "text-stats-tool",
+    "time-diff-tool",
     "timestamp-tool",
   ];
 
@@ -43,6 +45,25 @@ test("keeps every tool in an independent client chunk", async () => {
       ),
       true,
       `missing dynamic chunk for ${chunkName}`,
+    );
+  }
+
+  const toolStyleChunks = [
+    "color-tool",
+    "glitch-text-tool",
+    "password-tool",
+    "text-stats-tool",
+    "time-diff-tool",
+  ];
+
+  for (const chunkName of toolStyleChunks) {
+    assert.equal(
+      assets.some(
+        (fileName) =>
+          fileName.startsWith(`${chunkName}-`) && fileName.endsWith(".css"),
+      ),
+      true,
+      `missing lazy CSS chunk for ${chunkName}`,
     );
   }
 });

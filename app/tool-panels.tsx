@@ -6,41 +6,36 @@ import {
   type ComponentType,
   type LazyExoticComponent,
 } from "react";
-import type { ToolId } from "./tool-registry";
+import { TOOLS, type ToolId } from "./tool-registry";
+import type { ToolLoader } from "./tool-types";
 
-const TOOL_COMPONENTS: Record<
-  ToolId,
-  LazyExoticComponent<ComponentType>
-> = {
-  json: lazy(() =>
-    import("./tools/json-tool").then(({ JsonTool }) => ({ default: JsonTool })),
-  ),
-  timestamp: lazy(() =>
-    import("./tools/timestamp-tool").then(({ TimestampTool }) => ({
-      default: TimestampTool,
-    })),
-  ),
-  "text-stats": lazy(() =>
-    import("./tools/text-stats-tool").then(({ TextStatsTool }) => ({
-      default: TextStatsTool,
-    })),
-  ),
-  password: lazy(() =>
-    import("./tools/password-tool").then(({ PasswordTool }) => ({
-      default: PasswordTool,
-    })),
-  ),
-  base64: lazy(() =>
-    import("./tools/base64-tool").then(({ Base64Tool }) => ({
-      default: Base64Tool,
-    })),
-  ),
-  color: lazy(() =>
-    import("./tools/color-tool").then(({ ColorTool }) => ({
-      default: ColorTool,
-    })),
-  ),
-};
+const TOOL_LOADERS = Object.fromEntries(
+  TOOLS.map((tool) => [tool.id, tool.load]),
+) as Record<ToolId, ToolLoader>;
+
+const TOOL_LOAD_PROMISES = new Map<ToolId, ReturnType<ToolLoader>>();
+
+function loadTool(toolId: ToolId) {
+  const cached = TOOL_LOAD_PROMISES.get(toolId);
+  if (cached) return cached;
+
+  const pending = TOOL_LOADERS[toolId]();
+  TOOL_LOAD_PROMISES.set(toolId, pending);
+  void pending.catch(() => {
+    if (TOOL_LOAD_PROMISES.get(toolId) === pending) {
+      TOOL_LOAD_PROMISES.delete(toolId);
+    }
+  });
+  return pending;
+}
+
+const TOOL_COMPONENTS = Object.fromEntries(
+  TOOLS.map((tool) => [tool.id, lazy(() => loadTool(tool.id))]),
+) as Record<ToolId, LazyExoticComponent<ComponentType>>;
+
+export function preloadTool(toolId: ToolId) {
+  void loadTool(toolId);
+}
 
 function ToolLoading() {
   return (

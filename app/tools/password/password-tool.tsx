@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CopyButton, ToolStatus } from "./shared";
+import { CopyButton, ToolStatus } from "../shared/tool-ui";
+import styles from "./styles.module.css";
 
 const PASSWORD_POOLS = {
   lower: "abcdefghijkmnopqrstuvwxyz",
@@ -35,7 +36,7 @@ function secureShuffle(characters: string[]) {
   return characters;
 }
 
-export function PasswordTool() {
+export default function PasswordTool() {
   const [length, setLength] = useState(18);
   const [options, setOptions] = useState({ lower: true, upper: true, number: true, symbol: false });
   const [password, setPassword] = useState("");
@@ -65,12 +66,12 @@ export function PasswordTool() {
 
   return (
     <div className="tool-form">
-      <div className="range-heading">
+      <div className={styles.rangeHeading}>
         <label className="field-label" htmlFor="password-length">密码长度</label>
         <strong>{length}</strong>
       </div>
-      <input id="password-length" className="tool-range" type="range" min="8" max="40" value={length} onChange={(event) => setLength(Number(event.target.value))} />
-      <fieldset className="option-grid">
+      <input id="password-length" className={styles.range} type="range" min="8" max="40" value={length} onChange={(event) => setLength(Number(event.target.value))} />
+      <fieldset className={styles.optionGrid}>
         <legend className="field-label">包含字符</legend>
         {(Object.keys(PASSWORD_POOLS) as Array<keyof typeof PASSWORD_POOLS>).map((key) => (
           <label key={key}>
@@ -84,7 +85,7 @@ export function PasswordTool() {
         <CopyButton value={password} />
       </div>
       <ToolStatus error={error} message={password ? "已使用浏览器安全随机数生成。" : undefined} />
-      <output className="password-output" aria-label="生成的密码">{password || "点击“生成密码”开始"}</output>
+      <output className={styles.output} aria-label="生成的密码">{password || "点击“生成密码”开始"}</output>
     </div>
   );
 }

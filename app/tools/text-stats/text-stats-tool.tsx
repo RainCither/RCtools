@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import styles from "./styles.module.css";
 
-export function TextStatsTool() {
+export default function TextStatsTool() {
   const [input, setInput] = useState("");
   const stats = useMemo(() => {
     const words = input.match(/[A-Za-z0-9]+|[\u3400-\u9fff]/g) ?? [];
@@ -18,7 +19,7 @@ export function TextStatsTool() {
     <div className="tool-form">
       <label className="field-label" htmlFor="stats-input">输入文本</label>
       <textarea id="stats-input" className="tool-textarea" value={input} onChange={(event) => setInput(event.target.value)} placeholder="粘贴或输入要统计的文本…" />
-      <div className="stat-grid" aria-live="polite">
+      <div className={styles.statGrid} aria-live="polite">
         <div><span>字符数</span><strong>{stats.characters}</strong></div>
         <div><span>不含空格</span><strong>{stats.noSpaces}</strong></div>
         <div><span>字词数</span><strong>{stats.words}</strong></div>

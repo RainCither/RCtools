@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { CopyButton, ToolStatus } from "./shared";
+import { CopyButton, ToolStatus } from "../shared/tool-ui";
 
-export function JsonTool() {
+export default function JsonTool() {
   const [input, setInput] = useState('{\n  "name": "工具匣",\n  "ready": true\n}');
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");

@@ -1,0 +1,312 @@
+.tool {
+  gap: 16px;
+}
+
+.modeSwitch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.modeSwitch button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 9px;
+  outline: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.modeSwitch button:focus-visible {
+  box-shadow: 0 0 0 3px rgb(242 107 77 / 0.18);
+}
+
+.modeSwitch .modeActive {
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(66 49 38 / 0.08);
+  color: var(--accent-dark);
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.setting {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 38px 0 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  outline: 0;
+  background: #fff;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(242 107 77 / 0.12);
+}
+
+.toggle {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  align-self: end;
+  gap: 11px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.toggle input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  accent-color: var(--accent);
+}
+
+.toggle span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggle strong {
+  font-size: 13px;
+}
+
+.toggle small,
+.help {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.help {
+  margin: -4px 2px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pairList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: #fff;
+}
+
+.pair h3 {
+  margin: 0 0 13px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.input {
+  min-height: 48px;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.input.invalid {
+  border-color: #c8523e;
+  box-shadow: 0 0 0 3px rgb(179 63 44 / 0.1);
+}
+
+.error {
+  margin: -1px 2px 0;
+  color: #a93625;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.result {
+  position: relative;
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  gap: 7px;
+  margin-left: 12px;
+  padding-left: 30px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.result::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 7px;
+  width: 1px;
+  background: var(--border-strong);
+  content: "";
+}
+
+.result::after {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.result strong {
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.waiting {
+  color: #9a8e84;
+}
+
+.total {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgb(242 107 77 / 0.24);
+  border-radius: 13px;
+  background: var(--accent-soft);
+}
+
+.totalCopy,
+.totalValue {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.totalCopy strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.totalCopy small,
+.totalValue span,
+.totalWaiting {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.totalValue {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.totalValue strong {
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 2px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.actions :global(.button) {
+  min-height: 44px;
+}
+
+.utilityActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+@media (max-width: 640px) {
+  .settings {
+    grid-template-columns: 1fr;
+  }
+
+  .toggle {
+    align-self: stretch;
+  }
+
+  .actions,
+  .utilityActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actions :global(.button),
+  .utilityActions {
+    width: 100%;
+  }
+
+  .total {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .totalValue {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .pair {
+    padding: 12px;
+  }
+}

@@ -12,7 +12,9 @@
 | --- | --- |
 | JSON 格式化 | 校验、格式化或压缩 JSON 数据 |
 | 时间戳转换 | 在时间戳、日期与标准时间之间转换 |
+| 连续时间差 | 连续或成对输入时间，计算分段差值与累计总时长 |
 | 文本统计 | 统计字数、字符、单词和行数 |
+| 故障文字生成 | 用 Unicode 组合符生成可复制的故障、错位文字 |
 | 密码生成 | 按长度和字符规则生成随机密码 |
 | Base64 编解码 | 编码或解码包含中文的文本 |
 | 颜色转换 | 将 HEX 颜色转换为 RGB 与 HSL |
@@ -60,9 +62,15 @@ npx vite preview --config vite.pages.config.ts
 ```text
 RCtools/
 ├─ app/
-│  ├─ tools/                # 每个工具的独立实现
+│  ├─ tools/
+│  │  ├─ json/              # 一个工具一个目录
+│  │  │  ├─ config.ts       # 元数据与工具组件懒加载入口
+│  │  │  ├─ json-tool.tsx   # 工具组件入口
+│  │  │  └─ styles.module.css # 仅该工具使用的样式（按需）
+│  │  ├─ time-diff/         # 可同时包含专用算法、CSS、测试辅助等
+│  │  └─ shared/            # 仅存放跨工具复用的 UI 与逻辑
 │  ├─ pages-entry.tsx       # GitHub Pages 客户端入口
-│  ├─ tool-panels.tsx       # 工具组件的动态导入映射
+│  ├─ tool-panels.tsx       # 从注册表生成懒加载组件并复用预加载结果
 │  ├─ tool-registry.ts      # 工具名称、分类和搜索信息
 │  └─ toolbox-app.tsx       # 工具箱主界面
 ├─ public/                  # favicon 等公共静态资源
@@ -73,54 +81,53 @@ RCtools/
 └─ vite.pages.config.ts     # GitHub Pages 静态构建配置
 ```
 
-工具清单与工具实现彼此分离，功能组件通过动态导入按需加载。随着工具数量增加，首屏不会一次加载所有工具代码。
+每个工具的配置、实现和专用样式收拢在自己的目录中，功能组件通过动态导入按需加载。工具可以在目录内继续添加专用的 CSS Module、算法、类型和辅助文件；只有被多个工具使用的代码才放入 `app/tools/shared/`。工具 ID 会从注册清单自动推导，分类中文名也由公共映射统一生成，避免重复维护。随着工具数量增加，首屏不会一次加载所有工具代码。
 
 ## 添加新工具
 
-### 1. 注册工具信息
+### 1. 创建工具目录与配置
 
-在 `app/tool-registry.ts` 中：
-
-1. 将工具 ID 加入 `ToolId` 联合类型。
-2. 在 `TOOLS` 数组中添加名称、简介、分类、图标文字和搜索关键词。
-3. 如需新分类，同时更新 `ToolCategory` 和 `TOOL_CATEGORIES`。
-
-示例：
+创建 `app/tools/new-tool/`，并在其中添加 `config.ts`：
 
 ```ts
-{
+import { defineTool } from "../../tool-types";
+
+export const newToolConfig = defineTool({
   id: "new-tool",
   title: "新工具",
   summary: "一句话说明用途。",
   category: "dev",
-  categoryLabel: "开发",
   mark: "N",
   searchTerms: ["关键词", "keyword"],
-}
+  load: () => import("./new-tool"),
+});
 ```
 
-### 2. 创建独立组件
+然后在 `app/tool-registry.ts` 中导入 `newToolConfig` 并加入 `TOOLS`；`ToolId` 会自动包含 `"new-tool"`。`app/tool-panels.tsx` 会从注册表自动生成懒加载组件，不需要再维护第二份工具映射。用户悬停或用键盘聚焦工具卡片时会提前加载对应分块，打开弹窗时复用同一个加载结果。如需新分类，同时更新 `app/tool-types.ts` 的分类映射和 `TOOL_CATEGORIES`。
 
-在 `app/tools/` 中创建文件，例如 `new-tool.tsx`，并导出工具组件。一个工具可以使用一个文件，也可以在自己的子目录中拆成多个文件。
+### 2. 创建工具组件
+
+在同一目录创建 `new-tool.tsx` 并导出工具组件。专用样式、算法、类型或配置也放在这个目录内，例如 `styles.module.css`、`core.ts`、`types.ts`；组件通过 CSS Module 引用专用样式，不把工具私有选择器放回 `app/globals.css`。
 
 ```tsx
 "use client";
 
-export function NewTool() {
+export default function NewTool() {
   return <div>工具内容</div>;
 }
 ```
 
-### 3. 添加动态导入
+### 3. 注册工具
 
-在 `app/tool-panels.tsx` 的 `TOOL_COMPONENTS` 中加入映射：
+只需在 `app/tool-registry.ts` 导入配置并加入 `TOOLS`：
 
 ```ts
-"new-tool": lazy(() =>
-  import("./tools/new-tool").then(({ NewTool }) => ({
-    default: NewTool,
-  })),
-),
+import { newToolConfig } from "./tools/new-tool/config";
+
+export const TOOLS = [
+  // 现有工具…
+  newToolConfig,
+] as const satisfies readonly ToolDefinition[];
 ```
 
 ### 4. 更新测试并验证

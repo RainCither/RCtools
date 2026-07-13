@@ -1,0 +1,20 @@
+.inputRow {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.picker {
+  width: 54px;
+  height: 46px;
+  padding: 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  background: #fff;
+}
+
+.preview {
+  min-height: 120px;
+  border: 1px solid rgb(41 37 33 / 0.08);
+  border-radius: 13px;
+}

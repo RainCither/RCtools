@@ -35,8 +35,10 @@ test("server-renders the personal toolbox", async () => {
   assert.match(html, /搜索工具或功能/);
   assert.match(html, /JSON 格式化/);
   assert.match(html, /时间戳转换/);
+  assert.match(html, /连续时间差/);
+  assert.match(html, /故障文字生成/);
   assert.match(html, /Base64 编解码/);
-  assert.match(html, /本地处理/);
+  assert.match(html, /雨寒风轻筝音悠/);
   assert.match(html, /aria-label="搜索工具"/);
   assert.match(html, /aria-labelledby="tool-dialog-title"/);
   assert.doesNotMatch(html, /把重复的小事|hero-copy|<h1>/);
@@ -47,35 +49,82 @@ test("server-renders the personal toolbox", async () => {
 });
 
 test("keeps the tool registry modular and removes the starter preview", async () => {
-  const [registry, panels, toolbox, page, packageJson] = await Promise.all([
+  const [registry, toolTypes, panels, toolbox, page, packageJson, globalStyles] = await Promise.all([
     readFile(new URL("../app/tool-registry.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tool-types.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-panels.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
   assert.match(registry, /export const TOOLS/);
-  assert.match(registry, /searchTerms/);
+  assert.match(registry, /export type ToolId = \(typeof TOOLS\)\[number\]\["id"\]/);
+  assert.match(toolTypes, /export function defineTool/);
+  assert.match(toolTypes, /TOOL_CATEGORY_LABELS/);
+  assert.match(toolTypes, /export type ToolLoader/);
+  assert.doesNotMatch(toolTypes, /\| "json"/);
   assert.match(panels, /export function ToolPanel/);
-  assert.match(panels, /lazy\(\(\) =>/);
-  assert.match(panels, /import\("\.\/tools\/json-tool"\)/);
+  assert.match(panels, /TOOLS\.map/);
+  assert.match(panels, /TOOL_LOAD_PROMISES/);
+  assert.match(panels, /export function preloadTool/);
+  assert.doesNotMatch(panels, /import\("\.\/tools\//);
   assert.doesNotMatch(panels, /useState|function JsonTool|function PasswordTool/);
+  assert.match(toolbox, /onPointerEnter=\{\(\) => preloadTool\(tool\.id\)\}/);
+  assert.match(toolbox, /onFocus=\{\(\) => preloadTool\(tool\.id\)\}/);
   assert.doesNotMatch(toolbox, /developerGuide|showDeveloperGuide|添加一个新工具/);
   assert.match(page, /<ToolboxApp \/>/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(packageJson, /cloudflare|drizzle|tailwind|wrangler/);
-  await Promise.all(
-    [
-      "base64-tool.tsx",
-      "color-tool.tsx",
-      "json-tool.tsx",
-      "password-tool.tsx",
-      "text-stats-tool.tsx",
-      "timestamp-tool.tsx",
-      "shared.tsx",
-    ].map((fileName) => access(new URL(`app/tools/${fileName}`, templateRoot))),
+  const toolFiles = [
+    ["base64", "base64-tool.tsx"],
+    ["color", "color-tool.tsx"],
+    ["glitch-text", "glitch-text-core.ts"],
+    ["glitch-text", "glitch-text-tool.tsx"],
+    ["glitch-text", "styles.module.css"],
+    ["json", "json-tool.tsx"],
+    ["password", "password-tool.tsx"],
+    ["text-stats", "text-stats-tool.tsx"],
+    ["text-stats", "styles.module.css"],
+    ["password", "styles.module.css"],
+    ["color", "styles.module.css"],
+    ["time-diff", "time-diff-core.ts"],
+    ["time-diff", "time-diff-tool.tsx"],
+    ["time-diff", "styles.module.css"],
+    ["timestamp", "timestamp-tool.tsx"],
+  ];
+  const toolEntries = await readdir(new URL("app/tools/", templateRoot), {
+    withFileTypes: true,
+  });
+  assert.deepEqual(
+    toolEntries.filter((entry) => entry.isFile()).map((entry) => entry.name),
+    [],
   );
+  await Promise.all([
+    ...toolFiles.flatMap(([directory, fileName]) => [
+      access(new URL(`app/tools/${directory}/${fileName}`, templateRoot)),
+      access(new URL(`app/tools/${directory}/config.ts`, templateRoot)),
+    ]),
+    access(new URL("app/tools/shared/tool-ui.tsx", templateRoot)),
+  ]);
+  const configSources = await Promise.all(
+    ["base64", "color", "glitch-text", "json", "password", "text-stats", "time-diff", "timestamp"]
+      .map((directory) => readFile(
+        new URL(`app/tools/${directory}/config.ts`, templateRoot),
+        "utf8",
+      )),
+  );
+  for (const configSource of configSources) {
+    assert.match(configSource, /defineTool\(\{/);
+    assert.match(configSource, /load: \(\) =>/);
+    assert.match(configSource, /import\("\.\/[^\"]+-tool"\)/);
+    assert.doesNotMatch(configSource, /\.then\(/);
+    assert.doesNotMatch(configSource, /categoryLabel/);
+  }
+  assert.match(registry, /from "\.\/tools\/json\/config"/);
+  assert.doesNotMatch(registry, /title: "JSON 格式化"/);
+  assert.doesNotMatch(globalStyles, /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/);
   await assert.rejects(access(new URL("app/_sites-preview", templateRoot)));
   await assert.rejects(access(new URL(".openai/hosting.json", templateRoot)));
 });
@@ -87,9 +136,11 @@ test("builds each tool as an independent client chunk", async () => {
   const toolChunks = [
     "base64-tool",
     "color-tool",
+    "glitch-text-tool",
     "json-tool",
     "password-tool",
     "text-stats-tool",
+    "time-diff-tool",
     "timestamp-tool",
   ];
 
@@ -105,12 +156,16 @@ test("builds each tool as an independent client chunk", async () => {
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
-  const [shared, timestamp, password, toolbox, registry] = await Promise.all([
-    readFile(new URL("../app/tools/shared.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/timestamp-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/password-tool.tsx", import.meta.url), "utf8"),
+  const [shared, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig] = await Promise.all([
+    readFile(new URL("../app/tools/shared/tool-ui.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/password/password-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/time-diff/time-diff-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/glitch-text/glitch-text-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/glitch-text/glitch-text-core.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tool-registry.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/color/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/time-diff/config.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(shared, /error \|\| message \|\|/);
@@ -119,10 +174,27 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(timestamp, /时间戳必须是 10 位秒数或 13 位毫秒数/);
   assert.match(password, /secureRandomIndex/);
   assert.match(password, /selectedPools\.map\(randomCharacter\)/);
+  assert.match(timeDiff, /省略冒号/);
+  assert.match(timeDiff, /开始到结束总时间差/);
+  assert.match(timeDiff, /type TimeDiffMode = "continuous" \| "pairs"/);
+  assert.match(timeDiff, /aria-label="计算方式"/);
+  assert.match(timeDiff, /全部时间对总差值/);
+  assert.match(timeDiff, /handlePairKeyDown/);
+  assert.match(timeDiff, /添加时间对/);
+  assert.match(timeDiff, /sumCalculatedDifferences/);
+  assert.match(timeDiff, /aria-live="polite"/);
+  assert.match(timeDiff, /event\.key !== "Tab"/);
+  assert.match(glitchText, /aria-hidden="true"/);
+  assert.match(glitchText, /结果只在点击生成时更新/);
+  assert.match(glitchText, /Unicode 17/);
+  assert.match(glitchCore, /Intl\.Segmenter/);
+  assert.match(glitchCore, /String\.fromCodePoint/);
+  assert.doesNotMatch(glitchCore, /0x034f|0xfe20|0x20e3/);
   assert.match(toolbox, /aria-label="搜索工具"/);
   assert.match(toolbox, /aria-labelledby="tool-dialog-title"/);
   assert.doesNotMatch(toolbox, /<label className="search-box header-search"/);
-  assert.match(registry, /将 HEX 颜色转换为 RGB 与 HSL/);
+  assert.match(colorConfig, /将 HEX 颜色转换为 RGB 与 HSL/);
+  assert.match(timeDiffConfig, /成对时间差/);
 });
 
 test("keeps Next on the audited PostCSS version", async () => {

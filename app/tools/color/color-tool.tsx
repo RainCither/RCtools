@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ToolStatus } from "./shared";
+import { ToolStatus } from "../shared/tool-ui";
+import styles from "./styles.module.css";
 
 function normalizeHex(value: string) {
   const clean = value.trim().replace(/^#/, "");
@@ -39,7 +40,7 @@ function rgbToHsl(r: number, g: number, b: number) {
   return { h: Math.round(hue * 360), s: Math.round(saturation * 100), l: Math.round(lightness * 100) };
 }
 
-export function ColorTool() {
+export default function ColorTool() {
   const [input, setInput] = useState("#F26B4D");
   const normalized = normalizeHex(input);
   const rgb = normalized ? hexToRgb(normalized) : null;
@@ -48,12 +49,12 @@ export function ColorTool() {
   return (
     <div className="tool-form">
       <label className="field-label" htmlFor="color-text">HEX 颜色</label>
-      <div className="color-input-row">
-        <input aria-label="选择颜色" className="color-picker" type="color" value={normalized ?? "#F26B4D"} onChange={(event) => setInput(event.target.value.toUpperCase())} />
+      <div className={styles.inputRow}>
+        <input aria-label="选择颜色" className={styles.picker} type="color" value={normalized ?? "#F26B4D"} onChange={(event) => setInput(event.target.value.toUpperCase())} />
         <input id="color-text" className="tool-input tool-code" value={input} onChange={(event) => setInput(event.target.value)} placeholder="#F26B4D" />
       </div>
       <ToolStatus error={normalized ? undefined : "请输入 3 位或 6 位 HEX 颜色。"} message={normalized ? "颜色转换完成。" : undefined} />
-      <div className="color-preview" style={{ backgroundColor: normalized ?? "#F26B4D" }} aria-label={`颜色预览 ${normalized ?? "无效"}`} />
+      <div className={styles.preview} style={{ backgroundColor: normalized ?? "#F26B4D" }} aria-label={`颜色预览 ${normalized ?? "无效"}`} />
       <dl className="result-list">
         <div><dt>HEX</dt><dd>{normalized ?? "—"}</dd></div>
         <div><dt>RGB</dt><dd>{rgb ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : "—"}</dd></div>
