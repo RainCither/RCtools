@@ -41,6 +41,7 @@ test("server-renders the personal toolbox", async () => {
   assert.match(html, /连续时间差/);
   assert.match(html, /故障文字生成/);
   assert.match(html, /Base64 编解码/);
+  assert.match(html, /MD5 加密与校验/);
   assert.match(html, /进制转换/);
   assert.match(html, /IEEE-754 浮点数转换/);
   assert.match(html, /雨寒风轻筝音悠/);
@@ -100,6 +101,9 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     ["js-formatter", "js-formatter-core.ts"],
     ["js-formatter", "js-formatter-tool.tsx"],
     ["js-formatter", "styles.module.css"],
+    ["md5", "md5-core.ts"],
+    ["md5", "md5-tool.tsx"],
+    ["md5", "styles.module.css"],
     ["html-formatter", "html-formatter-core.ts"],
     ["html-formatter", "html-formatter-tool.tsx"],
     ["password", "password-tool.tsx"],
@@ -129,7 +133,7 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     access(new URL("app/tools/shared/code-transform-tool.module.css", templateRoot)),
   ]);
   const configSources = await Promise.all(
-    ["base64", "base-converter", "color", "css-formatter", "glitch-text", "html-formatter", "ieee-754", "js-formatter", "json", "password", "text-stats", "time-diff", "timestamp"]
+    ["base64", "base-converter", "color", "css-formatter", "glitch-text", "html-formatter", "ieee-754", "js-formatter", "json", "md5", "password", "text-stats", "time-diff", "timestamp"]
       .map((directory) => readFile(
         new URL(`app/tools/${directory}/config.ts`, templateRoot),
         "utf8",
@@ -148,6 +152,7 @@ test("keeps the tool registry modular and removes the starter preview", async ()
   assert.match(registry, /from "\.\/tools\/js-formatter\/config"/);
   assert.match(registry, /from "\.\/tools\/html-formatter\/config"/);
   assert.match(registry, /from "\.\/tools\/ieee-754\/config"/);
+  assert.match(registry, /from "\.\/tools\/md5\/config"/);
   assert.doesNotMatch(registry, /title: "JSON 格式化"/);
   assert.doesNotMatch(globalStyles, /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/);
   await assert.rejects(access(new URL("app/_sites-preview", templateRoot)));
@@ -168,6 +173,7 @@ test("builds each tool as an independent client chunk", async () => {
     "html-formatter-tool",
     "json-tool",
     "js-formatter-tool",
+    "md5-tool",
     "password-tool",
     "text-stats-tool",
     "time-diff-tool",
@@ -186,7 +192,7 @@ test("builds each tool as an independent client chunk", async () => {
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
-  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig] = await Promise.all([
+  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig, md5Tool, md5Core, md5Config] = await Promise.all([
     readFile(new URL("../app/tools/shared/tool-ui.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/shared/code-transform-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url), "utf8"),
@@ -210,6 +216,9 @@ test("guards tool behavior and accessibility contracts", async () => {
     readFile(new URL("../app/tools/js-formatter/config.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/html-formatter/html-formatter-core.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/html-formatter/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/md5/md5-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/md5/md5-core.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/md5/config.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(shared, /error \|\| message \|\|/);
@@ -276,6 +285,13 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(htmlFormatterCore, /mangle: false/);
   assert.match(htmlFormatterCore, /WHITESPACE_SENSITIVE_ELEMENTS/);
   assert.match(htmlFormatterConfig, /内嵌 CSS 与 JavaScript/);
+  assert.match(md5Tool, /MD5 是单向摘要，不能直接还原原文/);
+  assert.match(md5Tool, /aria-invalid=\{Boolean\(error\)\}/);
+  assert.match(md5Tool, /role=\{error \? "alert" : "status"\}/);
+  assert.match(md5Tool, /校验通过：候选文本与目标 MD5 匹配/);
+  assert.match(md5Core, /new TextEncoder\(\)\.encode\(value\)/);
+  assert.match(md5Core, /MD5_PATTERN/);
+  assert.match(md5Config, /计算文本的 MD5 摘要/);
 });
 
 test("keeps Next on the audited PostCSS version", async () => {

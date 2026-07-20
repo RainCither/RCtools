@@ -7,6 +7,7 @@ import { htmlFormatterToolConfig } from "./tools/html-formatter/config";
 import { ieee754ToolConfig } from "./tools/ieee-754/config";
 import { jsFormatterToolConfig } from "./tools/js-formatter/config";
 import { jsonToolConfig } from "./tools/json/config";
+import { md5ToolConfig } from "./tools/md5/config";
 import { passwordToolConfig } from "./tools/password/config";
 import { textStatsToolConfig } from "./tools/text-stats/config";
 import { timeDiffToolConfig } from "./tools/time-diff/config";
@@ -35,6 +36,7 @@ export const TOOLS = [
   glitchTextToolConfig,
   passwordToolConfig,
   base64ToolConfig,
+  md5ToolConfig,
   baseConverterToolConfig,
   ieee754ToolConfig,
   colorToolConfig,
