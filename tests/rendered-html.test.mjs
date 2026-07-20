@@ -252,6 +252,14 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.doesNotMatch(glitchCore, /0x034f|0xfe20|0x20e3/);
   assert.match(toolbox, /aria-label="搜索工具"/);
   assert.match(toolbox, /aria-labelledby="tool-dialog-title"/);
+  assert.match(toolbox, /root\.style\.overflow = "hidden"/);
+  assert.match(toolbox, /body\.style\.overflow = "hidden"/);
+  assert.match(toolbox, /root\.style\.overflow = previousRootOverflow/);
+  assert.match(toolbox, /body\.style\.overflow = previousBodyOverflow/);
+  assert.match(toolbox, /document\.addEventListener\("wheel", preventBackgroundWheel/);
+  assert.match(toolbox, /passive: false/);
+  assert.match(toolbox, /document\.removeEventListener\("wheel", preventBackgroundWheel, true\)/);
+  assert.doesNotMatch(toolbox, /onClick=\{\(event\) => \{\s*if \(event\.target === event\.currentTarget\) onRequestClose\(\)/);
   assert.doesNotMatch(toolbox, /<label className="search-box header-search"/);
   assert.match(colorConfig, /将 HEX 颜色转换为 RGB 与 HSL/);
   assert.match(timeDiffConfig, /成对时间差/);

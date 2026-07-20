@@ -71,6 +71,42 @@ function ToolDialog({
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    const root = document.documentElement;
+    const body = document.body;
+    const previousRootOverflow = root.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyPaddingRight = body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - root.clientWidth;
+
+    function preventBackgroundWheel(event: WheelEvent) {
+      const panel = dialogRef.current?.querySelector(".dialog-panel");
+      if (event.target instanceof Node && panel?.contains(event.target)) return;
+      event.preventDefault();
+    }
+
+    root.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    document.addEventListener("wheel", preventBackgroundWheel, {
+      capture: true,
+      passive: false,
+    });
+
+    if (scrollbarWidth > 0) {
+      const bodyPaddingRight = Number.parseFloat(window.getComputedStyle(body).paddingRight) || 0;
+      body.style.paddingRight = `${bodyPaddingRight + scrollbarWidth}px`;
+    }
+
+    return () => {
+      document.removeEventListener("wheel", preventBackgroundWheel, true);
+      root.style.overflow = previousRootOverflow;
+      body.style.overflow = previousBodyOverflow;
+      body.style.paddingRight = previousBodyPaddingRight;
+    };
+  }, [open]);
+
   return (
     <dialog
       ref={dialogRef}
@@ -82,9 +118,6 @@ function ToolDialog({
         onRequestClose();
       }}
       onClose={onRequestClose}
-      onClick={(event) => {
-        if (event.target === event.currentTarget) onRequestClose();
-      }}
     >
       <div className="dialog-panel">
         <header className="dialog-header">

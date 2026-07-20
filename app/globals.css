@@ -544,6 +544,7 @@ button:disabled {
   background: var(--surface);
   box-shadow: 0 28px 80px rgb(41 37 33 / 0.24);
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .dialog-header {
