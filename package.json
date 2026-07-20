@@ -12,7 +12,7 @@
     "start": "vinext start",
     "pages:build": "npm run build",
     "typecheck": "tsc --noEmit --incremental false",
-    "test": "npm run typecheck && npm run build:server && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/time-diff.test.mjs tests/glitch-text.test.mjs",
+    "test": "npm run typecheck && npm run build:server && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/time-diff.test.mjs tests/glitch-text.test.mjs tests/base-converter.test.mjs tests/ieee-754.test.mjs",
     "test:pages": "npm run pages:build && node --test tests/pages-build.test.mjs"
   },
   "dependencies": {

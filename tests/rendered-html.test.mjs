@@ -38,6 +38,8 @@ test("server-renders the personal toolbox", async () => {
   assert.match(html, /连续时间差/);
   assert.match(html, /故障文字生成/);
   assert.match(html, /Base64 编解码/);
+  assert.match(html, /进制转换/);
+  assert.match(html, /IEEE-754 浮点数转换/);
   assert.match(html, /雨寒风轻筝音悠/);
   assert.match(html, /aria-label="搜索工具"/);
   assert.match(html, /aria-labelledby="tool-dialog-title"/);
@@ -79,6 +81,12 @@ test("keeps the tool registry modular and removes the starter preview", async ()
   assert.doesNotMatch(packageJson, /cloudflare|drizzle|tailwind|wrangler/);
   const toolFiles = [
     ["base64", "base64-tool.tsx"],
+    ["base-converter", "base-converter-core.ts"],
+    ["base-converter", "base-converter-tool.tsx"],
+    ["base-converter", "styles.module.css"],
+    ["ieee-754", "ieee-754-core.ts"],
+    ["ieee-754", "ieee-754-tool.tsx"],
+    ["ieee-754", "styles.module.css"],
     ["color", "color-tool.tsx"],
     ["glitch-text", "glitch-text-core.ts"],
     ["glitch-text", "glitch-text-tool.tsx"],
@@ -109,7 +117,7 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     access(new URL("app/tools/shared/tool-ui.tsx", templateRoot)),
   ]);
   const configSources = await Promise.all(
-    ["base64", "color", "glitch-text", "json", "password", "text-stats", "time-diff", "timestamp"]
+    ["base64", "base-converter", "color", "glitch-text", "ieee-754", "json", "password", "text-stats", "time-diff", "timestamp"]
       .map((directory) => readFile(
         new URL(`app/tools/${directory}/config.ts`, templateRoot),
         "utf8",
@@ -123,6 +131,8 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     assert.doesNotMatch(configSource, /categoryLabel/);
   }
   assert.match(registry, /from "\.\/tools\/json\/config"/);
+  assert.match(registry, /from "\.\/tools\/base-converter\/config"/);
+  assert.match(registry, /from "\.\/tools\/ieee-754\/config"/);
   assert.doesNotMatch(registry, /title: "JSON 格式化"/);
   assert.doesNotMatch(globalStyles, /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/);
   await assert.rejects(access(new URL("app/_sites-preview", templateRoot)));
@@ -135,6 +145,8 @@ test("builds each tool as an independent client chunk", async () => {
   );
   const toolChunks = [
     "base64-tool",
+    "base-converter-tool",
+    "ieee-754-tool",
     "color-tool",
     "glitch-text-tool",
     "json-tool",
@@ -156,7 +168,7 @@ test("builds each tool as an independent client chunk", async () => {
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
-  const [shared, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig] = await Promise.all([
+  const [shared, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config] = await Promise.all([
     readFile(new URL("../app/tools/shared/tool-ui.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/password/password-tool.tsx", import.meta.url), "utf8"),
@@ -166,10 +178,18 @@ test("guards tool behavior and accessibility contracts", async () => {
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/color/config.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/time-diff/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/base-converter/base-converter-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/base-converter/base-converter-core.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/base-converter/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/ieee-754/ieee-754-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/ieee-754/ieee-754-core.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/ieee-754/config.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(shared, /error \|\| message \|\|/);
   assert.match(shared, /复制失败/);
+  assert.match(shared, /label = "结果"/);
+  assert.match(shared, /aria-label=/);
   assert.doesNotMatch(timestamp, /\\d\{10,13\}/);
   assert.match(timestamp, /时间戳必须是 10 位秒数或 13 位毫秒数/);
   assert.match(password, /secureRandomIndex/);
@@ -195,6 +215,22 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.doesNotMatch(toolbox, /<label className="search-box header-search"/);
   assert.match(colorConfig, /将 HEX 颜色转换为 RGB 与 HSL/);
   assert.match(timeDiffConfig, /成对时间差/);
+  assert.match(baseConverter, /aria-invalid=\{Boolean\(conversion\.error\)\}/);
+  assert.match(baseConverter, /label=\{`\$\{option\.label\}结果`\}/);
+  assert.match(baseConverter, /role=\{conversion\.error \? "alert"/);
+  assert.match(baseConverterCore, /value = value \* baseValue \+ BigInt\(digit\)/);
+  assert.match(baseConverterCore, /toUpperCase\(\)/);
+  assert.match(baseConverterConfig, /在二、八、十、十六进制整数之间精确转换/);
+  assert.match(ieee754, /type FloatInputMode/);
+  assert.match(ieee754, /aria-pressed=/);
+  assert.match(ieee754, /aria-invalid=\{Boolean\(conversion\.error\)\}/);
+  assert.match(ieee754, /role=\{conversion\.error \? "alert"/);
+  assert.match(ieee754, /label=\{`\$\{item\.label\}结果`\}/);
+  assert.match(ieee754Core, /new DataView/);
+  assert.match(ieee754Core, /setFloat32\(0, value, false\)/);
+  assert.match(ieee754Core, /CANONICAL_NAN_BYTES/);
+  assert.match(ieee754Core, /Uint8Array\.from\(bytes\)\.reverse\(\)/);
+  assert.match(ieee754Config, /Float32\/Float64 位模式之间双向转换/);
 });
 
 test("keeps Next on the audited PostCSS version", async () => {

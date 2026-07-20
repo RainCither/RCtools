@@ -4,7 +4,13 @@ import { useEffect, useRef, useState } from "react";
 
 type CopyStatus = "idle" | "copied" | "failed";
 
-export function CopyButton({ value }: { value: string }) {
+export function CopyButton({
+  value,
+  label = "结果",
+}: {
+  value: string;
+  label?: string;
+}) {
   const [status, setStatus] = useState<CopyStatus>("idle");
   const resetTimerRef = useRef<number | null>(null);
 
@@ -44,6 +50,11 @@ export function CopyButton({ value }: { value: string }) {
       type="button"
       onClick={copy}
       disabled={!value}
+      aria-label={{
+        idle: `复制${label}`,
+        copied: `${label}已复制`,
+        failed: `${label}复制失败`,
+      }[status]}
       aria-live="polite"
     >
       {{ idle: "复制结果", copied: "已复制", failed: "复制失败" }[status]}

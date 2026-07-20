@@ -28,6 +28,8 @@ test("keeps every tool in an independent client chunk", async () => {
   const assets = await readdir(new URL("dist/assets/", projectRoot));
   const toolChunks = [
     "base64-tool",
+    "base-converter-tool",
+    "ieee-754-tool",
     "color-tool",
     "glitch-text-tool",
     "json-tool",
@@ -49,6 +51,8 @@ test("keeps every tool in an independent client chunk", async () => {
   }
 
   const toolStyleChunks = [
+    "base-converter-tool",
+    "ieee-754-tool",
     "color-tool",
     "glitch-text-tool",
     "password-tool",

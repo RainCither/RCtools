@@ -1,0 +1,165 @@
+.tool {
+  gap: 14px;
+}
+
+.controls {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.controls > :global(.button) {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.baseField {
+  display: grid;
+  width: min(100%, 240px);
+  gap: 7px;
+}
+
+.select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 40px 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  outline: 0;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(242 107 77 / 0.12);
+}
+
+.input {
+  min-height: 104px;
+  overflow-wrap: anywhere;
+  resize: vertical;
+}
+
+.help,
+.error {
+  min-height: 20px;
+  margin: -4px 0 2px;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.help {
+  color: var(--muted);
+}
+
+.error {
+  color: #b33f2c;
+}
+
+.results {
+  display: grid;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.resultsHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.resultsHeading h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.resultsHeading span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.resultList {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.resultRow {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--surface);
+}
+
+.resultRow + .resultRow {
+  border-top: 1px solid var(--border);
+}
+
+.resultLabel {
+  display: grid;
+  gap: 3px;
+}
+
+.resultLabel strong {
+  font-size: 13px;
+}
+
+.resultLabel small {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.resultValue,
+.resultWaiting {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.resultValue {
+  color: var(--text);
+}
+
+.resultWaiting {
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .controls {
+    align-items: end;
+  }
+
+  .baseField {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .resultRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    align-items: start;
+  }
+
+  .resultValue,
+  .resultWaiting {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .resultRow > :global(.button) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

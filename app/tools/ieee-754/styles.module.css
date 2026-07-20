@@ -1,0 +1,196 @@
+.tool {
+  gap: 16px;
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.controlGroup {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: #fff;
+}
+
+.segmented button {
+  min-height: 44px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 8px;
+  outline: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.segmented button:focus-visible {
+  box-shadow: 0 0 0 3px rgb(242 107 77 / 0.18);
+}
+
+.segmented .active {
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  box-shadow: 0 2px 8px rgb(66 49 38 / 0.08);
+}
+
+.inputHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.inputHeading > :global(.button),
+.resultRow > :global(.button) {
+  min-height: 44px;
+  flex: 0 0 auto;
+}
+
+.input {
+  min-height: 96px;
+  overflow-wrap: anywhere;
+  resize: vertical;
+}
+
+.input[aria-invalid="true"] {
+  border-color: #c8523e;
+  box-shadow: 0 0 0 3px rgb(179 63 44 / 0.1);
+}
+
+.help,
+.error {
+  min-height: 20px;
+  margin: -5px 2px 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.help {
+  color: var(--muted);
+}
+
+.error {
+  color: #a93625;
+}
+
+.results {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+}
+
+.resultsHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.resultsHeading h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.resultsHeading span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.resultList {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.resultRow {
+  display: grid;
+  grid-template-columns: 126px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 14px;
+  background: var(--surface);
+}
+
+.resultRow + .resultRow {
+  border-top: 1px solid var(--border);
+}
+
+.resultLabel {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.resultLabel strong {
+  font-size: 13px;
+}
+
+.resultLabel small {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.resultValue,
+.resultWaiting {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.resultValue {
+  color: var(--text);
+}
+
+.resultWaiting {
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .settings {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .resultRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    align-items: start;
+  }
+
+  .resultValue,
+  .resultWaiting {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .resultRow > :global(.button) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

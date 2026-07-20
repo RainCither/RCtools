@@ -1,6 +1,8 @@
 import { base64ToolConfig } from "./tools/base64/config";
+import { baseConverterToolConfig } from "./tools/base-converter/config";
 import { colorToolConfig } from "./tools/color/config";
 import { glitchTextToolConfig } from "./tools/glitch-text/config";
+import { ieee754ToolConfig } from "./tools/ieee-754/config";
 import { jsonToolConfig } from "./tools/json/config";
 import { passwordToolConfig } from "./tools/password/config";
 import { textStatsToolConfig } from "./tools/text-stats/config";
@@ -27,6 +29,8 @@ export const TOOLS = [
   glitchTextToolConfig,
   passwordToolConfig,
   base64ToolConfig,
+  baseConverterToolConfig,
+  ieee754ToolConfig,
   colorToolConfig,
 ] as const satisfies readonly ToolDefinition[];
 
