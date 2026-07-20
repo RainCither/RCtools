@@ -1,31 +1,41 @@
 # 工具匣（RCtools）
 
-一个简洁、可扩展的浏览器工具箱。工具在浏览器本地运行，不需要上传输入内容，也不依赖后端服务。
+一个简洁、可扩展的浏览器工具箱。所有输入都在浏览器本地处理，无需上传内容，也不依赖后端服务。
 
-- 在线使用：[https://tool.raincither.top/](https://tool.raincither.top/)
-- 源码分支：`dev`
-- GitHub Pages 产物分支：`main`
+[在线使用](https://tool.raincither.top/) · [添加新工具指南](./ADDTOOL.md)
 
-## 已有工具
+## 功能特点
 
-| 工具 | 功能 |
-| --- | --- |
-| JSON 格式化 | 校验、格式化或压缩 JSON 数据 |
-| 时间戳转换 | 在时间戳、日期与标准时间之间转换 |
-| 连续时间差 | 连续或成对输入时间，计算分段差值与累计总时长 |
-| 文本统计 | 统计字数、字符、单词和行数 |
-| 故障文字生成 | 用 Unicode 组合符生成可复制的故障、错位文字 |
-| 密码生成 | 按长度和字符规则生成随机密码 |
-| Base64 编解码 | 编码或解码包含中文的文本 |
-| 颜色转换 | 将 HEX 颜色转换为 RGB 与 HSL |
+- 常用文本、开发和日期工具集中在一个页面中。
+- 支持标题、中文关键词、英文关键词和别名搜索。
+- 工具组件按需加载，避免在首屏加载全部工具代码。
+- 输入数据仅在本地处理，最近使用记录保存在当前浏览器中。
+- 可构建为纯静态站点并部署到 GitHub Pages。
 
-## 环境要求
+## 工具列表
+
+| 类别 | 工具 | 功能 |
+| --- | --- | --- |
+| 开发 | JSON 格式化 | 校验、格式化或压缩 JSON 数据 |
+| 日期 | 时间戳转换 | 在时间戳、日期与标准时间之间转换 |
+| 日期 | 连续时间差 | 连续或成对输入时间，计算分段差值与累计总时长 |
+| 文本 | 文本统计 | 统计字数、字符、单词和行数 |
+| 文本 | 故障文字生成 | 用 Unicode 组合符生成可复制的故障、错位文字 |
+| 开发 | 密码生成 | 按长度和字符规则生成随机密码 |
+| 开发 | Base64 编解码 | 编码或解码包含中文的文本 |
+| 开发 | 进制转换 | 在二、八、十、十六进制整数之间精确转换 |
+| 开发 | IEEE-754 浮点数转换 | 在十进制数与 Float32/Float64 位模式之间双向转换 |
+| 开发 | 颜色转换 | 将 HEX 颜色转换为 RGB 与 HSL |
+
+## 本地开发
+
+### 环境要求
 
 - Node.js `>= 22.13.0`
 - npm（随 Node.js 安装）
-- 现代浏览器，如 Chrome、Edge、Firefox 或 Safari
+- Chrome、Edge、Firefox 或 Safari 等现代浏览器
 
-## 快速开始
+### 快速开始
 
 ```bash
 git clone https://github.com/RainCither/RCtools.git
@@ -37,24 +47,32 @@ npm run dev
 
 开发服务器默认运行在 [http://localhost:3000](http://localhost:3000)。如果端口被占用，请以终端显示的地址为准。
 
-## 常用命令
+### 常用命令
 
 | 命令 | 说明 |
 | --- | --- |
 | `npm run dev` | 启动 Vinext 开发服务器 |
-| `npm run build` | 直接生成 GitHub Pages 静态文件到 `dist/` |
-| `npm run pages:build` | GitHub Pages 构建命令，等同于 `npm run build` |
-| `npm run build:server` | 构建用于专项验证的 Vinext 服务端版本 |
-| `npm run start` | 启动已构建的 Vinext 服务端版本 |
 | `npm run typecheck` | 运行 TypeScript 类型检查 |
 | `npm test` | 运行类型检查、服务端构建和功能测试 |
+| `npm run build` | 生成 GitHub Pages 静态文件到 `dist/` |
+| `npm run pages:build` | GitHub Pages 构建命令，等同于 `npm run build` |
 | `npm run test:pages` | 构建并验证 GitHub Pages 静态产物 |
+| `npm run build:server` | 构建用于专项验证的 Vinext 服务端版本 |
+| `npm run start` | 启动已构建的 Vinext 服务端版本 |
 
-本地预览静态产物：
+构建并预览静态站点：
 
 ```bash
 npm run build
 npx vite preview --config vite.pages.config.ts
+```
+
+提交代码前建议运行：
+
+```bash
+npm test
+npm run test:pages
+git diff --check
 ```
 
 ## 项目结构
@@ -63,138 +81,87 @@ npx vite preview --config vite.pages.config.ts
 RCtools/
 ├─ app/
 │  ├─ tools/
-│  │  ├─ json/              # 一个工具一个目录
-│  │  │  ├─ config.ts       # 元数据与工具组件懒加载入口
-│  │  │  ├─ json-tool.tsx   # 工具组件入口
-│  │  │  └─ styles.module.css # 仅该工具使用的样式（按需）
-│  │  ├─ time-diff/         # 可同时包含专用算法、CSS、测试辅助等
-│  │  └─ shared/            # 仅存放跨工具复用的 UI 与逻辑
-│  ├─ pages-entry.tsx       # GitHub Pages 客户端入口
-│  ├─ tool-panels.tsx       # 从注册表生成懒加载组件并复用预加载结果
-│  ├─ tool-registry.ts      # 工具名称、分类和搜索信息
-│  └─ toolbox-app.tsx       # 工具箱主界面
-├─ public/                  # favicon 等公共静态资源
-├─ tests/                   # 功能与静态构建测试
-├─ .github/workflows/       # GitHub Pages 自动部署工作流
-├─ index.html               # Vite 静态页面入口
-├─ vite.config.ts           # Vinext 开发配置
-└─ vite.pages.config.ts     # GitHub Pages 静态构建配置
+│  │  ├─ json/                 # 一个工具一个目录
+│  │  │  ├─ config.ts          # 元数据与动态导入入口
+│  │  │  ├─ json-tool.tsx      # 工具组件
+│  │  │  └─ styles.module.css  # 工具私有样式（按需）
+│  │  ├─ time-diff/            # 可包含专用算法、类型和样式
+│  │  └─ shared/               # 跨工具复用的 UI 与逻辑
+│  ├─ page.tsx                 # Vinext 页面入口
+│  ├─ pages-entry.tsx          # GitHub Pages 客户端入口
+│  ├─ toolbox-app.tsx          # 工具箱主界面
+│  ├─ tool-types.ts            # 工具类型与分类名称
+│  ├─ tool-registry.ts         # 工具配置注册表
+│  └─ tool-panels.tsx          # 懒加载与预加载管理
+├─ public/                     # favicon 等公共静态资源
+├─ tests/                      # 功能、结构与静态构建测试
+├─ .github/workflows/          # GitHub Pages 自动部署工作流
+├─ ADDTOOL.md                  # 添加新工具的完整指南
+├─ index.html                  # Vite 静态页面入口
+├─ vite.config.ts              # Vinext 开发配置
+└─ vite.pages.config.ts        # GitHub Pages 静态构建配置
 ```
 
-每个工具的配置、实现和专用样式收拢在自己的目录中，功能组件通过动态导入按需加载。工具可以在目录内继续添加专用的 CSS Module、算法、类型和辅助文件；只有被多个工具使用的代码才放入 `app/tools/shared/`。工具 ID 会从注册清单自动推导，分类中文名也由公共映射统一生成，避免重复维护。随着工具数量增加，首屏不会一次加载所有工具代码。
+每个工具的配置、组件、算法和专用样式都收拢在自己的目录中。工具 ID、分类、搜索和懒加载组件从注册表自动推导；只有被多个工具共同使用的代码才放入 `app/tools/shared/`。
 
 ## 添加新工具
 
-### 1. 创建工具目录与配置
+完整步骤、代码模板、测试要求和验收清单见 [`ADDTOOL.md`](./ADDTOOL.md)。基本流程是：
 
-创建 `app/tools/new-tool/`，并在其中添加 `config.ts`：
+1. 在 `app/tools/<tool-id>/` 中创建配置和组件。
+2. 使用 `defineTool` 声明元数据与动态导入入口。
+3. 将配置加入 `app/tool-registry.ts` 的 `TOOLS`。
+4. 更新工具清单、功能测试和独立分块测试。
+5. 运行完整验证并在浏览器中检查交互和响应式布局。
 
-```ts
-import { defineTool } from "../../tool-types";
-
-export const newToolConfig = defineTool({
-  id: "new-tool",
-  title: "新工具",
-  summary: "一句话说明用途。",
-  category: "dev",
-  mark: "N",
-  searchTerms: ["关键词", "keyword"],
-  load: () => import("./new-tool"),
-});
-```
-
-然后在 `app/tool-registry.ts` 中导入 `newToolConfig` 并加入 `TOOLS`；`ToolId` 会自动包含 `"new-tool"`。`app/tool-panels.tsx` 会从注册表自动生成懒加载组件，不需要再维护第二份工具映射。用户悬停或用键盘聚焦工具卡片时会提前加载对应分块，打开弹窗时复用同一个加载结果。如需新分类，同时更新 `app/tool-types.ts` 的分类映射和 `TOOL_CATEGORIES`。
-
-### 2. 创建工具组件
-
-在同一目录创建 `new-tool.tsx` 并导出工具组件。专用样式、算法、类型或配置也放在这个目录内，例如 `styles.module.css`、`core.ts`、`types.ts`；组件通过 CSS Module 引用专用样式，不把工具私有选择器放回 `app/globals.css`。
-
-```tsx
-"use client";
-
-export default function NewTool() {
-  return <div>工具内容</div>;
-}
-```
-
-### 3. 注册工具
-
-只需在 `app/tool-registry.ts` 导入配置并加入 `TOOLS`：
-
-```ts
-import { newToolConfig } from "./tools/new-tool/config";
-
-export const TOOLS = [
-  // 现有工具…
-  newToolConfig,
-] as const satisfies readonly ToolDefinition[];
-```
-
-### 4. 更新测试并验证
-
-如果新工具需要独立构建分块，请在 `tests/pages-build.test.mjs` 的 `toolChunks` 中加入对应文件名前缀，然后执行：
-
-```bash
-npm run typecheck
-npm test
-npm run test:pages
-```
+`app/tool-panels.tsx` 会从注册表自动生成组件映射，添加工具时不需要在其中维护第二份清单。
 
 ## GitHub Pages 部署
 
-仓库采用双分支结构：
+### 分支约定
 
 - `dev`：保存源码、测试和部署工作流，是日常开发分支。
 - `main`：由 GitHub Actions 自动生成，只保存 `dist/` 中的静态产物。
 
-推送到 `dev` 后，`.github/workflows/deploy-pages.yml` 会：
+推送到 `dev` 后，`.github/workflows/deploy-pages.yml` 会安装依赖、构建静态站点，并将 `dist/` 强制发布到 `main`。不要直接编辑或提交到 `main`，下一次部署会覆盖其中的内容。
 
-1. 安装依赖。
-2. 构建纯客户端静态站点。
-3. 将 `dist/` 强制推送到 `main`。
-4. 由 GitHub Pages 从 `main` 根目录发布。
-
-不要直接编辑或提交到 `main`，下一次部署会覆盖其中的内容。
-
-首次部署 Fork 后的仓库时，请在 GitHub 中打开：
+首次部署 Fork 后的仓库时，在 GitHub 中打开：
 
 `Settings → Pages → Build and deployment`
 
-选择：
+设置为：
 
 - Source：`Deploy from a branch`
 - Branch：`main`
 - Folder：`/ (root)`
 
-工作流已经声明 `contents: write` 权限。如果组织策略禁止写入，请在仓库的 Actions 设置中允许工作流写入仓库内容。
+工作流需要 `contents: write` 权限。如果组织策略禁止写入，请在仓库的 Actions 设置中允许工作流写入仓库内容。
 
-## 配置域名与 Base Path
+### 域名与 Base Path
 
-当前配置用于自定义域名 `tool.raincither.top`：
+当前部署使用自定义域名 `tool.raincither.top`：
 
 ```yaml
 PAGES_BASE_PATH: /
 PAGES_CUSTOM_DOMAIN: tool.raincither.top
 ```
 
-构建会生成 `dist/CNAME`，避免自动部署覆盖 `main` 后丢失域名绑定。
+`vite.pages.config.ts` 会把资源路径设置为根路径，并生成 `dist/CNAME`。
 
-### 使用自己的自定义域名
+使用其他自定义域名时：
 
-1. 在 `.github/workflows/deploy-pages.yml` 中将 `PAGES_CUSTOM_DOMAIN` 改为自己的域名。
+1. 将工作流中的 `PAGES_CUSTOM_DOMAIN` 改为目标域名。
 2. 保持 `PAGES_BASE_PATH: /`。
-3. 在 GitHub Pages 设置中填写相同的域名。
-4. 按 GitHub 提示配置 DNS，等待检查通过后启用 HTTPS。
+3. 在 GitHub Pages 设置中填写相同域名。
+4. 按 GitHub 提示配置 DNS，检查通过后启用 HTTPS。
 
-### 不使用自定义域名
-
-如果站点地址是 `https://<用户名>.github.io/<仓库名>/`：
+不使用自定义域名、通过 `https://<用户名>.github.io/<仓库名>/` 访问时：
 
 1. 将 `PAGES_BASE_PATH` 改为 `/<仓库名>`，例如 `/RCtools`。
-2. 删除工作流中的 `PAGES_CUSTOM_DOMAIN`。
-3. 在 `vite.pages.config.ts` 中禁用 `CNAME` 文件的生成。
+2. 修改 `vite.pages.config.ts`，在没有自定义域名时不生成 `CNAME`。
+3. 确认 GitHub Pages 仍从 `main` 分支根目录发布。
 
-Base Path 末尾不要添加 `/`。根路径使用单独的 `/`。
+Base Path 必须以 `/` 开头；除根路径 `/` 外，末尾不要添加 `/`。
 
 ## 数据与隐私
 
@@ -205,17 +172,21 @@ Base Path 末尾不要添加 `/`。根路径使用单独的 `/`。
 
 ## 常见问题
 
-### 页面打开后没有样式或脚本 404
+### 页面打开后样式或脚本返回 404
 
 检查 `PAGES_BASE_PATH` 是否与访问地址一致：自定义域名使用 `/`，仓库子路径使用 `/<仓库名>`。
 
 ### 自定义域名在重新部署后失效
 
-确认 `PAGES_CUSTOM_DOMAIN` 与 GitHub Pages 设置中的域名一致，并检查构建产物中是否存在内容正确的 `CNAME` 文件。
+确认 `PAGES_CUSTOM_DOMAIN` 与 GitHub Pages 设置中的域名一致，并检查构建产物中是否存在内容正确的 `CNAME`。
 
 ### `main` 中看不到源码
 
 这是正常现象。源码位于 `dev`，`main` 只用于 GitHub Pages 静态部署。
+
+### 新工具没有出现在页面中
+
+确认工具配置已经导入 `app/tool-registry.ts` 并加入 `TOOLS`，同时检查 `config.ts` 中的动态导入路径是否指向默认导出的组件。
 
 ### 安装依赖失败
 
