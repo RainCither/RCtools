@@ -1,0 +1,29 @@
+.tool {
+  gap: 14px;
+}
+
+.editor {
+  min-height: 190px;
+  tab-size: 2;
+}
+
+.editor:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.editor[aria-invalid="true"] {
+  border-color: #c8523e;
+  box-shadow: 0 0 0 3px rgb(179 63 44 / 0.1);
+}
+
+.output {
+  min-height: 160px;
+  background: var(--surface-soft);
+}
+
+@media (max-width: 640px) {
+  .editor {
+    min-height: 160px;
+  }
+}

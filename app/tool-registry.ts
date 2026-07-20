@@ -1,8 +1,11 @@
 import { base64ToolConfig } from "./tools/base64/config";
 import { baseConverterToolConfig } from "./tools/base-converter/config";
 import { colorToolConfig } from "./tools/color/config";
+import { cssFormatterToolConfig } from "./tools/css-formatter/config";
 import { glitchTextToolConfig } from "./tools/glitch-text/config";
+import { htmlFormatterToolConfig } from "./tools/html-formatter/config";
 import { ieee754ToolConfig } from "./tools/ieee-754/config";
+import { jsFormatterToolConfig } from "./tools/js-formatter/config";
 import { jsonToolConfig } from "./tools/json/config";
 import { passwordToolConfig } from "./tools/password/config";
 import { textStatsToolConfig } from "./tools/text-stats/config";
@@ -23,6 +26,9 @@ export type CategoryFilter = (typeof TOOL_CATEGORIES)[number]["id"];
 
 export const TOOLS = [
   jsonToolConfig,
+  cssFormatterToolConfig,
+  jsFormatterToolConfig,
+  htmlFormatterToolConfig,
   timestampToolConfig,
   timeDiffToolConfig,
   textStatsToolConfig,

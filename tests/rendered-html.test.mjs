@@ -34,6 +34,9 @@ test("server-renders the personal toolbox", async () => {
   assert.match(html, /<title>工具匣｜常用小工具，一开即用<\/title>/i);
   assert.match(html, /搜索工具或功能/);
   assert.match(html, /JSON 格式化/);
+  assert.match(html, /CSS 格式化压缩/);
+  assert.match(html, /JavaScript 格式化压缩/);
+  assert.match(html, /HTML 格式化压缩/);
   assert.match(html, /时间戳转换/);
   assert.match(html, /连续时间差/);
   assert.match(html, /故障文字生成/);
@@ -88,10 +91,17 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     ["ieee-754", "ieee-754-tool.tsx"],
     ["ieee-754", "styles.module.css"],
     ["color", "color-tool.tsx"],
+    ["css-formatter", "css-formatter-core.ts"],
+    ["css-formatter", "css-formatter-tool.tsx"],
     ["glitch-text", "glitch-text-core.ts"],
     ["glitch-text", "glitch-text-tool.tsx"],
     ["glitch-text", "styles.module.css"],
     ["json", "json-tool.tsx"],
+    ["js-formatter", "js-formatter-core.ts"],
+    ["js-formatter", "js-formatter-tool.tsx"],
+    ["js-formatter", "styles.module.css"],
+    ["html-formatter", "html-formatter-core.ts"],
+    ["html-formatter", "html-formatter-tool.tsx"],
     ["password", "password-tool.tsx"],
     ["text-stats", "text-stats-tool.tsx"],
     ["text-stats", "styles.module.css"],
@@ -115,9 +125,11 @@ test("keeps the tool registry modular and removes the starter preview", async ()
       access(new URL(`app/tools/${directory}/config.ts`, templateRoot)),
     ]),
     access(new URL("app/tools/shared/tool-ui.tsx", templateRoot)),
+    access(new URL("app/tools/shared/code-transform-tool.tsx", templateRoot)),
+    access(new URL("app/tools/shared/code-transform-tool.module.css", templateRoot)),
   ]);
   const configSources = await Promise.all(
-    ["base64", "base-converter", "color", "glitch-text", "ieee-754", "json", "password", "text-stats", "time-diff", "timestamp"]
+    ["base64", "base-converter", "color", "css-formatter", "glitch-text", "html-formatter", "ieee-754", "js-formatter", "json", "password", "text-stats", "time-diff", "timestamp"]
       .map((directory) => readFile(
         new URL(`app/tools/${directory}/config.ts`, templateRoot),
         "utf8",
@@ -132,6 +144,9 @@ test("keeps the tool registry modular and removes the starter preview", async ()
   }
   assert.match(registry, /from "\.\/tools\/json\/config"/);
   assert.match(registry, /from "\.\/tools\/base-converter\/config"/);
+  assert.match(registry, /from "\.\/tools\/css-formatter\/config"/);
+  assert.match(registry, /from "\.\/tools\/js-formatter\/config"/);
+  assert.match(registry, /from "\.\/tools\/html-formatter\/config"/);
   assert.match(registry, /from "\.\/tools\/ieee-754\/config"/);
   assert.doesNotMatch(registry, /title: "JSON 格式化"/);
   assert.doesNotMatch(globalStyles, /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/);
@@ -148,8 +163,11 @@ test("builds each tool as an independent client chunk", async () => {
     "base-converter-tool",
     "ieee-754-tool",
     "color-tool",
+    "css-formatter-tool",
     "glitch-text-tool",
+    "html-formatter-tool",
     "json-tool",
+    "js-formatter-tool",
     "password-tool",
     "text-stats-tool",
     "time-diff-tool",
@@ -168,8 +186,9 @@ test("builds each tool as an independent client chunk", async () => {
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
-  const [shared, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config] = await Promise.all([
+  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig] = await Promise.all([
     readFile(new URL("../app/tools/shared/tool-ui.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/shared/code-transform-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/password/password-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/time-diff/time-diff-tool.tsx", import.meta.url), "utf8"),
@@ -184,12 +203,24 @@ test("guards tool behavior and accessibility contracts", async () => {
     readFile(new URL("../app/tools/ieee-754/ieee-754-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/ieee-754/ieee-754-core.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/ieee-754/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/css-formatter/css-formatter-core.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/css-formatter/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/js-formatter/js-formatter-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/js-formatter/js-formatter-core.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/js-formatter/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/html-formatter/html-formatter-core.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/html-formatter/config.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(shared, /error \|\| message \|\|/);
   assert.match(shared, /复制失败/);
   assert.match(shared, /label = "结果"/);
   assert.match(shared, /aria-label=/);
+  assert.match(codeTransform, /aria-busy=\{busy\}/);
+  assert.match(codeTransform, /setOutput\(""\)/);
+  assert.match(codeTransform, /aria-invalid=\{Boolean\(error\)\}/);
+  assert.match(codeTransform, /正在格式化/);
+  assert.match(codeTransform, /正在压缩/);
   assert.doesNotMatch(timestamp, /\\d\{10,13\}/);
   assert.match(timestamp, /时间戳必须是 10 位秒数或 13 位毫秒数/);
   assert.match(password, /secureRandomIndex/);
@@ -231,6 +262,20 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(ieee754Core, /CANONICAL_NAN_BYTES/);
   assert.match(ieee754Core, /Uint8Array\.from\(bytes\)\.reverse\(\)/);
   assert.match(ieee754Config, /Float32\/Float64 位模式之间双向转换/);
+  assert.match(cssFormatterCore, /import\("prettier\/standalone"\)/);
+  assert.match(cssFormatterCore, /import\("csso"\)/);
+  assert.match(cssFormatterConfig, /格式化或压缩标准 CSS/);
+  assert.match(jsFormatter, /改名压缩/);
+  assert.match(jsFormatter, /保留名称/);
+  assert.match(jsFormatter, /aria-pressed=/);
+  assert.match(jsFormatterCore, /type JavaScriptMinifyMode = "mangle" \| "preserve-names"/);
+  assert.match(jsFormatterCore, /import\("terser"\)/);
+  assert.match(jsFormatterCore, /不支持 JSX 或 TypeScript/);
+  assert.match(jsFormatterConfig, /现代 JavaScript 与 ES Modules/);
+  assert.match(htmlFormatterCore, /import\("parse5"\)/);
+  assert.match(htmlFormatterCore, /mangle: false/);
+  assert.match(htmlFormatterCore, /WHITESPACE_SENSITIVE_ELEMENTS/);
+  assert.match(htmlFormatterConfig, /内嵌 CSS 与 JavaScript/);
 });
 
 test("keeps Next on the audited PostCSS version", async () => {

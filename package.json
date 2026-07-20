@@ -12,16 +12,21 @@
     "start": "vinext start",
     "pages:build": "npm run build",
     "typecheck": "tsc --noEmit --incremental false",
-    "test": "npm run typecheck && npm run build:server && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/time-diff.test.mjs tests/glitch-text.test.mjs tests/base-converter.test.mjs tests/ieee-754.test.mjs",
+    "test": "npm run typecheck && npm run build:server && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/time-diff.test.mjs tests/glitch-text.test.mjs tests/base-converter.test.mjs tests/ieee-754.test.mjs tests/code-formatters.test.mjs",
     "test:pages": "npm run pages:build && node --test tests/pages-build.test.mjs"
   },
   "dependencies": {
+    "csso": "5.0.5",
     "next": "16.2.6",
+    "parse5": "8.0.1",
     "postcss": "8.5.14",
+    "prettier": "3.9.5",
     "react": "19.2.6",
-    "react-dom": "19.2.6"
+    "react-dom": "19.2.6",
+    "terser": "5.49.0"
   },
   "devDependencies": {
+    "@types/csso": "5.0.4",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
