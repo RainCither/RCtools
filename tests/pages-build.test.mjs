@@ -39,6 +39,7 @@ test("keeps every tool in an independent client chunk", async () => {
     "md5-tool",
     "sha-tool",
     "password-tool",
+    "regex-tool",
     "text-stats-tool",
     "time-diff-tool",
     "timestamp-tool",
@@ -64,6 +65,7 @@ test("keeps every tool in an independent client chunk", async () => {
     "md5-tool",
     "sha-tool",
     "password-tool",
+    "regex-tool",
     "text-stats-tool",
     "time-diff-tool",
   ];

@@ -9,6 +9,7 @@ import { jsFormatterToolConfig } from "./tools/js-formatter/config";
 import { jsonToolConfig } from "./tools/json/config";
 import { md5ToolConfig } from "./tools/md5/config";
 import { passwordToolConfig } from "./tools/password/config";
+import { regexToolConfig } from "./tools/regex/config";
 import { shaToolConfig } from "./tools/sha/config";
 import { textStatsToolConfig } from "./tools/text-stats/config";
 import { timeDiffToolConfig } from "./tools/time-diff/config";
@@ -31,6 +32,7 @@ export const TOOLS = [
   cssFormatterToolConfig,
   jsFormatterToolConfig,
   htmlFormatterToolConfig,
+  regexToolConfig,
   timestampToolConfig,
   timeDiffToolConfig,
   textStatsToolConfig,

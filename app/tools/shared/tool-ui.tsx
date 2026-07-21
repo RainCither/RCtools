@@ -7,9 +7,11 @@ type CopyStatus = "idle" | "copied" | "failed";
 export function CopyButton({
   value,
   label = "结果",
+  idleText = "复制结果",
 }: {
   value: string;
   label?: string;
+  idleText?: string;
 }) {
   const [status, setStatus] = useState<CopyStatus>("idle");
   const resetTimerRef = useRef<number | null>(null);
@@ -57,7 +59,7 @@ export function CopyButton({
       }[status]}
       aria-live="polite"
     >
-      {{ idle: "复制结果", copied: "已复制", failed: "复制失败" }[status]}
+      {{ idle: idleText, copied: "已复制", failed: "复制失败" }[status]}
     </button>
   );
 }

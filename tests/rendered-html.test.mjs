@@ -37,6 +37,7 @@ test("server-renders the personal toolbox", async () => {
   assert.match(html, /CSS 格式化压缩/);
   assert.match(html, /JavaScript 格式化压缩/);
   assert.match(html, /HTML 格式化压缩/);
+  assert.match(html, /正则表达式测试/);
   assert.match(html, /时间戳转换/);
   assert.match(html, /连续时间差/);
   assert.match(html, /故障文字生成/);
@@ -114,6 +115,10 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     ["text-stats", "text-stats-tool.tsx"],
     ["text-stats", "styles.module.css"],
     ["password", "styles.module.css"],
+    ["regex", "regex-core.ts"],
+    ["regex", "regex-reference.ts"],
+    ["regex", "regex-tool.tsx"],
+    ["regex", "styles.module.css"],
     ["color", "styles.module.css"],
     ["time-diff", "time-diff-core.ts"],
     ["time-diff", "time-diff-tool.tsx"],
@@ -138,7 +143,7 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     access(new URL("app/tools/shared/hash-file.ts", templateRoot)),
   ]);
   const configSources = await Promise.all(
-    ["base64", "base-converter", "color", "css-formatter", "glitch-text", "html-formatter", "ieee-754", "js-formatter", "json", "md5", "password", "sha", "text-stats", "time-diff", "timestamp"]
+    ["base64", "base-converter", "color", "css-formatter", "glitch-text", "html-formatter", "ieee-754", "js-formatter", "json", "md5", "password", "regex", "sha", "text-stats", "time-diff", "timestamp"]
       .map((directory) => readFile(
         new URL(`app/tools/${directory}/config.ts`, templateRoot),
         "utf8",
@@ -159,6 +164,7 @@ test("keeps the tool registry modular and removes the starter preview", async ()
   assert.match(registry, /from "\.\/tools\/ieee-754\/config"/);
   assert.match(registry, /from "\.\/tools\/md5\/config"/);
   assert.match(registry, /from "\.\/tools\/sha\/config"/);
+  assert.match(registry, /from "\.\/tools\/regex\/config"/);
   assert.doesNotMatch(registry, /title: "JSON 格式化"/);
   assert.doesNotMatch(globalStyles, /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/);
   await assert.rejects(access(new URL("app/_sites-preview", templateRoot)));
@@ -182,6 +188,7 @@ test("builds each tool as an independent client chunk", async () => {
     "md5-tool",
     "sha-tool",
     "password-tool",
+    "regex-tool",
     "text-stats-tool",
     "time-diff-tool",
     "timestamp-tool",
@@ -199,7 +206,7 @@ test("builds each tool as an independent client chunk", async () => {
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
-  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig, md5Tool, md5Core, md5Config, shaTool, shaCore, shaConfig, hashFile] = await Promise.all([
+  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig, md5Tool, md5Core, md5Config, shaTool, shaCore, shaConfig, hashFile, regexTool, regexCore, regexReference, regexConfig] = await Promise.all([
     readFile(new URL("../app/tools/shared/tool-ui.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/shared/code-transform-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url), "utf8"),
@@ -230,11 +237,16 @@ test("guards tool behavior and accessibility contracts", async () => {
     readFile(new URL("../app/tools/sha/sha-core.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/sha/config.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/shared/hash-file.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/regex/regex-tool.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/regex/regex-core.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/regex/regex-reference.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/regex/config.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(shared, /error \|\| message \|\|/);
   assert.match(shared, /复制失败/);
   assert.match(shared, /label = "结果"/);
+  assert.match(shared, /idleText = "复制结果"/);
   assert.match(shared, /aria-label=/);
   assert.match(codeTransform, /aria-busy=\{busy\}/);
   assert.match(codeTransform, /setOutput\(""\)/);
@@ -341,6 +353,37 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(hashFile, /20 \* 1024 \* 1024/);
   assert.match(hashFile, /file\.arrayBuffer\(\)/);
   assert.match(hashFile, /文件读取失败，请重新选择后再试/);
+  assert.match(regexTool, /useMemo/);
+  assert.doesNotMatch(regexTool, /useEffect|dangerouslySetInnerHTML/);
+  assert.match(regexTool, /aria-invalid=\{Boolean\(error\)\}/);
+  assert.match(regexTool, /role=\{error \? "alert" : "status"\}/);
+  assert.match(regexTool, /type="checkbox"/);
+  assert.match(regexTool, /role="tablist"/);
+  assert.match(regexTool, /role="tab"/);
+  assert.match(regexTool, /role="tabpanel"/);
+  assert.match(regexTool, /aria-selected=\{view === option\.id\}/);
+  assert.match(regexTool, /ArrowRight/);
+  assert.match(regexTool, /ArrowLeft/);
+  assert.match(regexTool, /event\.key === "Home"/);
+  assert.match(regexTool, /event\.key === "End"/);
+  assert.match(regexTool, /复制表达式/);
+  assert.match(regexTool, /载入测试器/);
+  assert.match(regexTool, /JSON\.stringify\(entry\.positiveExample\)/);
+  assert.match(regexTool, /JSON\.stringify\(entry\.negativeExample\)/);
+  assert.match(regexTool, /setReplacement\(""\)/);
+  assert.match(regexTool, /支持 \$&amp;、\$1、\$&lt;name&gt;、\$\$/);
+  assert.match(regexReference, /export type RegexView/);
+  assert.match(regexReference, /export type RegexSyntaxSection/);
+  assert.match(regexReference, /export type CommonRegexEntry/);
+  assert.match(regexReference, /REGEX_SYNTAX_SECTIONS/);
+  assert.match(regexReference, /COMMON_REGEXES/);
+  assert.match(regexReference, /号段会随运营规则变化/);
+  assert.match(regexCore, /MAX_DISPLAYED_MATCHES = 500/);
+  assert.match(regexCore, /advanceStringIndex/);
+  assert.match(regexCore, /source\.replace\(new RegExp\(pattern, flags\), replacement\)/);
+  assert.match(regexConfig, /语法速查/);
+  assert.match(regexConfig, /常用正则/);
+  assert.match(regexConfig, /cheatsheet/);
 });
 
 test("keeps exact audited dependency versions", async () => {
