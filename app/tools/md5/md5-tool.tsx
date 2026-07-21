@@ -98,7 +98,7 @@ export default function Md5Tool() {
         aria-labelledby="md5-verify-title"
       >
         <div className={styles.verificationHeading}>
-          <h3 id="md5-verify-title">摘要校验（替代解密）</h3>
+          <h3 id="md5-verify-title">摘要校验</h3>
           <span>MD5 不可逆</span>
         </div>
         <p className={styles.notice}>
