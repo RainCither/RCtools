@@ -4,13 +4,13 @@ import test from "node:test";
 
 const templateRoot = new URL("../", import.meta.url);
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/ssr/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(new URL(pathname, "http://localhost/"), {
       headers: { accept: "text/html" },
     }),
     {
@@ -23,6 +23,22 @@ async function render() {
       passThroughOnException() {},
     },
   );
+}
+
+async function assertRedirectsHome(pathname) {
+  try {
+    const response = await render(pathname);
+    assert.match(String(response.status), /^30[78]$/);
+    assert.equal(
+      new URL(response.headers.get("location"), "http://localhost").pathname,
+      "/",
+    );
+  } catch (error) {
+    // Vinext's direct worker test adapter can expose the framework redirect
+    // control signal for not-found boundaries instead of converting it to a
+    // Response. Keep the assertion strict so ordinary render failures fail.
+    assert.equal(error?.digest, "NEXT_REDIRECT;;%2F");
+  }
 }
 
 test("server-renders the personal toolbox", async () => {
@@ -48,7 +64,8 @@ test("server-renders the personal toolbox", async () => {
   assert.match(html, /IEEE-754 浮点数转换/);
   assert.match(html, /雨寒风轻筝音悠/);
   assert.match(html, /aria-label="搜索工具"/);
-  assert.match(html, /aria-labelledby="tool-dialog-title"/);
+  assert.match(html, /href="\/json\/"/);
+  assert.doesNotMatch(html, /<dialog|tool-dialog|aria-labelledby="tool-dialog-title"/);
   assert.doesNotMatch(html, /把重复的小事|hero-copy|<h1>/);
   assert.doesNotMatch(html, /自动保存在当前设备|>添加工具</);
   assert.doesNotMatch(html, />扩展<|开发指南|添加一个新工具/);
@@ -56,19 +73,44 @@ test("server-renders the personal toolbox", async () => {
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
 });
 
+test("server resolves tool routes, metadata and invalid redirects", async () => {
+  const canonicalResponse = await render("/json/");
+  assert.equal(canonicalResponse.status, 308);
+  assert.equal(
+    new URL(canonicalResponse.headers.get("location"), "http://localhost").pathname,
+    "/json",
+  );
+
+  const toolResponse = await render("/json");
+  assert.equal(toolResponse.status, 200);
+  const html = await toolResponse.text();
+  assert.match(html, /<title>JSON 格式化｜工具匣<\/title>/i);
+  assert.match(html, /校验、格式化或压缩 JSON 数据/);
+  assert.match(html, /initialToolId/);
+  assert.match(html, /json/);
+  assert.doesNotMatch(html, /搜索工具或功能/);
+
+  await assertRedirectsHome("/unknown");
+  await assertRedirectsHome("/json/details");
+});
+
 test("keeps the tool registry modular and removes the starter preview", async () => {
-  const [registry, toolTypes, panels, toolbox, page, packageJson, globalStyles] = await Promise.all([
+  const [registry, toolTypes, panels, routes, toolbox, page, routePage, packageJson, globalStyles] = await Promise.all([
     readFile(new URL("../app/tool-registry.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-types.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-panels.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/tool-routes.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/[toolId]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
   assert.match(registry, /export const TOOLS/);
   assert.match(registry, /export type ToolId = \(typeof TOOLS\)\[number\]\["id"\]/);
+  assert.match(registry, /export function isToolId/);
+  assert.match(registry, /TOOL_BY_ID/);
   assert.match(toolTypes, /export function defineTool/);
   assert.match(toolTypes, /TOOL_CATEGORY_LABELS/);
   assert.match(toolTypes, /export type ToolLoader/);
@@ -76,13 +118,25 @@ test("keeps the tool registry modular and removes the starter preview", async ()
   assert.match(panels, /export function ToolPanel/);
   assert.match(panels, /TOOLS\.map/);
   assert.match(panels, /TOOL_LOAD_PROMISES/);
+  assert.match(panels, /TOOL_COMPONENTS\.delete\(toolId\)/);
   assert.match(panels, /export function preloadTool/);
+  assert.match(panels, /重新加载/);
   assert.doesNotMatch(panels, /import\("\.\/tools\//);
-  assert.doesNotMatch(panels, /useState|function JsonTool|function PasswordTool/);
-  assert.match(toolbox, /onPointerEnter=\{\(\) => preloadTool\(tool\.id\)\}/);
-  assert.match(toolbox, /onFocus=\{\(\) => preloadTool\(tool\.id\)\}/);
+  assert.doesNotMatch(panels, /function JsonTool|function PasswordTool/);
+  assert.match(routes, /export function parseToolRoute/);
+  assert.match(routes, /export function getToolHref/);
+  assert.match(toolbox, /HOVER_PRELOAD_DELAY = 120/);
+  assert.match(toolbox, /onPointerLeave=\{cancelScheduledPreload\}/);
+  assert.match(toolbox, /onFocus=\{\(\) =>/);
+  assert.match(toolbox, /window\.history\.pushState/);
+  assert.match(toolbox, /window\.addEventListener\("popstate"/);
+  assert.doesNotMatch(toolbox, /<dialog|showModal\(|preventBackgroundWheel/);
   assert.doesNotMatch(toolbox, /developerGuide|showDeveloperGuide|添加一个新工具/);
-  assert.match(page, /<ToolboxApp \/>/);
+  assert.match(page, /initialToolId=\{null\}/);
+  assert.match(page, /PAGES_BASE_PATH/);
+  assert.match(routePage, /generateStaticParams/);
+  assert.match(routePage, /generateMetadata/);
+  assert.match(routePage, /redirect\("\/"\)/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(packageJson, /cloudflare|drizzle|tailwind|wrangler/);
   const toolFiles = [
@@ -274,15 +328,11 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(glitchCore, /String\.fromCodePoint/);
   assert.doesNotMatch(glitchCore, /0x034f|0xfe20|0x20e3/);
   assert.match(toolbox, /aria-label="搜索工具"/);
-  assert.match(toolbox, /aria-labelledby="tool-dialog-title"/);
-  assert.match(toolbox, /root\.style\.overflow = "hidden"/);
-  assert.match(toolbox, /body\.style\.overflow = "hidden"/);
-  assert.match(toolbox, /root\.style\.overflow = previousRootOverflow/);
-  assert.match(toolbox, /body\.style\.overflow = previousBodyOverflow/);
-  assert.match(toolbox, /document\.addEventListener\("wheel", preventBackgroundWheel/);
-  assert.match(toolbox, /passive: false/);
-  assert.match(toolbox, /document\.removeEventListener\("wheel", preventBackgroundWheel, true\)/);
-  assert.doesNotMatch(toolbox, /onClick=\{\(event\) => \{\s*if \(event\.target === event\.currentTarget\) onRequestClose\(\)/);
+  assert.match(toolbox, /aria-labelledby="tool-page-title"/);
+  assert.match(toolbox, /返回全部工具/);
+  assert.match(toolbox, /document\.title = tool/);
+  assert.match(toolbox, /meta\[name=\"description\"\]/);
+  assert.match(toolbox, /window\.localStorage\.setItem\(RECENT_STORAGE_KEY/);
   assert.doesNotMatch(toolbox, /<label className="search-box header-search"/);
   assert.match(colorConfig, /将 HEX 颜色转换为 RGB 与 HSL/);
   assert.match(timeDiffConfig, /成对时间差/);

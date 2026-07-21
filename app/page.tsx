@@ -10,5 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <ToolboxApp />;
+  return (
+    <ToolboxApp
+      initialToolId={null}
+      basePath={process.env.PAGES_BASE_PATH ?? "/"}
+    />
+  );
 }

@@ -49,12 +49,20 @@ export const TOOLS = [
 export type ToolId = (typeof TOOLS)[number]["id"];
 export type RegisteredTool = (typeof TOOLS)[number];
 
+const TOOL_BY_ID: ReadonlyMap<string, RegisteredTool> = new Map(
+  TOOLS.map((tool) => [tool.id, tool] as [string, RegisteredTool]),
+);
+
 export const DEFAULT_RECENT: ToolId[] = [
   "json",
   "timestamp",
   "text-stats",
 ];
 
-export function findTool(toolId: ToolId): RegisteredTool | undefined {
-  return TOOLS.find((tool) => tool.id === toolId);
+export function isToolId(value: string): value is ToolId {
+  return TOOL_BY_ID.has(value);
+}
+
+export function findTool(toolId: string): RegisteredTool | undefined {
+  return TOOL_BY_ID.get(toolId);
 }

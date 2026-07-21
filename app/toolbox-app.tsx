@@ -1,41 +1,137 @@
 "use client";
 
 import {
+  useCallback,
   useDeferredValue,
   useEffect,
   useMemo,
   useRef,
   useState,
+  type MouseEvent,
 } from "react";
 import { preloadTool, ToolPanel } from "./tool-panels";
 import {
   DEFAULT_RECENT,
   findTool,
+  isToolId,
   TOOL_CATEGORIES,
   TOOLS,
   type CategoryFilter,
   type RegisteredTool,
   type ToolId,
 } from "./tool-registry";
+import {
+  getHomeHref,
+  getToolHref,
+  normalizeBasePath,
+  parseToolRoute,
+} from "./tool-routes";
 
 const RECENT_STORAGE_KEY = "toolbox:recent:v1";
+const HOVER_PRELOAD_DELAY = 120;
+const HOME_TITLE = "工具匣｜常用小工具，一开即用";
+const HOME_DESCRIPTION = "一个简洁、快速、可持续扩展的个人工具站。";
+
+type NavigateHandler = (
+  event: MouseEvent<HTMLAnchorElement>,
+  toolId: ToolId | null,
+) => void;
+
+function isPlainNavigation(event: MouseEvent<HTMLAnchorElement>) {
+  return (
+    !event.defaultPrevented &&
+    event.button === 0 &&
+    !event.metaKey &&
+    !event.ctrlKey &&
+    !event.shiftKey &&
+    !event.altKey
+  );
+}
+
+function SiteBrand({
+  href,
+  onNavigate,
+}: {
+  href: string;
+  onNavigate?: NavigateHandler;
+}) {
+  return (
+    <a
+      className="brand"
+      href={href}
+      onClick={onNavigate ? (event) => onNavigate(event, null) : undefined}
+      aria-label="工具匣首页"
+    >
+      <span className="brand-mark" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </span>
+      <span>工具匣</span>
+    </a>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <span>工具匣</span>
+      <p>雨寒风轻筝音悠</p>
+    </footer>
+  );
+}
 
 function ToolCard({
   tool,
+  basePath,
   compact = false,
-  onOpen,
+  onNavigate,
 }: {
   tool: RegisteredTool;
+  basePath: string;
   compact?: boolean;
-  onOpen: (toolId: ToolId) => void;
+  onNavigate: NavigateHandler;
 }) {
+  const preloadTimerRef = useRef<number | null>(null);
+
+  function cancelScheduledPreload() {
+    if (preloadTimerRef.current === null) return;
+    window.clearTimeout(preloadTimerRef.current);
+    preloadTimerRef.current = null;
+  }
+
+  function schedulePreload() {
+    cancelScheduledPreload();
+    preloadTimerRef.current = window.setTimeout(() => {
+      preloadTimerRef.current = null;
+      preloadTool(tool.id);
+    }, HOVER_PRELOAD_DELAY);
+  }
+
+  useEffect(
+    () => () => {
+      if (preloadTimerRef.current !== null) {
+        window.clearTimeout(preloadTimerRef.current);
+      }
+    },
+    [],
+  );
+
   return (
-    <button
+    <a
       className={compact ? "tool-card tool-card-compact" : "tool-card"}
-      type="button"
-      onPointerEnter={() => preloadTool(tool.id)}
-      onFocus={() => preloadTool(tool.id)}
-      onClick={() => onOpen(tool.id)}
+      href={getToolHref(tool.id, basePath)}
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse" || event.pointerType === "pen") {
+          schedulePreload();
+        }
+      }}
+      onPointerLeave={cancelScheduledPreload}
+      onFocus={() => {
+        cancelScheduledPreload();
+        preloadTool(tool.id);
+      }}
+      onClick={(event) => onNavigate(event, tool.id)}
       aria-label={`打开${tool.title}`}
     >
       <span className={`tool-mark tool-mark-${tool.id}`} aria-hidden="true">
@@ -48,120 +144,23 @@ function ToolCard({
         </span>
         {compact ? null : <span className="tool-card-summary">{tool.summary}</span>}
       </span>
-    </button>
+    </a>
   );
 }
 
-function ToolDialog({
-  open,
-  toolId,
-  onRequestClose,
+function ToolboxHome({
+  basePath,
+  recent,
+  onNavigate,
 }: {
-  open: boolean;
-  toolId: ToolId | null;
-  onRequestClose: () => void;
+  basePath: string;
+  recent: ToolId[];
+  onNavigate: NavigateHandler;
 }) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const tool = toolId ? findTool(toolId) : null;
-
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-
-    const root = document.documentElement;
-    const body = document.body;
-    const previousRootOverflow = root.style.overflow;
-    const previousBodyOverflow = body.style.overflow;
-    const previousBodyPaddingRight = body.style.paddingRight;
-    const scrollbarWidth = window.innerWidth - root.clientWidth;
-
-    function preventBackgroundWheel(event: WheelEvent) {
-      const panel = dialogRef.current?.querySelector(".dialog-panel");
-      if (event.target instanceof Node && panel?.contains(event.target)) return;
-      event.preventDefault();
-    }
-
-    root.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    document.addEventListener("wheel", preventBackgroundWheel, {
-      capture: true,
-      passive: false,
-    });
-
-    if (scrollbarWidth > 0) {
-      const bodyPaddingRight = Number.parseFloat(window.getComputedStyle(body).paddingRight) || 0;
-      body.style.paddingRight = `${bodyPaddingRight + scrollbarWidth}px`;
-    }
-
-    return () => {
-      document.removeEventListener("wheel", preventBackgroundWheel, true);
-      root.style.overflow = previousRootOverflow;
-      body.style.overflow = previousBodyOverflow;
-      body.style.paddingRight = previousBodyPaddingRight;
-    };
-  }, [open]);
-
-  return (
-    <dialog
-      ref={dialogRef}
-      className="tool-dialog"
-      aria-labelledby="tool-dialog-title"
-      aria-describedby="tool-dialog-description"
-      onCancel={(event) => {
-        event.preventDefault();
-        onRequestClose();
-      }}
-      onClose={onRequestClose}
-    >
-      <div className="dialog-panel">
-        <header className="dialog-header">
-          <div>
-            <span className="dialog-kicker">{tool?.categoryLabel}</span>
-            <h2 id="tool-dialog-title">{tool?.title}</h2>
-            <p id="tool-dialog-description">{tool?.summary}</p>
-          </div>
-          <button className="dialog-close" type="button" onClick={onRequestClose} aria-label="关闭窗口">
-            ×
-          </button>
-        </header>
-
-        <div className="dialog-content">
-          {toolId ? <ToolPanel toolId={toolId} /> : null}
-        </div>
-      </div>
-    </dialog>
-  );
-}
-
-export function ToolboxApp() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
-  const [recent, setRecent] = useState<ToolId[]>(DEFAULT_RECENT);
-  const [activeTool, setActiveTool] = useState<ToolId | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const deferredQuery = useDeferredValue(query);
-
-  useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(RECENT_STORAGE_KEY);
-      if (!stored) return;
-      const parsed: unknown = JSON.parse(stored);
-      if (!Array.isArray(parsed)) return;
-      const validIds = new Set(TOOLS.map((tool) => tool.id));
-      const safeIds = parsed.filter((value): value is ToolId =>
-        typeof value === "string" && validIds.has(value as ToolId),
-      );
-      if (safeIds.length) setRecent(safeIds.slice(0, 3));
-    } catch {
-      // Ignore invalid device-local history and keep the useful defaults.
-    }
-  }, []);
 
   useEffect(() => {
     function handleShortcut(event: KeyboardEvent) {
@@ -193,34 +192,17 @@ export function ToolboxApp() {
   }, [category, deferredQuery]);
 
   const recentTools = useMemo(
-    () => recent.map((toolId) => findTool(toolId)).filter((tool): tool is RegisteredTool => Boolean(tool)),
+    () =>
+      recent
+        .map((toolId) => findTool(toolId))
+        .filter((tool): tool is RegisteredTool => Boolean(tool)),
     [recent],
   );
-
-  function openTool(toolId: ToolId) {
-    setActiveTool(toolId);
-    setRecent((current) => {
-      const next = [toolId, ...current.filter((item) => item !== toolId)].slice(0, 3);
-      try {
-        window.localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(next));
-      } catch {
-        // Storage can be unavailable in private browsing or blocked contexts.
-      }
-      return next;
-    });
-  }
-
-  function closeDialog() {
-    setActiveTool(null);
-  }
 
   return (
     <main className="toolbox-shell">
       <header className="site-header" id="top">
-        <a className="brand" href="#top" aria-label="工具匣首页">
-          <span className="brand-mark" aria-hidden="true"><i /><i /><i /></span>
-          <span>工具匣</span>
-        </a>
+        <SiteBrand href="#top" />
 
         <div className="search-box header-search">
           <span className="search-icon" aria-hidden="true" />
@@ -234,7 +216,13 @@ export function ToolboxApp() {
             autoComplete="off"
           />
           {query ? (
-            <button type="button" onClick={() => setQuery("")} aria-label="清空搜索">×</button>
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="清空搜索"
+            >
+              ×
+            </button>
           ) : (
             <kbd aria-label="快捷键：斜杠">/</kbd>
           )}
@@ -250,7 +238,13 @@ export function ToolboxApp() {
           </div>
           <div className="recent-grid">
             {recentTools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} compact onOpen={openTool} />
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                basePath={basePath}
+                compact
+                onNavigate={onNavigate}
+              />
             ))}
           </div>
         </section>
@@ -281,30 +275,221 @@ export function ToolboxApp() {
         {filteredTools.length ? (
           <div className="tool-grid">
             {filteredTools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} onOpen={openTool} />
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                basePath={basePath}
+                onNavigate={onNavigate}
+              />
             ))}
           </div>
         ) : (
           <div className="empty-state" role="status">
             <strong>没有找到匹配的工具</strong>
             <span>换个关键词，或切换到“全部”分类。</span>
-            <button className="button button-secondary" type="button" onClick={() => { setQuery(""); setCategory("all"); }}>
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={() => {
+                setQuery("");
+                setCategory("all");
+              }}
+            >
               清除筛选
             </button>
           </div>
         )}
       </section>
 
-      <footer className="site-footer">
-        <span>工具匣</span>
-        <p>雨寒风轻筝音悠</p>
-      </footer>
-
-      <ToolDialog
-        open={Boolean(activeTool)}
-        toolId={activeTool}
-        onRequestClose={closeDialog}
-      />
+      <SiteFooter />
     </main>
+  );
+}
+
+function ToolPage({
+  toolId,
+  basePath,
+  onNavigate,
+}: {
+  toolId: ToolId;
+  basePath: string;
+  onNavigate: NavigateHandler;
+}) {
+  const tool = findTool(toolId);
+  if (!tool) return null;
+
+  const homeHref = getHomeHref(basePath);
+
+  return (
+    <main className="toolbox-shell tool-page-shell">
+      <header className="site-header tool-page-site-header">
+        <SiteBrand href={homeHref} onNavigate={onNavigate} />
+        <a
+          className="tool-home-link"
+          href={homeHref}
+          onClick={(event) => onNavigate(event, null)}
+        >
+          <span aria-hidden="true">←</span>
+          返回全部工具
+        </a>
+      </header>
+
+      <article className="tool-page-main" aria-labelledby="tool-page-title">
+        <header className="tool-page-header">
+          <span className="tool-page-kicker">{tool.categoryLabel}</span>
+          <div className="tool-page-title-row">
+            <span
+              className={`tool-mark tool-mark-${tool.id}`}
+              aria-hidden="true"
+            >
+              {tool.mark}
+            </span>
+            <div>
+              <h1 id="tool-page-title" tabIndex={-1}>
+                {tool.title}
+              </h1>
+              <p>{tool.summary}</p>
+            </div>
+          </div>
+        </header>
+
+        <div className="tool-page-content">
+          <ToolPanel toolId={toolId} />
+        </div>
+      </article>
+
+      <SiteFooter />
+    </main>
+  );
+}
+
+export function ToolboxApp({
+  initialToolId = null,
+  basePath = "/",
+}: {
+  initialToolId?: ToolId | null;
+  basePath?: string;
+}) {
+  const normalizedBasePath = useMemo(
+    () => normalizeBasePath(basePath),
+    [basePath],
+  );
+  const [activeTool, setActiveTool] = useState<ToolId | null>(initialToolId);
+  const [recent, setRecent] = useState<ToolId[]>(DEFAULT_RECENT);
+
+  const recordRecent = useCallback((toolId: ToolId) => {
+    setRecent((current) => {
+      const next = [toolId, ...current.filter((item) => item !== toolId)].slice(
+        0,
+        3,
+      );
+      try {
+        window.localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // Storage can be unavailable in private browsing or blocked contexts.
+      }
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(RECENT_STORAGE_KEY);
+      const parsed: unknown = stored ? JSON.parse(stored) : null;
+      const safeIds = Array.isArray(parsed)
+        ? parsed.filter(
+            (value): value is ToolId =>
+              typeof value === "string" && isToolId(value),
+          )
+        : DEFAULT_RECENT;
+      const next = initialToolId
+        ? [initialToolId, ...safeIds.filter((item) => item !== initialToolId)]
+        : safeIds;
+      const trimmed = next.slice(0, 3);
+      if (trimmed.length) setRecent(trimmed);
+      if (initialToolId) {
+        window.localStorage.setItem(
+          RECENT_STORAGE_KEY,
+          JSON.stringify(trimmed),
+        );
+      }
+    } catch {
+      if (initialToolId) recordRecent(initialToolId);
+    }
+  }, [initialToolId, recordRecent]);
+
+  useEffect(() => {
+    const tool = activeTool ? findTool(activeTool) : null;
+    document.title = tool ? `${tool.title}｜工具匣` : HOME_TITLE;
+    const description = document.querySelector<HTMLMetaElement>(
+      'meta[name="description"]',
+    );
+    if (description) {
+      description.content = tool?.summary ?? HOME_DESCRIPTION;
+    }
+  }, [activeTool]);
+
+  useEffect(() => {
+    function handlePopState() {
+      const route = parseToolRoute(
+        window.location.pathname,
+        normalizedBasePath,
+        isToolId,
+      );
+
+      if (route.kind === "invalid") {
+        window.location.replace(getHomeHref(normalizedBasePath));
+        return;
+      }
+
+      const toolId = route.kind === "tool" ? route.toolId : null;
+      setActiveTool(toolId);
+      if (toolId) recordRecent(toolId);
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [normalizedBasePath, recordRecent]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+    if (activeTool) {
+      window.requestAnimationFrame(() => {
+        document.getElementById("tool-page-title")?.focus();
+      });
+    }
+  }, [activeTool]);
+
+  const handleNavigate = useCallback<NavigateHandler>(
+    (event, toolId) => {
+      if (!isPlainNavigation(event)) return;
+
+      event.preventDefault();
+      const href = toolId
+        ? getToolHref(toolId, normalizedBasePath)
+        : getHomeHref(normalizedBasePath);
+
+      if (window.location.pathname !== href) {
+        window.history.pushState({ toolId }, "", href);
+      }
+      setActiveTool(toolId);
+      if (toolId) recordRecent(toolId);
+    },
+    [normalizedBasePath, recordRecent],
+  );
+
+  return activeTool ? (
+    <ToolPage
+      toolId={activeTool}
+      basePath={normalizedBasePath}
+      onNavigate={handleNavigate}
+    />
+  ) : (
+    <ToolboxHome
+      basePath={normalizedBasePath}
+      recent={recent}
+      onNavigate={handleNavigate}
+    />
   );
 }

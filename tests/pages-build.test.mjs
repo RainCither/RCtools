@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
+import { readRegisteredTools } from "../scripts/read-tool-registry.mjs";
 
 const projectRoot = new URL("../", import.meta.url);
 
@@ -10,11 +12,15 @@ test("creates only static GitHub Pages output", async () => {
     access(new URL("dist/favicon.svg", projectRoot)),
     access(new URL("dist/.nojekyll", projectRoot)),
     access(new URL("dist/CNAME", projectRoot)),
+    access(new URL("dist/404.html", projectRoot)),
+    access(new URL("dist/tool-routes.json", projectRoot)),
   ]);
 
-  const [html, cname] = await Promise.all([
+  const [html, cname, notFoundHtml, routeManifestSource] = await Promise.all([
     readFile(new URL("dist/index.html", projectRoot), "utf8"),
     readFile(new URL("dist/CNAME", projectRoot), "utf8"),
+    readFile(new URL("dist/404.html", projectRoot), "utf8"),
+    readFile(new URL("dist/tool-routes.json", projectRoot), "utf8"),
   ]);
   assert.match(html, /<title>工具匣｜常用小工具，一开即用<\/title>/);
   assert.match(html, /\/assets\/[^"']+\.js/);
@@ -22,6 +28,39 @@ test("creates only static GitHub Pages output", async () => {
   assert.doesNotMatch(html, /\/RCtools\//i);
   assert.doesNotMatch(html, /dist\/server|__vite_rsc|vinext-server/);
   assert.equal(cname.trim(), "tool.raincither.top");
+  assert.match(notFoundHtml, /window\.location\.replace\("\/"\)/);
+
+  const routeManifest = JSON.parse(routeManifestSource);
+  const registeredTools = await readRegisteredTools(
+    fileURLToPath(new URL("../", import.meta.url)),
+  );
+  assert.equal(routeManifest.basePath, "/");
+  assert.deepEqual(
+    routeManifest.routes,
+    registeredTools.map((tool) => tool.id),
+  );
+  assert.equal(new Set(routeManifest.routes).size, routeManifest.routes.length);
+
+  for (const toolId of routeManifest.routes) {
+    const routeHtml = await readFile(
+      new URL(`dist/${toolId}/index.html`, projectRoot),
+      "utf8",
+    );
+    assert.match(routeHtml, /<title>.+｜工具匣<\/title>/);
+    assert.doesNotMatch(
+      routeHtml,
+      /<title>工具匣｜常用小工具，一开即用<\/title>/,
+    );
+    assert.match(routeHtml, /<meta name="description" content=".+" \/>/);
+    assert.match(routeHtml, /\/assets\/[^"']+\.js/);
+  }
+
+  const jsonHtml = await readFile(
+    new URL("dist/json/index.html", projectRoot),
+    "utf8",
+  );
+  assert.match(jsonHtml, /<title>JSON 格式化｜工具匣<\/title>/);
+  assert.match(jsonHtml, /校验、格式化或压缩 JSON 数据/);
 });
 
 test("keeps every tool in an independent client chunk", async () => {

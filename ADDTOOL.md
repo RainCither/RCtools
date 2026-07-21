@@ -44,7 +44,7 @@ export const newToolConfig = defineTool({
 | 字段 | 要求 |
 | --- | --- |
 | `id` | 全局唯一，并与目录名保持一致 |
-| `title` | 显示在工具卡片和弹窗中的名称 |
+| `title` | 显示在工具卡片、页面标题和独立工具页中的名称 |
 | `summary` | 简短说明用途，建议写成完整中文句子 |
 | `category` | 使用 `text`、`dev` 或 `date` |
 | `mark` | 工具卡片上的简短标记，不要使用过长文本 |
@@ -134,7 +134,7 @@ export const TOOLS = [
 ] as const satisfies readonly ToolDefinition[];
 ```
 
-完成后，`ToolId`、搜索、筛选、预加载和弹窗中的懒加载组件都会从注册表自动推导。不要在 `app/tool-panels.tsx` 中再添加一份组件映射。
+完成后，`ToolId`、搜索、筛选、意图预加载、`/<tool-id>/` 独立路由和懒加载组件都会从注册表自动推导。不要在 `app/tool-panels.tsx` 或路由文件中再添加一份工具清单。
 
 如需增加新分类，而不是使用现有的 `text`、`dev` 或 `date`，需要同时修改：
 
@@ -162,6 +162,7 @@ export const TOOLS = [
 
 - 在 `toolChunks` 中加入 `<tool-id>-tool`。
 - 如果组件导入了 CSS Module，在 `toolStyleChunks` 中也加入 `<tool-id>-tool`。
+- 静态子路由会从注册表自动生成；运行测试后确认 `dist/<tool-id>/index.html` 存在并包含正确标题与资源路径。
 
 ### 功能测试
 
