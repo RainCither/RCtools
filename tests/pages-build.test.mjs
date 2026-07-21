@@ -78,4 +78,38 @@ test("keeps every tool in an independent client chunk", async () => {
       `missing lazy CSS chunk for ${chunkName}`,
     );
   }
+
+  const md5Chunk = assets.find(
+    (fileName) =>
+      fileName.startsWith("md5-tool-") && fileName.endsWith(".js"),
+  );
+  const shaChunk = assets.find(
+    (fileName) =>
+      fileName.startsWith("sha-tool-") && fileName.endsWith(".js"),
+  );
+  assert.ok(md5Chunk);
+  assert.ok(shaChunk);
+
+  const [html, md5Source, shaSource] = await Promise.all([
+    readFile(new URL("dist/index.html", projectRoot), "utf8"),
+    readFile(new URL(`dist/assets/${md5Chunk}`, projectRoot), "utf8"),
+    readFile(new URL(`dist/assets/${shaChunk}`, projectRoot), "utf8"),
+  ]);
+  const initialScripts = Array.from(
+    html.matchAll(/<script[^>]+src="\/assets\/([^"]+\.js)"/g),
+    (match) => match[1],
+  );
+  const initialSources = await Promise.all(
+    initialScripts.map((fileName) =>
+      readFile(new URL(`dist/assets/${fileName}`, projectRoot), "utf8"),
+    ),
+  );
+
+  assert.equal((md5Source.match(/AGFzbQ/g) ?? []).length, 1);
+  assert.doesNotMatch(md5Source, /sha1|sha256|sha512/i);
+  assert.equal((shaSource.match(/AGFzbQ/g) ?? []).length, 3);
+  assert.doesNotMatch(shaSource, /md5/i);
+  for (const source of initialSources) {
+    assert.doesNotMatch(source, /AGFzbQ/);
+  }
 });

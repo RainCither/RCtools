@@ -3,7 +3,8 @@ import { defineTool } from "../../tool-types";
 export const shaToolConfig = defineTool({
   id: "sha",
   title: "SHA-1 / SHA-2 哈希与校验",
-  summary: "计算 SHA-1、SHA-256 或 SHA-512 摘要，并校验候选文本。",
+  summary:
+    "计算文本或小文件的 SHA-1、SHA-256 或 SHA-512 摘要，并校验候选内容。",
   category: "dev",
   mark: "SHA",
   searchTerms: [
@@ -21,6 +22,7 @@ export const shaToolConfig = defineTool({
     "散列",
     "摘要",
     "校验",
+    "文件",
     "hash",
     "digest",
   ],

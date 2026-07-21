@@ -1,3 +1,11 @@
+import hashWasmSha1 from "hash-wasm/dist/sha1.umd.min.js";
+import hashWasmSha256 from "hash-wasm/dist/sha256.umd.min.js";
+import hashWasmSha512 from "hash-wasm/dist/sha512.umd.min.js";
+
+const { sha1 } = hashWasmSha1;
+const { sha256 } = hashWasmSha256;
+const { sha512 } = hashWasmSha512;
+
 export const SHA_ALGORITHMS = ["SHA-1", "SHA-256", "SHA-512"] as const;
 
 export type ShaAlgorithm = (typeof SHA_ALGORITHMS)[number];
@@ -14,21 +22,21 @@ const SHA_PATTERNS: Record<ShaAlgorithm, RegExp> = {
   "SHA-512": /^[0-9a-f]{128}$/i,
 };
 
-function bytesToHex(bytes: Uint8Array) {
-  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join(
-    "",
-  );
+const SHA_HASHERS: Record<
+  ShaAlgorithm,
+  (value: Uint8Array) => Promise<string>
+> = {
+  "SHA-1": sha1,
+  "SHA-256": sha256,
+  "SHA-512": sha512,
+};
+
+export function shaBytes(value: Uint8Array, algorithm: ShaAlgorithm) {
+  return SHA_HASHERS[algorithm](value);
 }
 
-export async function shaHex(value: string, algorithm: ShaAlgorithm) {
-  const subtle = globalThis.crypto?.subtle;
-  if (!subtle) {
-    throw new Error("当前环境不支持 Web Crypto API，无法计算 SHA 摘要。");
-  }
-
-  const sourceBytes = new TextEncoder().encode(value);
-  const digest = await subtle.digest(algorithm, sourceBytes);
-  return bytesToHex(new Uint8Array(digest));
+export function shaHex(value: string, algorithm: ShaAlgorithm) {
+  return shaBytes(new TextEncoder().encode(value), algorithm);
 }
 
 export type ShaVerification = {
@@ -37,13 +45,12 @@ export type ShaVerification = {
   error: string;
 };
 
-export async function verifyShaCandidate(
+export function verifyShaDigest(
   expectedDigest: string,
-  candidate: string,
+  digest: string,
   algorithm: ShaAlgorithm,
-): Promise<ShaVerification> {
+): ShaVerification {
   const normalizedDigest = expectedDigest.trim().toLowerCase();
-  const digest = await shaHex(candidate, algorithm);
 
   if (!normalizedDigest) {
     return {
@@ -66,4 +73,16 @@ export async function verifyShaCandidate(
     matches: digest === normalizedDigest,
     error: "",
   };
+}
+
+export async function verifyShaCandidate(
+  expectedDigest: string,
+  candidate: string,
+  algorithm: ShaAlgorithm,
+) {
+  return verifyShaDigest(
+    expectedDigest,
+    await shaHex(candidate, algorithm),
+    algorithm,
+  );
 }

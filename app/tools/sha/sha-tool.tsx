@@ -1,13 +1,21 @@
 "use client";
 
 import { useRef, useState } from "react";
+import {
+  formatHashFileSize,
+  MAX_HASH_FILE_LABEL,
+  readHashFileBytes,
+  type HashSourceMode,
+  validateHashFile,
+} from "../shared/hash-file";
 import { CopyButton } from "../shared/tool-ui";
 import {
   SHA_ALGORITHMS,
   SHA_DIGEST_LENGTHS,
+  shaBytes,
   shaHex,
   type ShaAlgorithm,
-  verifyShaCandidate,
+  verifyShaDigest,
 } from "./sha-core";
 import styles from "./styles.module.css";
 
@@ -21,7 +29,9 @@ function errorMessage(error: unknown) {
 
 export default function ShaTool() {
   const [algorithm, setAlgorithm] = useState<ShaAlgorithm>(DEFAULT_ALGORITHM);
+  const [sourceMode, setSourceMode] = useState<HashSourceMode>("text");
   const [input, setInput] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [digest, setDigest] = useState("");
   const [digestAlgorithm, setDigestAlgorithm] =
     useState<ShaAlgorithm>(DEFAULT_ALGORITHM);
@@ -31,28 +41,69 @@ export default function ShaTool() {
   const [operationError, setOperationError] = useState("");
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  function selectAlgorithm(nextAlgorithm: ShaAlgorithm) {
-    setAlgorithm(nextAlgorithm);
+  function resetComputedState() {
     setDigest("");
-    setDigestAlgorithm(nextAlgorithm);
-    setTargetDigest("");
     setVerification("idle");
     setVerificationError("");
     setOperationError("");
   }
 
+  function selectAlgorithm(nextAlgorithm: ShaAlgorithm) {
+    setAlgorithm(nextAlgorithm);
+    setDigestAlgorithm(nextAlgorithm);
+    setTargetDigest("");
+    resetComputedState();
+  }
+
+  function changeSourceMode(nextMode: HashSourceMode) {
+    if (nextMode === sourceMode) return;
+    setSourceMode(nextMode);
+    resetComputedState();
+  }
+
+  function handleTextChange(value: string) {
+    setInput(value);
+    resetComputedState();
+  }
+
+  function handleFileChange(file: File | null) {
+    resetComputedState();
+
+    if (!file) {
+      setSelectedFile(null);
+      return;
+    }
+
+    const validationError = validateHashFile(file);
+    if (validationError) {
+      setSelectedFile(null);
+      setOperationError(validationError);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    setSelectedFile(file);
+  }
+
+  async function hashCurrentSource() {
+    if (sourceMode === "text") return shaHex(input, algorithm);
+    if (!selectedFile) throw new Error("请先选择要计算的文件。");
+    return shaBytes(await readHashFileBytes(selectedFile), algorithm);
+  }
+
   async function calculateDigest() {
     setBusy(true);
+    setDigest("");
     setOperationError("");
     setVerification("idle");
     setVerificationError("");
 
     try {
-      setDigest(await shaHex(input, algorithm));
+      setDigest(await hashCurrentSource());
       setDigestAlgorithm(algorithm);
     } catch (error) {
-      setDigest("");
       setOperationError(errorMessage(error));
     } finally {
       setBusy(false);
@@ -61,11 +112,17 @@ export default function ShaTool() {
 
   async function verifyCandidate() {
     setBusy(true);
+    setDigest("");
     setOperationError("");
+    setVerification("idle");
     setVerificationError("");
 
     try {
-      const result = await verifyShaCandidate(targetDigest, input, algorithm);
+      const result = verifyShaDigest(
+        targetDigest,
+        await hashCurrentSource(),
+        algorithm,
+      );
       setDigest(result.digest);
       setDigestAlgorithm(algorithm);
       setVerificationError(result.error);
@@ -77,7 +134,6 @@ export default function ShaTool() {
             : "mismatch",
       );
     } catch (error) {
-      setVerification("idle");
       setOperationError(errorMessage(error));
     } finally {
       setBusy(false);
@@ -86,20 +142,33 @@ export default function ShaTool() {
 
   function clearAll() {
     setInput("");
+    setSelectedFile(null);
     setDigest("");
     setTargetDigest("");
     setVerification("idle");
     setVerificationError("");
     setOperationError("");
-    inputRef.current?.focus();
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (sourceMode === "text") inputRef.current?.focus();
+    else fileInputRef.current?.focus();
   }
 
+  const candidateLabel = sourceMode === "text" ? "候选文本" : "候选文件";
+  const hasSource = sourceMode === "text" || Boolean(selectedFile);
   const verificationMessage = {
-    idle: `输入目标 ${algorithm} 后，校验上方候选文本。`,
-    match: `校验通过：候选文本与目标 ${algorithm} 匹配。`,
-    mismatch: `校验未通过：候选文本与目标 ${algorithm} 不匹配。`,
+    idle: `输入目标 ${algorithm} 后，校验上方${candidateLabel}。`,
+    match: `校验通过：${candidateLabel}与目标 ${algorithm} 匹配。`,
+    mismatch: `校验未通过：${candidateLabel}与目标 ${algorithm} 不匹配。`,
   }[verification];
   const verificationStatus = verificationError ? "error" : verification;
+  const canClear = Boolean(
+    input ||
+    selectedFile ||
+    digest ||
+    targetDigest ||
+    verificationError ||
+    operationError,
+  );
 
   return (
     <div className={`tool-form ${styles.tool}`} aria-busy={busy}>
@@ -128,39 +197,102 @@ export default function ShaTool() {
         SHA-1 仅适合兼容旧系统；新用途建议选择 SHA-256 或 SHA-512。
       </p>
 
-      <label className="field-label" htmlFor="sha-input">
-        原始文本或候选文本
-      </label>
-      <textarea
-        ref={inputRef}
-        id="sha-input"
-        className={`tool-textarea ${styles.input}`}
-        value={input}
-        onChange={(event) => setInput(event.target.value)}
-        placeholder="输入要计算 SHA 摘要的文本，支持中文与 Emoji"
-        aria-describedby="sha-input-help"
-        spellCheck={false}
-      />
-      <p id="sha-input-help" className={styles.help}>
-        按 UTF-8 字节计算，不会自动去除首尾空格或换行；空文本也有固定摘要。
-      </p>
+      <div className={styles.sourceMode} role="group" aria-label="SHA 输入类型">
+        <button
+          type="button"
+          className={sourceMode === "text" ? styles.activeMode : undefined}
+          aria-pressed={sourceMode === "text"}
+          onClick={() => changeSourceMode("text")}
+          disabled={busy}
+        >
+          文本
+        </button>
+        <button
+          type="button"
+          className={sourceMode === "file" ? styles.activeMode : undefined}
+          aria-pressed={sourceMode === "file"}
+          onClick={() => changeSourceMode("file")}
+          disabled={busy}
+        >
+          文件
+        </button>
+      </div>
+
+      {sourceMode === "text" ? (
+        <>
+          <label className="field-label" htmlFor="sha-input">
+            原始文本或候选文本
+          </label>
+          <textarea
+            ref={inputRef}
+            id="sha-input"
+            className={`tool-textarea ${styles.input}`}
+            value={input}
+            onChange={(event) => handleTextChange(event.target.value)}
+            placeholder="输入要计算 SHA 摘要的文本，支持中文与 Emoji"
+            aria-describedby="sha-input-help"
+            spellCheck={false}
+            disabled={busy}
+          />
+          <p id="sha-input-help" className={styles.help}>
+            按 UTF-8 字节计算，不会自动去除首尾空格或换行；空文本也有固定摘要。
+          </p>
+        </>
+      ) : (
+        <div className={styles.fileSource}>
+          <label className="field-label" htmlFor="sha-file">
+            原始文件或候选文件
+          </label>
+          <input
+            ref={fileInputRef}
+            id="sha-file"
+            className={styles.fileInput}
+            type="file"
+            onChange={(event) =>
+              handleFileChange(event.currentTarget.files?.[0] ?? null)
+            }
+            aria-describedby="sha-file-help sha-file-status"
+            disabled={busy}
+          />
+          <p id="sha-file-help" className={styles.help}>
+            最大 {MAX_HASH_FILE_LABEL}；文件仅在当前浏览器本地读取，不会上传。
+          </p>
+          <div
+            id="sha-file-status"
+            className={styles.fileStatus}
+            role="status"
+            aria-live="polite"
+          >
+            {selectedFile ? (
+              <>
+                <strong>{selectedFile.name}</strong>
+                <span>{formatHashFileSize(selectedFile.size)}</span>
+              </>
+            ) : (
+              <span>尚未选择文件</span>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="tool-actions">
         <button
           className="button button-primary"
           type="button"
           onClick={calculateDigest}
-          disabled={busy}
+          disabled={busy || !hasSource}
         >
-          {busy ? "正在计算…" : `计算 ${algorithm}`}
+          {busy
+            ? "正在计算…"
+            : sourceMode === "file"
+              ? `计算文件 ${algorithm}`
+              : `计算 ${algorithm}`}
         </button>
         <button
           className="button button-secondary"
           type="button"
           onClick={clearAll}
-          disabled={
-            busy || (!input && !digest && !targetDigest && !operationError)
-          }
+          disabled={busy || !canClear}
         >
           清空
         </button>
@@ -191,7 +323,7 @@ export default function ShaTool() {
           <span>单向摘要</span>
         </div>
         <p className={styles.notice}>
-          SHA 不能直接还原原文；可在此校验上方候选文本是否匹配目标摘要。
+          SHA 不能直接还原原始内容；可在此校验上方候选内容是否匹配目标摘要。
         </p>
         <label className="field-label" htmlFor="sha-target">
           目标 {algorithm}
@@ -211,15 +343,16 @@ export default function ShaTool() {
           spellCheck={false}
           aria-invalid={Boolean(verificationError)}
           aria-describedby="sha-verification-status"
+          disabled={busy}
         />
         <div className="tool-actions">
           <button
             className="button button-secondary"
             type="button"
             onClick={verifyCandidate}
-            disabled={busy}
+            disabled={busy || !hasSource}
           >
-            校验候选文本
+            校验{candidateLabel}
           </button>
         </div>
         <p

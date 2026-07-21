@@ -29,6 +29,40 @@
   box-shadow: 0 0 0 3px rgb(242 107 77 / 0.12);
 }
 
+.sourceMode {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.sourceMode button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.sourceMode button:hover:not(:disabled) {
+  color: var(--text);
+}
+
+.sourceMode button.activeMode {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 3px 12px rgb(73 51 38 / 0.08);
+}
+
 .input {
   min-height: 118px;
 }
@@ -50,6 +84,63 @@
   color: #72571c;
   font-size: 12px;
   line-height: 1.6;
+}
+
+.fileSource {
+  display: grid;
+  gap: 10px;
+}
+
+.fileInput {
+  width: 100%;
+  min-height: 48px;
+  padding: 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  outline: 0;
+  background: #fff;
+  font-size: 13px;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.fileInput:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(242 107 77 / 0.12);
+}
+
+.fileInput::file-selector-button {
+  min-height: 32px;
+  margin-right: 12px;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.fileStatus {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.fileStatus strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 13px;
 }
 
 .operationError {
@@ -189,6 +280,11 @@
   .algorithmControl {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .fileStatus {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .resultHeading {

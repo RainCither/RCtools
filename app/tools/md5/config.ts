@@ -3,7 +3,7 @@ import { defineTool } from "../../tool-types";
 export const md5ToolConfig = defineTool({
   id: "md5",
   title: "MD5 加密与校验",
-  summary: "计算文本的 MD5 摘要，并验证候选文本是否匹配指定摘要。",
+  summary: "计算文本或小文件的 MD5 摘要，并验证候选内容是否匹配指定摘要。",
   category: "dev",
   mark: "MD5",
   searchTerms: [
@@ -14,6 +14,7 @@ export const md5ToolConfig = defineTool({
     "散列",
     "摘要",
     "校验",
+    "文件",
     "hash",
     "digest",
   ],

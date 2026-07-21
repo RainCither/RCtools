@@ -4,8 +4,10 @@ import test from "node:test";
 import {
   SHA_ALGORITHMS,
   SHA_DIGEST_LENGTHS,
+  shaBytes,
   shaHex,
   verifyShaCandidate,
+  verifyShaDigest,
 } from "../app/tools/sha/sha-core.ts";
 
 const NODE_ALGORITHM_NAMES = {
@@ -54,6 +56,41 @@ test("hashes UTF-8 text and whitespace exactly", async () => {
   }
 });
 
+test("hashes zero-byte and arbitrary binary files exactly", async () => {
+  const vectors = [
+    new Uint8Array(),
+    Uint8Array.from([0x00]),
+    Uint8Array.from([0x00, 0xff, 0x01, 0x80, 0x7f, 0x0a]),
+  ];
+
+  for (const algorithm of SHA_ALGORITHMS) {
+    for (const bytes of vectors) {
+      const expected = createHash(NODE_ALGORITHM_NAMES[algorithm])
+        .update(bytes)
+        .digest("hex");
+      assert.equal(await shaBytes(bytes, algorithm), expected);
+    }
+  }
+});
+
+test("does not normalize Unicode text", async () => {
+  const composed = "ü";
+  const decomposed = "u\u0308";
+
+  for (const algorithm of SHA_ALGORITHMS) {
+    assert.notEqual(
+      await shaHex(composed, algorithm),
+      await shaHex(decomposed, algorithm),
+    );
+    assert.equal(
+      await shaHex(decomposed, algorithm),
+      createHash(NODE_ALGORITHM_NAMES[algorithm])
+        .update(decomposed, "utf8")
+        .digest("hex"),
+    );
+  }
+});
+
 test("verifies trimmed, case-insensitive SHA digests", async () => {
   for (const algorithm of SHA_ALGORITHMS) {
     const expected = createHash(NODE_ALGORITHM_NAMES[algorithm])
@@ -73,6 +110,10 @@ test("verifies trimmed, case-insensitive SHA digests", async () => {
     assert.equal(
       (await verifyShaCandidate(expected, "abd", algorithm)).matches,
       false,
+    );
+    assert.equal(
+      verifyShaDigest(expected.toUpperCase(), expected, algorithm).matches,
+      true,
     );
   }
 });

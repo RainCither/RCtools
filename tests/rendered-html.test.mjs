@@ -135,6 +135,7 @@ test("keeps the tool registry modular and removes the starter preview", async ()
     access(new URL("app/tools/shared/tool-ui.tsx", templateRoot)),
     access(new URL("app/tools/shared/code-transform-tool.tsx", templateRoot)),
     access(new URL("app/tools/shared/code-transform-tool.module.css", templateRoot)),
+    access(new URL("app/tools/shared/hash-file.ts", templateRoot)),
   ]);
   const configSources = await Promise.all(
     ["base64", "base-converter", "color", "css-formatter", "glitch-text", "html-formatter", "ieee-754", "js-formatter", "json", "md5", "password", "sha", "text-stats", "time-diff", "timestamp"]
@@ -198,7 +199,7 @@ test("builds each tool as an independent client chunk", async () => {
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
-  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig, md5Tool, md5Core, md5Config, shaTool, shaCore, shaConfig] = await Promise.all([
+  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig, md5Tool, md5Core, md5Config, shaTool, shaCore, shaConfig, hashFile] = await Promise.all([
     readFile(new URL("../app/tools/shared/tool-ui.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/shared/code-transform-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url), "utf8"),
@@ -228,6 +229,7 @@ test("guards tool behavior and accessibility contracts", async () => {
     readFile(new URL("../app/tools/sha/sha-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/sha/sha-core.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/sha/config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/tools/shared/hash-file.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(shared, /error \|\| message \|\|/);
@@ -302,24 +304,46 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(htmlFormatterCore, /mangle: false/);
   assert.match(htmlFormatterCore, /WHITESPACE_SENSITIVE_ELEMENTS/);
   assert.match(htmlFormatterConfig, /内嵌 CSS 与 JavaScript/);
-  assert.match(md5Tool, /MD5 是单向摘要，不能直接还原原文/);
-  assert.match(md5Tool, /aria-invalid=\{Boolean\(error\)\}/);
-  assert.match(md5Tool, /role=\{error \? "alert" : "status"\}/);
-  assert.match(md5Tool, /校验通过：候选文本与目标 MD5 匹配/);
+  assert.match(md5Tool, /MD5\s+是单向摘要，不能直接还原原始内容/);
+  assert.match(md5Tool, /type="file"/);
+  assert.match(md5Tool, /aria-pressed=/);
+  assert.match(md5Tool, /aria-busy=\{busy\}/);
+  assert.match(md5Tool, /aria-invalid=\{Boolean\(verificationError\)\}/);
+  assert.match(md5Tool, /role=\{verificationError \? "alert" : "status"\}/);
+  assert.match(md5Tool, /最大 \{MAX_HASH_FILE_LABEL\}/);
+  assert.match(md5Tool, /文件仅在当前浏览器本地读取，不会上传/);
+  assert.match(md5Tool, /disabled=\{busy \|\| !hasSource\}/);
+  assert.match(md5Tool, /校验通过：\$\{candidateLabel\}与目标 MD5 匹配/);
+  assert.match(md5Core, /hash-wasm\/dist\/md5\.umd\.min\.js/);
+  assert.match(md5Core, /const \{ md5 \} = hashWasmMd5/);
+  assert.match(md5Core, /export function md5Bytes/);
   assert.match(md5Core, /new TextEncoder\(\)\.encode\(value\)/);
   assert.match(md5Core, /MD5_PATTERN/);
-  assert.match(md5Config, /计算文本的 MD5 摘要/);
+  assert.doesNotMatch(md5Core, /ROTATION_AMOUNTS|ROUND_CONSTANTS/);
+  assert.match(md5Config, /计算文本或小文件的 MD5 摘要/);
   assert.match(shaTool, /SHA-1 仅适合兼容旧系统/);
+  assert.match(shaTool, /type="file"/);
+  assert.match(shaTool, /aria-pressed=/);
   assert.match(shaTool, /aria-busy=\{busy\}/);
   assert.match(shaTool, /aria-invalid=\{Boolean\(verificationError\)\}/);
-  assert.match(shaTool, /校验通过：候选文本与目标 \$\{algorithm\} 匹配/);
+  assert.match(shaTool, /最大 \{MAX_HASH_FILE_LABEL\}/);
+  assert.match(shaTool, /文件仅在当前浏览器本地读取，不会上传/);
+  assert.match(shaTool, /disabled=\{busy \|\| !hasSource\}/);
+  assert.match(shaTool, /校验通过：\$\{candidateLabel\}与目标 \$\{algorithm\} 匹配/);
   assert.match(shaCore, /\["SHA-1", "SHA-256", "SHA-512"\]/);
-  assert.match(shaCore, /globalThis\.crypto\?\.subtle/);
+  assert.match(shaCore, /hash-wasm\/dist\/sha1\.umd\.min\.js/);
+  assert.match(shaCore, /hash-wasm\/dist\/sha256\.umd\.min\.js/);
+  assert.match(shaCore, /hash-wasm\/dist\/sha512\.umd\.min\.js/);
+  assert.match(shaCore, /export function shaBytes/);
+  assert.doesNotMatch(shaCore, /crypto\.subtle|globalThis\.crypto/);
   assert.match(shaCore, /new TextEncoder\(\)\.encode\(value\)/);
-  assert.match(shaConfig, /计算 SHA-1、SHA-256 或 SHA-512 摘要/);
+  assert.match(shaConfig, /计算文本或小文件的 SHA-1、SHA-256 或 SHA-512 摘要/);
+  assert.match(hashFile, /20 \* 1024 \* 1024/);
+  assert.match(hashFile, /file\.arrayBuffer\(\)/);
+  assert.match(hashFile, /文件读取失败，请重新选择后再试/);
 });
 
-test("keeps Next on the audited PostCSS version", async () => {
+test("keeps exact audited dependency versions", async () => {
   const [packageSource, lockSource] = await Promise.all([
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../package-lock.json", import.meta.url), "utf8"),
@@ -327,6 +351,9 @@ test("keeps Next on the audited PostCSS version", async () => {
   const packageJson = JSON.parse(packageSource);
 
   assert.equal(packageJson.dependencies.postcss, "8.5.14");
+  assert.equal(packageJson.dependencies["hash-wasm"], "4.12.0");
   assert.equal(packageJson.overrides.next.postcss, "8.5.14");
+  assert.match(lockSource, /"node_modules\/hash-wasm": \{/);
+  assert.match(lockSource, /"version": "4\.12\.0"/);
   assert.doesNotMatch(lockSource, /node_modules\/next\/node_modules\/postcss/);
 });
