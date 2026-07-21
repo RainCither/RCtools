@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="16" fill="#FFF0EA"/>
+  <path d="M23 20v-2.5A5.5 5.5 0 0 1 28.5 12h7a5.5 5.5 0 0 1 5.5 5.5V20" fill="none" stroke="#D9563A" stroke-linecap="round" stroke-width="4"/>
+  <path d="M11 23.5A5.5 5.5 0 0 1 16.5 18h31a5.5 5.5 0 0 1 5.5 5.5v23A5.5 5.5 0 0 1 47.5 52h-31a5.5 5.5 0 0 1-5.5-5.5v-23Z" fill="#F26B4D"/>
+  <path d="M11 32h42v4H11z" fill="#D9563A"/>
+  <text x="32" y="43" fill="#FFFDFB" font-family="Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="-1.6" text-anchor="middle">RC</text>
+</svg>
