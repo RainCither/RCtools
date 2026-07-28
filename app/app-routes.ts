@@ -9,25 +9,25 @@ export { getHomeHref };
 
 export type ParsedAppRoute<
   TToolId extends string,
-  TOtherPageId extends string,
+  TPageId extends string,
 > =
   | Exclude<ParsedToolRoute<TToolId>, { kind: "invalid" }>
-  | { kind: "other-page"; pageId: TOtherPageId }
+  | { kind: "page"; pageId: TPageId }
   | { kind: "invalid" };
 
-export function getOtherPageHref(pageId: string, basePath = "/"): string {
-  return `${normalizeBasePath(basePath)}other/${pageId}/`;
+export function getPageHref(pageId: string, basePath = "/"): string {
+  return `${normalizeBasePath(basePath)}${pageId}/`;
 }
 
 export function parseAppRoute<
   TToolId extends string,
-  TOtherPageId extends string,
+  TPageId extends string,
 >(
   pathname: string,
   basePath: string,
   isToolId: (value: string) => value is TToolId,
-  isOtherPageId: (value: string) => value is TOtherPageId,
-): ParsedAppRoute<TToolId, TOtherPageId> {
+  isPageId: (value: string) => value is TPageId,
+): ParsedAppRoute<TToolId, TPageId> {
   const toolRoute = parseToolRoute(pathname, basePath, isToolId);
 
   if (toolRoute.kind !== "invalid") {
@@ -45,16 +45,15 @@ export function parseAppRoute<
     .split("/")
     .filter(Boolean);
 
-  if (segments.length !== 2) {
+  if (segments.length !== 1) {
     return { kind: "invalid" };
   }
 
   try {
-    const namespace = decodeURIComponent(segments[0]);
-    const pageId = decodeURIComponent(segments[1]);
+    const pageId = decodeURIComponent(segments[0]);
 
-    return namespace === "other" && isOtherPageId(pageId)
-      ? { kind: "other-page", pageId }
+    return isPageId(pageId)
+      ? { kind: "page", pageId }
       : { kind: "invalid" };
   } catch {
     return { kind: "invalid" };

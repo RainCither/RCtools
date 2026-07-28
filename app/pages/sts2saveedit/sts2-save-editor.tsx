@@ -63,7 +63,7 @@ function formatFileSize(size: number) {
   return `${(size / 1024).toFixed(1)} KiB`;
 }
 
-export function Sts2SaveCheatApp() {
+export function Sts2SaveEditor() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [original, setOriginal] = useState<Sts2Save | null>(null);
   const [draft, setDraft] = useState<Sts2Save | null>(null);

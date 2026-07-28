@@ -4,6 +4,7 @@ export const TOOL_CATEGORY_LABELS = {
   text: "文本",
   dev: "开发",
   date: "日期",
+  other: "其他",
 } as const;
 
 export type ToolCategory = keyof typeof TOOL_CATEGORY_LABELS;

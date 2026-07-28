@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { OTHER_PAGE_METADATA } from "./app/pages/other/page-metadata";
+import { PAGE_METADATA } from "./app/pages/page-metadata";
 import { readRegisteredTools } from "./scripts/read-tool-registry.mjs";
 
 const basePath = process.env.PAGES_BASE_PATH ?? "/";
@@ -104,12 +104,8 @@ export default defineConfig({
               "utf8",
             );
           }),
-          ...OTHER_PAGE_METADATA.map(async (page) => {
-            const routeDirectory = resolve(
-              outputDirectory,
-              "other",
-              page.id,
-            );
+          ...PAGE_METADATA.map(async (page) => {
+            const routeDirectory = resolve(outputDirectory, page.id);
             await mkdir(routeDirectory, { recursive: true });
             await writeFile(
               resolve(routeDirectory, "index.html"),

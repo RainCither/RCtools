@@ -23,6 +23,7 @@ export const TOOL_CATEGORIES = [
   { id: "text", label: TOOL_CATEGORY_LABELS.text },
   { id: "dev", label: TOOL_CATEGORY_LABELS.dev },
   { id: "date", label: TOOL_CATEGORY_LABELS.date },
+  { id: "other", label: TOOL_CATEGORY_LABELS.other },
 ] as const;
 
 export type CategoryFilter = (typeof TOOL_CATEGORIES)[number]["id"];
@@ -53,11 +54,7 @@ const TOOL_BY_ID: ReadonlyMap<string, RegisteredTool> = new Map(
   TOOLS.map((tool) => [tool.id, tool] as [string, RegisteredTool]),
 );
 
-export const DEFAULT_RECENT: ToolId[] = [
-  "json",
-  "timestamp",
-  "text-stats",
-];
+export const DEFAULT_RECENT: ToolId[] = ["json", "timestamp", "text-stats"];
 
 export function isToolId(value: string): value is ToolId {
   return TOOL_BY_ID.has(value);

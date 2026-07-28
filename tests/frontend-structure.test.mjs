@@ -8,12 +8,13 @@ test("keeps a modular browser-only application structure", async () => {
   const [
     registry,
     toolTypes,
+    externalLinks,
     panels,
     routes,
     appRoutes,
-    otherMetadata,
-    otherRegistry,
-    otherPanel,
+    pageMetadata,
+    pageRegistry,
+    pagePanel,
     sts2Page,
     sts2App,
     sts2Map,
@@ -27,42 +28,43 @@ test("keeps a modular browser-only application structure", async () => {
   ] = await Promise.all([
     readFile(new URL("../app/tool-registry.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-types.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/external-links.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-panels.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-routes.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/app-routes.ts", import.meta.url), "utf8"),
     readFile(
-      new URL("../app/pages/other/page-metadata.ts", import.meta.url),
+      new URL("../app/pages/page-metadata.ts", import.meta.url),
       "utf8",
     ),
     readFile(
-      new URL("../app/pages/other/page-registry.ts", import.meta.url),
+      new URL("../app/pages/page-registry.ts", import.meta.url),
       "utf8",
     ),
     readFile(
-      new URL("../app/pages/other/other-page-panel.tsx", import.meta.url),
+      new URL("../app/pages/page-panel.tsx", import.meta.url),
       "utf8",
     ),
     readFile(
-      new URL("../app/pages/other/sts2savecheat-page.tsx", import.meta.url),
+      new URL("../app/pages/sts2saveedit-page.tsx", import.meta.url),
       "utf8",
     ),
     readFile(
       new URL(
-        "../app/pages/other/sts2savecheat/sts2-save-cheat-app.tsx",
+        "../app/pages/sts2saveedit/sts2-save-editor.tsx",
         import.meta.url,
       ),
       "utf8",
     ),
     readFile(
       new URL(
-        "../app/pages/other/sts2savecheat/map-editor.tsx",
+        "../app/pages/sts2saveedit/map-editor.tsx",
         import.meta.url,
       ),
       "utf8",
     ),
     readFile(
       new URL(
-        "../app/pages/other/sts2savecheat/misc-editor.tsx",
+        "../app/pages/sts2saveedit/misc-editor.tsx",
         import.meta.url,
       ),
       "utf8",
@@ -84,8 +86,17 @@ test("keeps a modular browser-only application structure", async () => {
   assert.match(registry, /TOOL_BY_ID/);
   assert.match(toolTypes, /export function defineTool/);
   assert.match(toolTypes, /TOOL_CATEGORY_LABELS/);
+  assert.match(toolTypes, /other: "其他"/);
   assert.match(toolTypes, /export type ToolLoader/);
   assert.doesNotMatch(toolTypes, /\| "json"/);
+  assert.match(
+    registry,
+    /\{ id: "other", label: TOOL_CATEGORY_LABELS\.other \}/,
+  );
+  assert.match(externalLinks, /export function defineExternalLink/);
+  assert.match(externalLinks, /export const EXTERNAL_LINKS = \[/);
+  assert.match(externalLinks, /href: ExternalLinkHref/);
+  assert.match(externalLinks, /https:\/\/\$\{string\}/);
   assert.match(panels, /export function ToolPanel/);
   assert.match(panels, /TOOLS\.map/);
   assert.match(panels, /TOOL_LOAD_PROMISES/);
@@ -97,20 +108,26 @@ test("keeps a modular browser-only application structure", async () => {
   assert.match(routes, /export function parseToolRoute/);
   assert.match(routes, /export function getToolHref/);
   assert.match(appRoutes, /export function parseAppRoute/);
-  assert.match(appRoutes, /kind: "other-page"/);
-  assert.match(appRoutes, /namespace === "other"/);
-  assert.match(otherMetadata, /id: "sts2savecheat"/);
-  assert.match(otherMetadata, /杀戮尖塔 2 存档修改器/);
-  assert.match(otherRegistry, /export const OTHER_PAGES/);
-  assert.match(otherRegistry, /\.\.\.OTHER_PAGE_METADATA\[0\]/);
+  assert.match(appRoutes, /kind: "page"/);
+  assert.doesNotMatch(appRoutes, /namespace === "other"/);
+  assert.match(pageMetadata, /id: "sts2saveedit"/);
+  assert.match(pageMetadata, /杀戮尖塔 2 存档修改器/);
+  assert.match(pageMetadata, /homeCard: \{/);
+  assert.match(pageMetadata, /category: "other"/);
+  assert.match(pageMetadata, /mark: "S2"/);
+  assert.match(pageMetadata, /"Slay the Spire 2"/);
+  assert.match(pageMetadata, /"save editor"/);
+  assert.match(pageRegistry, /export const PAGES/);
+  assert.match(pageRegistry, /\.\.\.PAGE_METADATA\[0\]/);
   assert.match(
-    otherRegistry,
-    /load: \(\) => import\("\.\/sts2savecheat-page"\)/,
+    pageRegistry,
+    /load: \(\) => import\("\.\/sts2saveedit-page"\)/,
   );
-  assert.doesNotMatch(otherRegistry, /defineTool|TOOLS/);
-  assert.match(otherPanel, /export function OtherPagePanel/);
-  assert.match(otherPanel, /lazy\(page\.load\)/);
-  assert.match(sts2Page, /<Sts2SaveCheatApp \/>/);
+  assert.doesNotMatch(pageRegistry, /defineTool|TOOLS/);
+  assert.match(pagePanel, /export function PagePanel/);
+  assert.match(pagePanel, /lazy\(page\.load\)/);
+  assert.doesNotMatch(panels, /PAGE_METADATA|sts2saveedit/);
+  assert.match(sts2Page, /<Sts2SaveEditor \/>/);
   assert.match(sts2App, /parseSts2Save/);
   assert.match(sts2App, /serializeSts2Save/);
   assert.match(sts2App, /文件只会在当前浏览器中处理/);
@@ -123,10 +140,25 @@ test("keeps a modular browser-only application structure", async () => {
   assert.match(sts2Misc, /进阶等级/);
   assert.match(sts2Misc, /药水修改/);
   assert.match(sts2Misc, /potionCatalogJson/);
-  assert.doesNotMatch(registry, /sts2savecheat|OTHER_PAGES/);
+  assert.doesNotMatch(registry, /sts2saveedit|PAGES/);
   assert.match(toolbox, /HOVER_PRELOAD_DELAY = 120/);
-  assert.match(toolbox, /onPointerLeave=\{cancelScheduledPreload\}/);
-  assert.match(toolbox, /onFocus=\{\(\) =>/);
+  assert.match(toolbox, /const PAGE_CARDS/);
+  assert.match(toolbox, /getPageHref\(pageCard\.pageId, basePath\)/);
+  assert.match(
+    toolbox,
+    /\.\.\.TOOLS,\s+\.\.\.PAGE_CARDS,\s+\.\.\.EXTERNAL_LINKS/,
+  );
+  assert.match(toolbox, /const HOME_CARD_BY_ID/);
+  assert.match(toolbox, /target=\{opensNewTab \? "_blank" : undefined\}/);
+  assert.match(
+    toolbox,
+    /rel=\{opensNewTab \? "noopener noreferrer" : undefined\}/,
+  );
+  assert.match(toolbox, /onPointerLeave=\{internalTool \?/);
+  assert.match(toolbox, /onFocus=\{\s*internalTool\s*\?/);
+  assert.match(toolbox, /onRecordRecent\(card\.id\)/);
+  assert.match(toolbox, /HOME_CARD_BY_ID\.has\(value\)/);
+  assert.match(toolbox, /在新标签页打开/);
   assert.match(toolbox, /window\.history\.pushState/);
   assert.match(toolbox, /window\.addEventListener\("popstate"/);
   assert.doesNotMatch(toolbox, /<dialog|showModal\(|preventBackgroundWheel/);
@@ -136,14 +168,15 @@ test("keeps a modular browser-only application structure", async () => {
   );
   assert.match(entry, /createRoot\(root\)\.render/);
   assert.match(entry, /parseAppRoute\(/);
-  assert.match(entry, /isOtherPageId/);
-  assert.match(entry, /route\.kind === "other-page"/);
-  assert.match(entry, /<OtherPagePanel pageId=\{route\.pageId\} \/>/);
+  assert.match(entry, /isPageId/);
+  assert.match(entry, /route\.kind === "page"/);
+  assert.match(entry, /<PagePanel pageId=\{route\.pageId\} \/>/);
   assert.match(entry, /route\.kind === "tool" \? route\.toolId : null/);
   assert.match(viteConfig, /import react from "@vitejs\/plugin-react"/);
   assert.match(viteConfig, /name: "static-app-routes"/);
-  assert.match(viteConfig, /OTHER_PAGE_METADATA/);
-  assert.match(viteConfig, /"other",\s+page\.id/);
+  assert.match(viteConfig, /PAGE_METADATA/);
+  assert.match(viteConfig, /resolve\(outputDirectory, page\.id\)/);
+  assert.doesNotMatch(viteConfig, /"other",\s+page\.id/);
   assert.match(viteConfig, /resolve\(routeDirectory, "index\.html"\)/);
   assert.doesNotMatch(viteConfig, /vinext|plugin-rsc|react-server/i);
   assert.doesNotMatch(tsconfig, /"name":\s*"next"|\.next|next-env/i);

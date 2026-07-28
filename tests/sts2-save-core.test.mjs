@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { ENCHANTMENTS } from "../app/pages/other/sts2savecheat/enchantments.ts";
+import { ENCHANTMENTS } from "../app/pages/sts2saveedit/enchantments.ts";
 import {
   cloneSts2Save,
   countInventory,
@@ -19,7 +19,7 @@ import {
   updateAscension,
   updatePlayerNumber,
   validateSts2Save,
-} from "../app/pages/other/sts2savecheat/save-core.ts";
+} from "../app/pages/sts2saveedit/save-core.ts";
 
 const fixtureUrl = new URL(
   "fixtures/sts2-schema14-minimal.save",

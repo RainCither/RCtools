@@ -7,6 +7,9 @@ import {
   useState,
   type MouseEvent,
 } from "react";
+import { getPageHref } from "./app-routes";
+import { EXTERNAL_LINKS, type ExternalLinkDefinition } from "./external-links";
+import { PAGE_METADATA, type PageMetadata } from "./pages/page-metadata";
 import { preloadTool, ToolPanel } from "./tool-panels";
 import {
   DEFAULT_RECENT,
@@ -18,6 +21,7 @@ import {
   type RegisteredTool,
   type ToolId,
 } from "./tool-registry";
+import { TOOL_CATEGORY_LABELS, type ToolCategory } from "./tool-types";
 import {
   getHomeHref,
   getToolHref,
@@ -29,11 +33,73 @@ const RECENT_STORAGE_KEY = "toolbox:recent:v1";
 const HOVER_PRELOAD_DELAY = 120;
 const HOME_TITLE = "工具匣｜常用小工具，一开即用";
 const HOME_DESCRIPTION = "一个简洁、快速、可持续扩展的个人工具站。";
+type PageCardDefinition = {
+  id: string;
+  pageId: string;
+  title: string;
+  summary: string;
+  category: ToolCategory;
+  categoryLabel: (typeof TOOL_CATEGORY_LABELS)[ToolCategory];
+  mark: string;
+  searchTerms: readonly string[];
+};
+type HomeCardDefinition =
+  RegisteredTool | PageCardDefinition | ExternalLinkDefinition;
+const PAGE_CARDS: readonly PageCardDefinition[] = (
+  PAGE_METADATA as readonly PageMetadata[]
+).flatMap((page) => {
+  const homeCard = page.homeCard;
+  if (!homeCard) return [];
+
+  return [
+    {
+      id: page.id,
+      pageId: page.id,
+      title: page.title,
+      summary: page.description,
+      category: homeCard.category,
+      categoryLabel: TOOL_CATEGORY_LABELS[homeCard.category],
+      mark: homeCard.mark,
+      searchTerms: homeCard.searchTerms,
+    },
+  ];
+});
+const HOME_CARDS: readonly HomeCardDefinition[] = [
+  ...TOOLS,
+  ...PAGE_CARDS,
+  ...EXTERNAL_LINKS,
+];
+const HOME_CARD_BY_ID: ReadonlyMap<string, HomeCardDefinition> = new Map(
+  HOME_CARDS.map((card) => [card.id, card]),
+);
 
 type NavigateHandler = (
   event: MouseEvent<HTMLAnchorElement>,
   toolId: ToolId | null,
 ) => void;
+type RecordRecentHandler = (cardId: string) => void;
+
+function findHomeCard(cardId: string): HomeCardDefinition | undefined {
+  return HOME_CARD_BY_ID.get(cardId);
+}
+
+function isExternalLinkCard(
+  card: HomeCardDefinition,
+): card is ExternalLinkDefinition {
+  return "href" in card;
+}
+
+function isPageCard(
+  card: HomeCardDefinition,
+): card is PageCardDefinition {
+  return "pageId" in card;
+}
+
+function isRegisteredToolCard(
+  card: HomeCardDefinition,
+): card is RegisteredTool {
+  return !isExternalLinkCard(card) && !isPageCard(card);
+}
 
 function isPlainNavigation(event: MouseEvent<HTMLAnchorElement>) {
   return (
@@ -80,17 +146,28 @@ function SiteFooter() {
 }
 
 function ToolCard({
-  tool,
+  card,
   basePath,
   compact = false,
   onNavigate,
+  onRecordRecent,
 }: {
-  tool: RegisteredTool;
+  card: HomeCardDefinition;
   basePath: string;
   compact?: boolean;
   onNavigate: NavigateHandler;
+  onRecordRecent: RecordRecentHandler;
 }) {
   const preloadTimerRef = useRef<number | null>(null);
+  const externalLink = isExternalLinkCard(card) ? card : null;
+  const pageCard = isPageCard(card) ? card : null;
+  const internalTool = isRegisteredToolCard(card) ? card : null;
+  const opensNewTab = Boolean(externalLink || pageCard);
+  const href =
+    externalLink?.href ??
+    (pageCard
+      ? getPageHref(pageCard.pageId, basePath)
+      : getToolHref(card.id, basePath));
 
   function cancelScheduledPreload() {
     if (preloadTimerRef.current === null) return;
@@ -99,10 +176,11 @@ function ToolCard({
   }
 
   function schedulePreload() {
+    if (!internalTool) return;
     cancelScheduledPreload();
     preloadTimerRef.current = window.setTimeout(() => {
       preloadTimerRef.current = null;
-      preloadTool(tool.id);
+      preloadTool(internalTool.id);
     }, HOVER_PRELOAD_DELAY);
   }
 
@@ -118,29 +196,52 @@ function ToolCard({
   return (
     <a
       className={compact ? "tool-card tool-card-compact" : "tool-card"}
-      href={getToolHref(tool.id, basePath)}
-      onPointerEnter={(event) => {
-        if (event.pointerType === "mouse" || event.pointerType === "pen") {
-          schedulePreload();
-        }
-      }}
-      onPointerLeave={cancelScheduledPreload}
-      onFocus={() => {
-        cancelScheduledPreload();
-        preloadTool(tool.id);
-      }}
-      onClick={(event) => onNavigate(event, tool.id)}
-      aria-label={`打开${tool.title}`}
+      href={href}
+      target={opensNewTab ? "_blank" : undefined}
+      rel={opensNewTab ? "noopener noreferrer" : undefined}
+      onPointerEnter={
+        internalTool
+          ? (event) => {
+              if (
+                event.pointerType === "mouse" ||
+                event.pointerType === "pen"
+              ) {
+                schedulePreload();
+              }
+            }
+          : undefined
+      }
+      onPointerLeave={internalTool ? cancelScheduledPreload : undefined}
+      onFocus={
+        internalTool
+          ? () => {
+              cancelScheduledPreload();
+              preloadTool(internalTool.id);
+            }
+          : undefined
+      }
+      onClick={
+        internalTool
+          ? (event) => onNavigate(event, internalTool.id)
+          : () => onRecordRecent(card.id)
+      }
+      aria-label={
+        opensNewTab
+          ? `访问${card.title}（在新标签页打开）`
+          : `打开${card.title}`
+      }
     >
-      <span className={`tool-mark tool-mark-${tool.id}`} aria-hidden="true">
-        {tool.mark}
+      <span className={`tool-mark tool-mark-${card.id}`} aria-hidden="true">
+        {card.mark}
       </span>
       <span className="tool-card-copy">
         <span className="tool-card-heading">
-          <strong>{tool.title}</strong>
-          <span className="tool-card-category">{tool.categoryLabel}</span>
+          <strong>{card.title}</strong>
+          <span className="tool-card-category">{card.categoryLabel}</span>
         </span>
-        {compact ? null : <span className="tool-card-summary">{tool.summary}</span>}
+        {compact ? null : (
+          <span className="tool-card-summary">{card.summary}</span>
+        )}
       </span>
     </a>
   );
@@ -150,10 +251,12 @@ function ToolboxHome({
   basePath,
   recent,
   onNavigate,
+  onRecordRecent,
 }: {
   basePath: string;
-  recent: ToolId[];
+  recent: string[];
   onNavigate: NavigateHandler;
+  onRecordRecent: RecordRecentHandler;
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
@@ -178,22 +281,22 @@ function ToolboxHome({
     return () => window.removeEventListener("keydown", handleShortcut);
   }, []);
 
-  const filteredTools = useMemo(() => {
+  const filteredCards = useMemo(() => {
     const search = deferredQuery.trim().toLocaleLowerCase("zh-CN");
-    return TOOLS.filter((tool) => {
-      const inCategory = category === "all" || tool.category === category;
-      const searchable = [tool.title, tool.summary, ...tool.searchTerms]
+    return HOME_CARDS.filter((card) => {
+      const inCategory = category === "all" || card.category === category;
+      const searchable = [card.title, card.summary, ...card.searchTerms]
         .join(" ")
         .toLocaleLowerCase("zh-CN");
       return inCategory && (!search || searchable.includes(search));
     });
   }, [category, deferredQuery]);
 
-  const recentTools = useMemo(
+  const recentCards = useMemo(
     () =>
       recent
-        .map((toolId) => findTool(toolId))
-        .filter((tool): tool is RegisteredTool => Boolean(tool)),
+        .map((cardId) => findHomeCard(cardId))
+        .filter((card): card is HomeCardDefinition => Boolean(card)),
     [recent],
   );
 
@@ -235,13 +338,14 @@ function ToolboxHome({
             </div>
           </div>
           <div className="recent-grid">
-            {recentTools.map((tool) => (
+            {recentCards.map((card) => (
               <ToolCard
-                key={tool.id}
-                tool={tool}
+                key={card.id}
+                card={card}
                 basePath={basePath}
                 compact
                 onNavigate={onNavigate}
+                onRecordRecent={onRecordRecent}
               />
             ))}
           </div>
@@ -253,7 +357,7 @@ function ToolboxHome({
           <div>
             <h2 id="tools-heading">全部工具</h2>
           </div>
-          <span>{filteredTools.length} 个可用工具</span>
+          <span>{filteredCards.length} 个可用工具</span>
         </div>
 
         <nav className="category-tabs" aria-label="工具分类">
@@ -270,14 +374,15 @@ function ToolboxHome({
           ))}
         </nav>
 
-        {filteredTools.length ? (
+        {filteredCards.length ? (
           <div className="tool-grid">
-            {filteredTools.map((tool) => (
+            {filteredCards.map((card) => (
               <ToolCard
-                key={tool.id}
-                tool={tool}
+                key={card.id}
+                card={card}
                 basePath={basePath}
                 onNavigate={onNavigate}
+                onRecordRecent={onRecordRecent}
               />
             ))}
           </div>
@@ -373,11 +478,11 @@ export function ToolboxApp({
     [basePath],
   );
   const [activeTool, setActiveTool] = useState<ToolId | null>(initialToolId);
-  const [recent, setRecent] = useState<ToolId[]>(DEFAULT_RECENT);
+  const [recent, setRecent] = useState<string[]>(DEFAULT_RECENT);
 
-  const recordRecent = useCallback((toolId: ToolId) => {
+  const recordRecent = useCallback((cardId: string) => {
     setRecent((current) => {
-      const next = [toolId, ...current.filter((item) => item !== toolId)].slice(
+      const next = [cardId, ...current.filter((item) => item !== cardId)].slice(
         0,
         3,
       );
@@ -396,8 +501,8 @@ export function ToolboxApp({
       const parsed: unknown = stored ? JSON.parse(stored) : null;
       const safeIds = Array.isArray(parsed)
         ? parsed.filter(
-            (value): value is ToolId =>
-              typeof value === "string" && isToolId(value),
+            (value): value is string =>
+              typeof value === "string" && HOME_CARD_BY_ID.has(value),
           )
         : DEFAULT_RECENT;
       const next = initialToolId
@@ -488,6 +593,7 @@ export function ToolboxApp({
       basePath={normalizedBasePath}
       recent={recent}
       onNavigate={handleNavigate}
+      onRecordRecent={recordRecent}
     />
   );
 }

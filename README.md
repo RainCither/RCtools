@@ -6,33 +6,34 @@
 
 ## 功能特点
 
-- 常用文本、开发和日期工具集中在一个页面中。
+- 常用文本、开发、日期和其他工具集中在一个页面中。
 - 每个工具都有可直接访问、刷新和分享的独立子路由。
 - 支持标题、中文关键词、英文关键词和别名搜索。
 - 工具组件按需加载，并按访问意图预加载，避免在首屏加载全部工具代码。
 - 输入数据仅在本地处理，最近使用记录保存在当前浏览器中。
 - 可构建为纯静态站点并部署到 GitHub Pages。
 
-## 工具列表
+## 主页功能列表
 
-| 类别 | 工具 | 功能 |
-| --- | --- | --- |
-| 开发 | JSON 格式化 | 校验、格式化或压缩 JSON 数据 |
-| 开发 | CSS 格式化压缩 | 格式化或压缩标准 CSS 样式代码 |
-| 开发 | JavaScript 格式化压缩 | 格式化或压缩现代 JavaScript 与 ES Modules |
-| 开发 | HTML 格式化压缩 | 格式化或保守压缩 HTML，并处理内嵌 CSS 与 JavaScript |
-| 开发 | 正则表达式测试 | 实时测试 JavaScript 正则，并查看语法速查与常用表达式 |
-| 日期 | 时间戳转换 | 在时间戳、日期与标准时间之间转换 |
-| 日期 | 连续时间差 | 连续或成对输入时间，计算分段差值与累计总时长 |
-| 文本 | 文本统计 | 统计字数、字符、单词和行数 |
-| 文本 | 故障文字生成 | 用 Unicode 组合符生成可复制的故障、错位文字 |
-| 开发 | 密码生成 | 按长度和字符规则生成随机密码 |
-| 开发 | Base64 编解码 | 编码或解码包含中文的文本 |
-| 开发 | MD5 加密与校验 | 计算文本或 20 MiB 内小文件的 MD5 摘要并校验候选内容 |
+| 类别 | 工具或页面               | 功能                                                                    |
+| ---- | ------------------------ | ----------------------------------------------------------------------- |
+| 开发 | JSON 格式化              | 校验、格式化或压缩 JSON 数据                                            |
+| 开发 | CSS 格式化压缩           | 格式化或压缩标准 CSS 样式代码                                           |
+| 开发 | JavaScript 格式化压缩    | 格式化或压缩现代 JavaScript 与 ES Modules                               |
+| 开发 | HTML 格式化压缩          | 格式化或保守压缩 HTML，并处理内嵌 CSS 与 JavaScript                     |
+| 开发 | 正则表达式测试           | 实时测试 JavaScript 正则，并查看语法速查与常用表达式                    |
+| 日期 | 时间戳转换               | 在时间戳、日期与标准时间之间转换                                        |
+| 日期 | 连续时间差               | 连续或成对输入时间，计算分段差值与累计总时长                            |
+| 文本 | 文本统计                 | 统计字数、字符、单词和行数                                              |
+| 文本 | 故障文字生成             | 用 Unicode 组合符生成可复制的故障、错位文字                             |
+| 开发 | 密码生成                 | 按长度和字符规则生成随机密码                                            |
+| 开发 | Base64 编解码            | 编码或解码包含中文的文本                                                |
+| 开发 | MD5 加密与校验           | 计算文本或 20 MiB 内小文件的 MD5 摘要并校验候选内容                     |
 | 开发 | SHA-1 / SHA-2 哈希与校验 | 计算文本或 20 MiB 内小文件的 SHA-1、SHA-256、SHA-512 摘要并校验候选内容 |
-| 开发 | 进制转换 | 在二、八、十、十六进制整数之间精确转换 |
-| 开发 | IEEE-754 浮点数转换 | 在十进制数与 Float32/Float64 位模式之间双向转换 |
-| 开发 | 颜色转换 | 将 HEX 颜色转换为 RGB 与 HSL |
+| 开发 | 进制转换                 | 在二、八、十、十六进制整数之间精确转换                                  |
+| 开发 | IEEE-754 浮点数转换      | 在十进制数与 Float32/Float64 位模式之间双向转换                         |
+| 开发 | 颜色转换                 | 将 HEX 颜色转换为 RGB 与 HSL                                            |
+| 其他 | 杀戮尖塔 2 存档修改器   | 在浏览器本地编辑卡牌、遗物、属性与地图节点                              |
 
 ## 本地开发
 
@@ -56,15 +57,15 @@ Vite 开发服务器默认运行在 [http://localhost:5173](http://localhost:517
 
 ### 常用命令
 
-| 命令 | 说明 |
-| --- | --- |
-| `npm run dev` | 启动 Vite 前端开发服务器 |
-| `npm run typecheck` | 运行 TypeScript 类型检查 |
-| `npm test` | 运行类型检查、前端结构测试和功能测试 |
-| `npm run build` | 生成 GitHub Pages 静态文件到 `dist/` |
+| 命令                  | 说明                                          |
+| --------------------- | --------------------------------------------- |
+| `npm run dev`         | 启动 Vite 前端开发服务器                      |
+| `npm run typecheck`   | 运行 TypeScript 类型检查                      |
+| `npm test`            | 运行类型检查、前端结构测试和功能测试          |
+| `npm run build`       | 生成 GitHub Pages 静态文件到 `dist/`          |
 | `npm run pages:build` | GitHub Pages 构建命令，等同于 `npm run build` |
-| `npm run test:pages` | 构建并验证 GitHub Pages 静态产物 |
-| `npm run preview` | 本地预览已构建的静态站点 |
+| `npm run test:pages`  | 构建并验证 GitHub Pages 静态产物              |
+| `npm run preview`     | 本地预览已构建的静态站点                      |
 
 构建并预览静态站点：
 
@@ -94,10 +95,13 @@ RCtools/
 │  │  ├─ time-diff/            # 可包含专用算法、类型和样式
 │  │  └─ shared/               # 跨工具复用的 UI 与逻辑
 │  ├─ pages/
-│  │  └─ other/                # 与工具系统分离的普通页面
-│  │     ├─ page-registry.ts   # 普通页面注册表
-│  │     └─ sts2savecheat-page.tsx
-│  ├─ app-routes.ts            # 应用级路由与 /other/ 页面解析
+│  │  ├─ page-metadata.ts      # 页面元数据与可选主页卡片配置
+│  │  ├─ page-panel.tsx        # 普通页面的懒加载渲染入口
+│  │  ├─ page-registry.ts      # 页面组件的懒加载注册表
+│  │  ├─ sts2saveedit-page.tsx # 杀戮尖塔 2 页面入口
+│  │  └─ sts2saveedit/         # 页面内部组件、逻辑、样式与目录数据
+│  ├─ app-routes.ts            # 工具与独立页面的应用级路由解析
+│  ├─ external-links.ts        # 外部链接主页卡片
 │  ├─ main.tsx                 # 浏览器应用入口
 │  ├─ toolbox-app.tsx          # 工具箱主界面
 │  ├─ tool-routes.ts           # Base Path、链接与路径解析
@@ -114,7 +118,7 @@ RCtools/
 
 每个工具的配置、组件、算法和专用样式都收拢在自己的目录中。工具 ID、分类、搜索、独立子路由和懒加载组件从注册表自动推导；只有被多个工具共同使用的代码才放入 `app/tools/shared/`。
 
-`app/pages/other/` 中的普通页面使用独立注册表和 `/other/<page-id>/` 路由，不注册到 `TOOLS`，也不会出现在工具列表、搜索、分类或最近使用中。
+`app/pages/` 中的普通页面使用独立注册表和根级 `/<page-id>/` 路由，不注册到 `TOOLS`。普通页面默认不出现在主页；只有声明 `homeCard` 配置的页面才会进入工具列表、搜索、分类和最近使用。杀戮尖塔 2 存档修改器的地址是 `/sts2saveedit/`。
 
 ## 添加新工具
 
@@ -129,6 +133,108 @@ RCtools/
 `app/tool-panels.tsx` 会从注册表自动生成组件映射，静态构建也会从同一注册表生成 `/<tool-id>/` 页面；添加工具时不需要维护第二份路由清单。
 
 依赖必须遵循工具级按需加载：应用入口、注册表和 `config.ts` 不得直接导入工具专属重型库；只在用户操作时需要的压缩器、解析器、WASM 等应继续使用动态 `import()`。首屏 JavaScript 的 Gzip 体积目标保持在 `100 KiB` 以内，增长超过 `10%` 时需要检查加载链路并说明原因。完整约束和验收项见 [`ADDTOOL.md` 的“依赖与分块约束”](./ADDTOOL.md#依赖与分块约束)。
+
+## 添加独立普通页面与主页卡片
+
+普通页面适合完整应用、说明页，以及不使用工具面板布局的功能。它们位于 `app/pages/`，使用根级 `/<page-id>/` 路由，并与 `TOOLS`、工具路由和工具组件预加载保持分离。
+
+`TOOLS`、`PAGE_METADATA` 和 `EXTERNAL_LINKS` 中的所有 `id` 必须全局唯一，包括没有 `homeCard` 的普通页面，避免根级路由、静态构建目录、列表渲染和最近使用记录发生冲突。ID 使用小写短横线格式，例如 `save-editor`。
+
+### 添加独立普通页面
+
+1. 在 `app/pages/` 中创建 `<page-id>-page.tsx` 页面组件，并使用默认导出：
+
+   ```tsx
+   export default function AboutPage() {
+     return <main>这是一个独立普通页面。</main>;
+   }
+   ```
+
+2. 在 `app/pages/page-metadata.ts` 的 `PAGE_METADATA` 中添加页面元数据：
+
+   ```ts
+   {
+     id: "about",
+     title: "关于",
+     description: "介绍这个项目及其使用方式。",
+   },
+   ```
+
+3. 在 `app/pages/page-registry.ts` 的 `PAGES` 中注册组件的动态导入：
+
+   ```ts
+   {
+     ...PAGE_METADATA[1],
+     load: () => import("./about-page"),
+   },
+   ```
+
+   `PAGE_METADATA[1]` 必须指向上一步新增的元数据；如果数组顺序发生变化，需要同步调整索引。
+
+完成后，开发环境可通过 `/about/` 访问页面。静态构建会生成 `dist/about/index.html`；部署在仓库 Base Path 下时，对应地址会自动变为 `/RCtools/about/`。普通页面不需要、也不应加入 `TOOLS`、`app/tool-registry.ts` 或 `app/tool-panels.tsx`。
+
+新增页面时还应补充路由、注册表结构和 Pages 构建测试，确保页面 ID、标题、摘要及 `dist/<page-id>/index.html` 保持一致。
+
+### 添加外部链接卡片
+
+只需编辑 `app/external-links.ts`，使用 `defineExternalLink` 向 `EXTERNAL_LINKS` 添加配置：
+
+```ts
+export const EXTERNAL_LINKS = [
+  defineExternalLink({
+    id: "example",
+    title: "示例网站",
+    summary: "一句话说明这个外部网站能解决什么问题。",
+    category: "dev",
+    mark: "E",
+    searchTerms: ["示例", "example"],
+    href: "https://example.com",
+  }),
+] as const satisfies readonly ExternalLinkDefinition[];
+```
+
+- `category` 可使用 `text`、`dev`、`date` 或 `other`，分类中文名会自动生成。
+- `mark` 是卡片左侧的短标记；`searchTerms` 用于补充中文关键词、英文名和别名。
+- `href` 必须是完整的 `http://` 或 `https://` 地址。
+- 外部链接卡片会排在站内工具和普通页面卡片之后；点击时在新标签页打开，并写入最近使用。
+- 外部链接不需要本地页面组件、路由注册或静态页面构建配置。
+
+### 将普通页面添加为站内主页卡片
+
+普通页面默认只能通过地址访问。要让它出现在主页列表、搜索、分类筛选和最近使用中，请直接在对应的页面元数据上添加 `homeCard`：
+
+```ts
+{
+  id: "about",
+  title: "关于",
+  description: "介绍这个项目及其使用方式。",
+  homeCard: {
+    category: "other",
+    mark: "A",
+    searchTerms: ["项目介绍", "about"],
+  },
+},
+```
+
+卡片标题和摘要会复用页面的 `title` 与 `description`，不需要重复填写。卡片地址由 `getPageHref(pageId, basePath)` 生成，因此同时兼容 `/about/` 和 `/RCtools/about/`；点击时在新标签页打开，并先写入最近使用。
+
+不要把这种卡片重复添加到 `EXTERNAL_LINKS` 或 `TOOLS`。如果页面只需要保留独立地址而不在主页展示，删除或省略 `homeCard` 即可。
+
+完成上述任一种修改后，运行：
+
+```bash
+npm test
+npm run test:pages
+git diff --check
+```
+
+还应在桌面端和移动端浏览器中检查：
+
+- 卡片能够通过标题、关键词和别名搜索。
+- 分类筛选包含卡片，并能正确显示或隐藏。
+- 普通页面卡片和外部链接卡片会在新标签页打开。
+- 点击后返回或刷新主页，卡片会出现在最近使用中。
+- 根路径和仓库 Base Path 下的普通页面地址都能直接访问和刷新。
 
 ## GitHub Pages 部署
 
@@ -160,7 +266,7 @@ PAGES_BASE_PATH: /
 PAGES_CUSTOM_DOMAIN: tool.raincither.top
 ```
 
-`vite.config.ts` 会把资源路径设置为根路径，为每个已注册工具生成 `dist/<tool-id>/index.html`，并生成 `dist/404.html`、`.nojekyll` 与 `CNAME`。
+`vite.config.ts` 会把资源路径设置为根路径，为每个已注册工具生成 `dist/<tool-id>/index.html`，并根据 `PAGE_METADATA` 为普通页面生成 `dist/<page-id>/index.html`；同时还会生成 `dist/404.html`、`.nojekyll` 与 `CNAME`。
 
 使用其他自定义域名时：
 
@@ -182,7 +288,9 @@ Base Path 必须以 `/` 开头；除根路径 `/` 外，末尾不要添加 `/`�
 - 工具输入在浏览器本地处理。
 - 项目没有数据库和上传接口。
 - 最近使用记录仅保存在当前浏览器的本地存储中。
+- 最近使用只保存工具或卡片的 ID，不保存工具输入内容。
 - 清除浏览器站点数据会同时清除最近使用记录。
+- 外部链接卡片会离开本站；目标网站的数据处理方式和隐私政策由对应第三方负责。
 
 ## 常见问题
 
@@ -190,9 +298,9 @@ Base Path 必须以 `/` 开头；除根路径 `/` 外，末尾不要添加 `/`�
 
 检查 `PAGES_BASE_PATH` 是否与访问地址一致：自定义域名使用 `/`，仓库子路径使用 `/<仓库名>`。
 
-### 工具子路由无法直接刷新
+### 工具或普通页面子路由无法直接刷新
 
-确认部署产物中存在对应的 `dist/<tool-id>/index.html`，并通过 `npm run test:pages` 检查所有已注册工具的静态入口。未知或多层路径会自动返回工具匣首页。
+确认部署产物中存在对应的 `dist/<tool-id>/index.html` 或 `dist/<page-id>/index.html`，并通过 `npm run test:pages` 检查所有已注册工具和普通页面的静态入口。未知或多层路径会自动返回工具匣首页。
 
 ### 自定义域名在重新部署后失效
 

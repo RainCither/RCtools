@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const catalogRoot = new URL(
-  "../app/pages/other/sts2savecheat/catalog/",
+  "../app/pages/sts2saveedit/catalog/",
   import.meta.url,
 );
 
