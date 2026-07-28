@@ -5,11 +5,68 @@ import test from "node:test";
 const templateRoot = new URL("../", import.meta.url);
 
 test("keeps a modular browser-only application structure", async () => {
-  const [registry, toolTypes, panels, routes, toolbox, entry, packageJson, globalStyles, viteConfig, tsconfig] = await Promise.all([
+  const [
+    registry,
+    toolTypes,
+    panels,
+    routes,
+    appRoutes,
+    otherMetadata,
+    otherRegistry,
+    otherPanel,
+    sts2Page,
+    sts2App,
+    sts2Map,
+    sts2Misc,
+    toolbox,
+    entry,
+    packageJson,
+    globalStyles,
+    viteConfig,
+    tsconfig,
+  ] = await Promise.all([
     readFile(new URL("../app/tool-registry.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-types.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-panels.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-routes.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/app-routes.ts", import.meta.url), "utf8"),
+    readFile(
+      new URL("../app/pages/other/page-metadata.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/pages/other/page-registry.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/pages/other/other-page-panel.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/pages/other/sts2savecheat-page.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/pages/other/sts2savecheat/sts2-save-cheat-app.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/pages/other/sts2savecheat/map-editor.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/pages/other/sts2savecheat/misc-editor.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/main.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
@@ -19,7 +76,10 @@ test("keeps a modular browser-only application structure", async () => {
   ]);
 
   assert.match(registry, /export const TOOLS/);
-  assert.match(registry, /export type ToolId = \(typeof TOOLS\)\[number\]\["id"\]/);
+  assert.match(
+    registry,
+    /export type ToolId = \(typeof TOOLS\)\[number\]\["id"\]/,
+  );
   assert.match(registry, /export function isToolId/);
   assert.match(registry, /TOOL_BY_ID/);
   assert.match(toolTypes, /export function defineTool/);
@@ -36,18 +96,54 @@ test("keeps a modular browser-only application structure", async () => {
   assert.doesNotMatch(panels, /function JsonTool|function PasswordTool/);
   assert.match(routes, /export function parseToolRoute/);
   assert.match(routes, /export function getToolHref/);
+  assert.match(appRoutes, /export function parseAppRoute/);
+  assert.match(appRoutes, /kind: "other-page"/);
+  assert.match(appRoutes, /namespace === "other"/);
+  assert.match(otherMetadata, /id: "sts2savecheat"/);
+  assert.match(otherMetadata, /杀戮尖塔 2 存档修改器/);
+  assert.match(otherRegistry, /export const OTHER_PAGES/);
+  assert.match(otherRegistry, /\.\.\.OTHER_PAGE_METADATA\[0\]/);
+  assert.match(
+    otherRegistry,
+    /load: \(\) => import\("\.\/sts2savecheat-page"\)/,
+  );
+  assert.doesNotMatch(otherRegistry, /defineTool|TOOLS/);
+  assert.match(otherPanel, /export function OtherPagePanel/);
+  assert.match(otherPanel, /lazy\(page\.load\)/);
+  assert.match(sts2Page, /<Sts2SaveCheatApp \/>/);
+  assert.match(sts2App, /parseSts2Save/);
+  assert.match(sts2App, /serializeSts2Save/);
+  assert.match(sts2App, /文件只会在当前浏览器中处理/);
+  assert.match(sts2App, /CC BY-NC-SA 4\.0/);
+  assert.match(sts2Map, /getCurrentMap/);
+  assert.match(sts2Map, /aria-label="当前地图"/);
+  assert.match(sts2Map, /save\.visited_map_coords/);
+  assert.match(sts2Map, /mapNodeCurrent/);
+  assert.doesNotMatch(sts2Map, /getActMap|mapActTabs|role="tab"/);
+  assert.match(sts2Misc, /进阶等级/);
+  assert.match(sts2Misc, /药水修改/);
+  assert.match(sts2Misc, /potionCatalogJson/);
+  assert.doesNotMatch(registry, /sts2savecheat|OTHER_PAGES/);
   assert.match(toolbox, /HOVER_PRELOAD_DELAY = 120/);
   assert.match(toolbox, /onPointerLeave=\{cancelScheduledPreload\}/);
   assert.match(toolbox, /onFocus=\{\(\) =>/);
   assert.match(toolbox, /window\.history\.pushState/);
   assert.match(toolbox, /window\.addEventListener\("popstate"/);
   assert.doesNotMatch(toolbox, /<dialog|showModal\(|preventBackgroundWheel/);
-  assert.doesNotMatch(toolbox, /developerGuide|showDeveloperGuide|添加一个新工具/);
+  assert.doesNotMatch(
+    toolbox,
+    /developerGuide|showDeveloperGuide|添加一个新工具/,
+  );
   assert.match(entry, /createRoot\(root\)\.render/);
-  assert.match(entry, /parseToolRoute\(window\.location\.pathname/);
+  assert.match(entry, /parseAppRoute\(/);
+  assert.match(entry, /isOtherPageId/);
+  assert.match(entry, /route\.kind === "other-page"/);
+  assert.match(entry, /<OtherPagePanel pageId=\{route\.pageId\} \/>/);
   assert.match(entry, /route\.kind === "tool" \? route\.toolId : null/);
   assert.match(viteConfig, /import react from "@vitejs\/plugin-react"/);
-  assert.match(viteConfig, /name: "static-tool-routes"/);
+  assert.match(viteConfig, /name: "static-app-routes"/);
+  assert.match(viteConfig, /OTHER_PAGE_METADATA/);
+  assert.match(viteConfig, /"other",\s+page\.id/);
   assert.match(viteConfig, /resolve\(routeDirectory, "index\.html"\)/);
   assert.doesNotMatch(viteConfig, /vinext|plugin-rsc|react-server/i);
   assert.doesNotMatch(tsconfig, /"name":\s*"next"|\.next|next-env/i);
@@ -110,15 +206,35 @@ test("keeps a modular browser-only application structure", async () => {
     ]),
     access(new URL("app/tools/shared/tool-ui.tsx", templateRoot)),
     access(new URL("app/tools/shared/code-transform-tool.tsx", templateRoot)),
-    access(new URL("app/tools/shared/code-transform-tool.module.css", templateRoot)),
+    access(
+      new URL("app/tools/shared/code-transform-tool.module.css", templateRoot),
+    ),
     access(new URL("app/tools/shared/hash-file.ts", templateRoot)),
   ]);
   const configSources = await Promise.all(
-    ["base64", "base-converter", "color", "css-formatter", "glitch-text", "html-formatter", "ieee-754", "js-formatter", "json", "md5", "password", "regex", "sha", "text-stats", "time-diff", "timestamp"]
-      .map((directory) => readFile(
+    [
+      "base64",
+      "base-converter",
+      "color",
+      "css-formatter",
+      "glitch-text",
+      "html-formatter",
+      "ieee-754",
+      "js-formatter",
+      "json",
+      "md5",
+      "password",
+      "regex",
+      "sha",
+      "text-stats",
+      "time-diff",
+      "timestamp",
+    ].map((directory) =>
+      readFile(
         new URL(`app/tools/${directory}/config.ts`, templateRoot),
         "utf8",
-      )),
+      ),
+    ),
   );
   for (const configSource of configSources) {
     assert.match(configSource, /defineTool\(\{/);
@@ -137,54 +253,187 @@ test("keeps a modular browser-only application structure", async () => {
   assert.match(registry, /from "\.\/tools\/sha\/config"/);
   assert.match(registry, /from "\.\/tools\/regex\/config"/);
   assert.doesNotMatch(registry, /title: "JSON 格式化"/);
-  assert.doesNotMatch(globalStyles, /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/);
-  await Promise.all([
-    "app/_sites-preview",
-    ".openai/hosting.json",
-    "app/page.tsx",
-    "app/layout.tsx",
-    "app/not-found.tsx",
-    "app/[toolId]/page.tsx",
-    "next.config.ts",
-    "vite.pages.config.ts",
-  ].map((path) => assert.rejects(access(new URL(path, templateRoot)))));
+  assert.doesNotMatch(
+    globalStyles,
+    /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/,
+  );
+  await Promise.all(
+    [
+      "app/_sites-preview",
+      ".openai/hosting.json",
+      "app/page.tsx",
+      "app/layout.tsx",
+      "app/not-found.tsx",
+      "app/[toolId]/page.tsx",
+      "next.config.ts",
+      "vite.pages.config.ts",
+    ].map((path) => assert.rejects(access(new URL(path, templateRoot)))),
+  );
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
-  const [shared, codeTransform, timestamp, password, timeDiff, glitchText, glitchCore, toolbox, colorConfig, timeDiffConfig, baseConverter, baseConverterCore, baseConverterConfig, ieee754, ieee754Core, ieee754Config, cssFormatterCore, cssFormatterConfig, jsFormatter, jsFormatterCore, jsFormatterConfig, htmlFormatterCore, htmlFormatterConfig, md5Tool, md5Core, md5Config, shaTool, shaCore, shaConfig, hashFile, regexTool, regexCore, regexReference, regexConfig] = await Promise.all([
-    readFile(new URL("../app/tools/shared/tool-ui.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/shared/code-transform-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/password/password-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/time-diff/time-diff-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/glitch-text/glitch-text-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/glitch-text/glitch-text-core.ts", import.meta.url), "utf8"),
+  const [
+    shared,
+    codeTransform,
+    timestamp,
+    password,
+    timeDiff,
+    glitchText,
+    glitchCore,
+    toolbox,
+    colorConfig,
+    timeDiffConfig,
+    baseConverter,
+    baseConverterCore,
+    baseConverterConfig,
+    ieee754,
+    ieee754Core,
+    ieee754Config,
+    cssFormatterCore,
+    cssFormatterConfig,
+    jsFormatter,
+    jsFormatterCore,
+    jsFormatterConfig,
+    htmlFormatterCore,
+    htmlFormatterConfig,
+    md5Tool,
+    md5Core,
+    md5Config,
+    shaTool,
+    shaCore,
+    shaConfig,
+    hashFile,
+    regexTool,
+    regexCore,
+    regexReference,
+    regexConfig,
+  ] = await Promise.all([
+    readFile(
+      new URL("../app/tools/shared/tool-ui.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/shared/code-transform-tool.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/timestamp/timestamp-tool.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/password/password-tool.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/time-diff/time-diff-tool.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/glitch-text/glitch-text-tool.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/glitch-text/glitch-text-core.ts", import.meta.url),
+      "utf8",
+    ),
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/color/config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/time-diff/config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/base-converter/base-converter-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/base-converter/base-converter-core.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/base-converter/config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/ieee-754/ieee-754-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/ieee-754/ieee-754-core.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/ieee-754/config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/css-formatter/css-formatter-core.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/css-formatter/config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/js-formatter/js-formatter-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/js-formatter/js-formatter-core.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/js-formatter/config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/html-formatter/html-formatter-core.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/html-formatter/config.ts", import.meta.url), "utf8"),
+    readFile(
+      new URL("../app/tools/time-diff/config.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/tools/base-converter/base-converter-tool.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/tools/base-converter/base-converter-core.ts",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/base-converter/config.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/ieee-754/ieee-754-tool.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/ieee-754/ieee-754-core.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/ieee-754/config.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/tools/css-formatter/css-formatter-core.ts",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/css-formatter/config.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/tools/js-formatter/js-formatter-tool.tsx",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/tools/js-formatter/js-formatter-core.ts",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/js-formatter/config.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL(
+        "../app/tools/html-formatter/html-formatter-core.ts",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/html-formatter/config.ts", import.meta.url),
+      "utf8",
+    ),
     readFile(new URL("../app/tools/md5/md5-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/md5/md5-core.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/md5/config.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/sha/sha-tool.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/sha/sha-core.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tools/sha/config.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/shared/hash-file.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/regex/regex-tool.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/regex/regex-core.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/tools/regex/regex-reference.ts", import.meta.url), "utf8"),
+    readFile(
+      new URL("../app/tools/shared/hash-file.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/regex/regex-tool.tsx", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/regex/regex-core.ts", import.meta.url),
+      "utf8",
+    ),
+    readFile(
+      new URL("../app/tools/regex/regex-reference.ts", import.meta.url),
+      "utf8",
+    ),
     readFile(new URL("../app/tools/regex/config.ts", import.meta.url), "utf8"),
   ]);
 
@@ -230,7 +479,10 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(baseConverter, /aria-invalid=\{Boolean\(conversion\.error\)\}/);
   assert.match(baseConverter, /label=\{`\$\{option\.label\}结果`\}/);
   assert.match(baseConverter, /role=\{conversion\.error \? "alert"/);
-  assert.match(baseConverterCore, /value = value \* baseValue \+ BigInt\(digit\)/);
+  assert.match(
+    baseConverterCore,
+    /value = value \* baseValue \+ BigInt\(digit\)/,
+  );
   assert.match(baseConverterCore, /toUpperCase\(\)/);
   assert.match(baseConverterConfig, /在二、八、十、十六进制整数之间精确转换/);
   assert.match(ieee754, /type FloatInputMode/);
@@ -249,7 +501,10 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(jsFormatter, /改名压缩/);
   assert.match(jsFormatter, /保留名称/);
   assert.match(jsFormatter, /aria-pressed=/);
-  assert.match(jsFormatterCore, /type JavaScriptMinifyMode = "mangle" \| "preserve-names"/);
+  assert.match(
+    jsFormatterCore,
+    /type JavaScriptMinifyMode = "mangle" \| "preserve-names"/,
+  );
   assert.match(jsFormatterCore, /import\("terser"\)/);
   assert.match(jsFormatterCore, /不支持 JSX 或 TypeScript/);
   assert.match(jsFormatterConfig, /现代 JavaScript 与 ES Modules/);
@@ -282,7 +537,10 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(shaTool, /最大 \{MAX_HASH_FILE_LABEL\}/);
   assert.match(shaTool, /文件仅在当前浏览器本地读取，不会上传/);
   assert.match(shaTool, /disabled=\{busy \|\| !hasSource\}/);
-  assert.match(shaTool, /校验通过：\$\{candidateLabel\}与目标 \$\{algorithm\} 匹配/);
+  assert.match(
+    shaTool,
+    /校验通过：\$\{candidateLabel\}与目标 \$\{algorithm\} 匹配/,
+  );
   assert.match(shaCore, /\["SHA-1", "SHA-256", "SHA-512"\]/);
   assert.match(shaCore, /hash-wasm\/dist\/sha1\.umd\.min\.js/);
   assert.match(shaCore, /hash-wasm\/dist\/sha256\.umd\.min\.js/);
@@ -321,7 +579,10 @@ test("guards tool behavior and accessibility contracts", async () => {
   assert.match(regexReference, /号段会随运营规则变化/);
   assert.match(regexCore, /MAX_DISPLAYED_MATCHES = 500/);
   assert.match(regexCore, /advanceStringIndex/);
-  assert.match(regexCore, /source\.replace\(new RegExp\(pattern, flags\), replacement\)/);
+  assert.match(
+    regexCore,
+    /source\.replace\(new RegExp\(pattern, flags\), replacement\)/,
+  );
   assert.match(regexConfig, /语法速查/);
   assert.match(regexConfig, /常用正则/);
   assert.match(regexConfig, /cheatsheet/);

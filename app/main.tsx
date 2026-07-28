@@ -1,8 +1,13 @@
 import { createRoot } from "react-dom/client";
 import "./globals.css";
+import { getHomeHref, parseAppRoute } from "./app-routes";
+import { OtherPagePanel } from "./pages/other/other-page-panel";
+import {
+  findOtherPage,
+  isOtherPageId,
+} from "./pages/other/page-registry";
 import { ToolboxApp } from "./toolbox-app";
 import { isToolId } from "./tool-registry";
-import { getHomeHref, parseToolRoute } from "./tool-routes";
 
 const root = document.getElementById("root");
 
@@ -11,10 +16,27 @@ if (!root) {
 }
 
 const basePath = import.meta.env.BASE_URL;
-const route = parseToolRoute(window.location.pathname, basePath, isToolId);
+const route = parseAppRoute(
+  window.location.pathname,
+  basePath,
+  isToolId,
+  isOtherPageId,
+);
 
 if (route.kind === "invalid") {
   window.location.replace(getHomeHref(basePath));
+} else if (route.kind === "other-page") {
+  const page = findOtherPage(route.pageId);
+
+  if (!page) {
+    window.location.replace(getHomeHref(basePath));
+  } else {
+    document.title = `${page.title}｜工具匣`;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", page.description);
+    createRoot(root).render(<OtherPagePanel pageId={route.pageId} />);
+  }
 } else {
   createRoot(root).render(
     <ToolboxApp

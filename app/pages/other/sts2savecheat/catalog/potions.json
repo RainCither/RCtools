@@ -1,0 +1,513 @@
+{
+  "source": "游戏数据中文目录（Spire Codex 解析），条目链接至灰机 Wiki",
+  "sourceUrl": "https://sts2.huijiwiki.com/wiki/分类:药水",
+  "dataSourceUrl": "https://spire-codex.com/api/potions?lang=zhs",
+  "sourceVersion": "schema 14 / 2026-07-28",
+  "generatedAt": "2026-07-28",
+  "entries": [
+    {
+      "id": "POTION.REGEN_POTION",
+      "name": "再生药水",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "获得5层再生。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%86%8D%E7%94%9F%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.STRENGTH_POTION",
+      "name": "力量药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "获得2点力量。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8A%9B%E9%87%8F%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.GLOWWATER_POTION",
+      "name": "发光水",
+      "pool": "事件",
+      "rarity": "事件",
+      "description": "消耗你的手牌。抽10张牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%91%E5%85%89%E6%B0%B4"
+    },
+    {
+      "id": "POTION.FORTIFIER",
+      "name": "固化药水",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "将你的格挡变为三倍。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%9B%BA%E5%8C%96%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.SOLDIERS_STEW",
+      "name": "士兵炖汤",
+      "pool": "铁甲战士",
+      "rarity": "稀有",
+      "description": "在本场战斗中，所有名字中有“打击”的牌获得重放：1。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A3%AB%E5%85%B5%E7%82%96%E6%B1%A4"
+    },
+    {
+      "id": "POTION.DUPLICATOR",
+      "name": "复制药水",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "本回合，你打出的下一张牌会额外打出一次。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%8D%E5%88%B6%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.COSMIC_CONCOCTION",
+      "name": "宇宙药剂",
+      "pool": "储君",
+      "rarity": "稀有",
+      "description": "将3张升级的无色牌加入你的手牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%AE%87%E5%AE%99%E8%8D%AF%E5%89%82"
+    },
+    {
+      "id": "POTION.POT_OF_GHOULS",
+      "name": "尸鬼瓮",
+      "pool": "亡灵契约师",
+      "rarity": "稀有",
+      "description": "将2张灵魂加入你的手牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%B8%E9%AC%BC%E7%93%AE"
+    },
+    {
+      "id": "POTION.LUCKY_TONIC",
+      "name": "幸运补剂",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "获得1层缓冲。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B9%B8%E8%BF%90%E8%A1%A5%E5%89%82"
+    },
+    {
+      "id": "POTION.SNECKO_OIL",
+      "name": "异蛇之油",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "抽7张牌。在本回合随机化你手牌中所有牌的耗能。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%82%E8%9B%87%E4%B9%8B%E6%B2%B9"
+    },
+    {
+      "id": "POTION.FYSH_OIL",
+      "name": "异鱼之油",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "获得1点力量和1点敏捷。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%82%E9%B1%BC%E4%B9%8B%E6%B2%B9"
+    },
+    {
+      "id": "POTION.POTION_OF_CAPACITY",
+      "name": "扩容药水",
+      "pool": "故障机器人",
+      "rarity": "罕见",
+      "description": "获得2个充能球栏位。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%89%A9%E5%AE%B9%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.SKILL_POTION",
+      "name": "技能药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "从3张随机技能牌中选择1张加入你的手牌。这张牌在本回合可以免费打出。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8A%80%E8%83%BD%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.ATTACK_POTION",
+      "name": "攻击药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "从3张随机攻击牌中选择1张加入你的手牌。这张牌在本回合可以免费打出。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%94%BB%E5%87%BB%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.DEXTERITY_POTION",
+      "name": "敏捷药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "获得2点敏捷。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%95%8F%E6%8D%B7%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.COLORLESS_POTION",
+      "name": "无色药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "从3张随机无色牌中选择1张加入你的手牌。这张牌在本回合可以免费打出。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%97%A0%E8%89%B2%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.CLARITY",
+      "name": "明晰提取物",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "抽1张牌。在你的下3个回合开始时，额外抽1张牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%98%8E%E6%99%B0%E6%8F%90%E5%8F%96%E7%89%A9"
+    },
+    {
+      "id": "POTION.RADIANT_TINCTURE",
+      "name": "明耀酊剂",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "获得1 点能量。在你的下3个回合开始时，额外获得1 点能量。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%98%8E%E8%80%80%E9%85%8A%E5%89%82"
+    },
+    {
+      "id": "POTION.VULNERABLE_POTION",
+      "name": "易伤药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "给予3层易伤。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%98%93%E4%BC%A4%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.STAR_POTION",
+      "name": "星星药水",
+      "pool": "储君",
+      "rarity": "普通",
+      "description": "获得3 星。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%98%9F%E6%98%9F%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.FRUIT_JUICE",
+      "name": "果汁",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "获得5点最大生命值。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%9E%9C%E6%B1%81"
+    },
+    {
+      "id": "POTION.BLOCK_POTION",
+      "name": "格挡药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "获得12点格挡。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%A0%BC%E6%8C%A1%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.OROBIC_ACID",
+      "name": "欧洛巴斯之酸",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "往你的手牌中加入一张随机攻击牌、一张随机技能牌和一张随机能力牌。这些牌在本回合免费。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%AC%A7%E6%B4%9B%E5%B7%B4%E6%96%AF%E4%B9%8B%E9%85%B8"
+    },
+    {
+      "id": "POTION.POISON_POTION",
+      "name": "毒药水",
+      "pool": "静默猎手",
+      "rarity": "普通",
+      "description": "给予6层中毒。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%AF%92%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.FOUL_POTION",
+      "name": "污浊药水",
+      "pool": "事件",
+      "rarity": "事件",
+      "description": "对所有玩家和敌人造成12点伤害。\n也可以投掷给商人换取100金币。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B1%A1%E6%B5%8A%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.LIQUID_BRONZE",
+      "name": "流动铜液",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "获得3点荆棘。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B5%81%E5%8A%A8%E9%93%9C%E6%B6%B2"
+    },
+    {
+      "id": "POTION.POWDERED_DEMISE",
+      "name": "消亡粉末",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "敌人在自身的每个回合结束时，失去9点生命。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B6%88%E4%BA%A1%E7%B2%89%E6%9C%AB"
+    },
+    {
+      "id": "POTION.LIQUID_MEMORIES",
+      "name": "液态记忆",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "将你弃牌堆中的一张牌放入你的手牌。这张牌在本回合可以免费打出。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B6%B2%E6%80%81%E8%AE%B0%E5%BF%86"
+    },
+    {
+      "id": "POTION.ENTROPIC_BREW",
+      "name": "混沌药水",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在所有空药水栏位中获得随机药水。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B7%B7%E6%B2%8C%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.FIRE_POTION",
+      "name": "火焰药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "造成20点伤害。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%81%AB%E7%84%B0%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.ASHWATER",
+      "name": "灰水",
+      "pool": "铁甲战士",
+      "rarity": "罕见",
+      "description": "消耗你手牌中的任意张牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%81%B0%E6%B0%B4"
+    },
+    {
+      "id": "POTION.POTION_OF_DOOM",
+      "name": "灾厄药水",
+      "pool": "亡灵契约师",
+      "rarity": "普通",
+      "description": "给予33层灾厄。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%81%BE%E5%8E%84%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.BLESSING_OF_THE_FORGE",
+      "name": "熔炉的祝福",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在本场战斗中升级你手牌中的所有牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%86%94%E7%82%89%E7%9A%84%E7%A5%9D%E7%A6%8F"
+    },
+    {
+      "id": "POTION.EXPLOSIVE_AMPOULE",
+      "name": "爆炸安瓿",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "对所有敌人造成10点伤害。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%88%86%E7%82%B8%E5%AE%89%E7%93%BF"
+    },
+    {
+      "id": "POTION.CUNNING_POTION",
+      "name": "狡诈药水",
+      "pool": "静默猎手",
+      "rarity": "罕见",
+      "description": "将3张小刀+加入你的手牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8B%A1%E8%AF%88%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.KINGS_COURAGE",
+      "name": "王之勇气",
+      "pool": "储君",
+      "rarity": "罕见",
+      "description": "铸造15。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8E%8B%E4%B9%8B%E5%8B%87%E6%B0%94"
+    },
+    {
+      "id": "POTION.FAIRY_IN_A_BOTTLE",
+      "name": "瓶中精灵",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "当你的生命值将被减少至0或以下时，改为丢弃这瓶药水，然后将你回复到你最大生命值的30%。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%93%B6%E4%B8%AD%E7%B2%BE%E7%81%B5"
+    },
+    {
+      "id": "POTION.SHIP_IN_A_BOTTLE",
+      "name": "瓶中船",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "获得10点格挡。在下个回合开始时获得10点格挡。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%93%B6%E4%B8%AD%E8%88%B9"
+    },
+    {
+      "id": "POTION.BOTTLED_POTENTIAL",
+      "name": "瓶装潜能",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "将你的所有牌洗入你的抽牌堆。抽5张牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%93%B6%E8%A3%85%E6%BD%9C%E8%83%BD"
+    },
+    {
+      "id": "POTION.BEETLE_JUICE",
+      "name": "甲虫汁",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "敌人的攻击在下4个回合中造成的伤害减少30%。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%94%B2%E8%99%AB%E6%B1%81"
+    },
+    {
+      "id": "POTION.CURE_ALL",
+      "name": "痊愈药水",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "获得1 点能量。抽2张牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%97%8A%E6%84%88%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.TOUCH_OF_INSANITY",
+      "name": "癫狂之触",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "选择你手牌中的一张牌，使其在本场战斗可以免费打出。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%99%AB%E7%8B%82%E4%B9%8B%E8%A7%A6"
+    },
+    {
+      "id": "POTION.STABLE_SERUM",
+      "name": "稳定血清",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "保留你的手牌2回合。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%A8%B3%E5%AE%9A%E8%A1%80%E6%B8%85"
+    },
+    {
+      "id": "POTION.DISTILLED_CHAOS",
+      "name": "精炼混沌",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "打出你抽牌堆顶部的3张牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%B2%BE%E7%82%BC%E6%B7%B7%E6%B2%8C"
+    },
+    {
+      "id": "POTION.POTION_OF_BINDING",
+      "name": "缚魂药水",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "给予所有敌人1层虚弱和1层易伤。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BC%9A%E9%AD%82%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.GHOST_IN_A_JAR",
+      "name": "罐装幽灵",
+      "pool": "静默猎手",
+      "rarity": "稀有",
+      "description": "获得1层无实体。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BD%90%E8%A3%85%E5%B9%BD%E7%81%B5"
+    },
+    {
+      "id": "POTION.FLEX_POTION",
+      "name": "肌肉药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "获得5点力量。在你的这个回合结束时，失去5点力量。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%82%8C%E8%82%89%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.POWER_POTION",
+      "name": "能力药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "从3张随机能力牌中选择1张加入你的手牌。这张牌在本回合可以免费打出。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%83%BD%E5%8A%9B%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.ENERGY_POTION",
+      "name": "能量药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "获得2 点能量。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%83%BD%E9%87%8F%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.POTION_SHAPED_ROCK",
+      "name": "药水形状的石头",
+      "pool": "通用",
+      "rarity": "衍生",
+      "description": "造成15点伤害。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8D%AF%E6%B0%B4%E5%BD%A2%E7%8A%B6%E7%9A%84%E7%9F%B3%E5%A4%B4"
+    },
+    {
+      "id": "POTION.WEAK_POTION",
+      "name": "虚弱药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "给予3层虚弱。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%99%9A%E5%BC%B1%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.GAMBLERS_BREW",
+      "name": "赌徒特酿",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "丢弃任意张牌，然后抽相同数量的牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%B5%8C%E5%BE%92%E7%89%B9%E9%85%BF"
+    },
+    {
+      "id": "POTION.GIGANTIFICATION_POTION",
+      "name": "超巨化药水",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你打出的下一张攻击牌将会造成三倍伤害。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%B6%85%E5%B7%A8%E5%8C%96%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.SWIFT_POTION",
+      "name": "迅捷药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "抽3张牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%BF%85%E6%8D%B7%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.SPEED_POTION",
+      "name": "速度药水",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "获得5点敏捷。在你的这个回合结束时，失去5点敏捷。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%80%9F%E5%BA%A6%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.HEART_OF_IRON",
+      "name": "铁心药水",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "获得7层覆甲。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%93%81%E5%BF%83%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.SHACKLING_POTION",
+      "name": "镣铐药水",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "所有敌人在这个回合失去7点力量。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%95%A3%E9%93%90%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.FOCUS_POTION",
+      "name": "集中药水",
+      "pool": "故障机器人",
+      "rarity": "普通",
+      "description": "获得2点集中。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%9B%86%E4%B8%AD%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.DROPLET_OF_PRECOGNITION",
+      "name": "预知之滴",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "选择你抽牌堆中的一张牌加入你的手牌。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%A2%84%E7%9F%A5%E4%B9%8B%E6%BB%B4"
+    },
+    {
+      "id": "POTION.MAZALETHS_GIFT",
+      "name": "马萨雷斯的赠礼",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "获得1层仪式。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%A9%AC%E8%90%A8%E9%9B%B7%E6%96%AF%E7%9A%84%E8%B5%A0%E7%A4%BC"
+    },
+    {
+      "id": "POTION.BONE_BREW",
+      "name": "骨头酿",
+      "pool": "亡灵契约师",
+      "rarity": "罕见",
+      "description": "召唤15。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%AA%A8%E5%A4%B4%E9%85%BF"
+    },
+    {
+      "id": "POTION.BLOOD_POTION",
+      "name": "鲜血药水",
+      "pool": "铁甲战士",
+      "rarity": "普通",
+      "description": "回复你最大生命值的20%。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%B2%9C%E8%A1%80%E8%8D%AF%E6%B0%B4"
+    },
+    {
+      "id": "POTION.ESSENCE_OF_DARKNESS",
+      "name": "黑暗精华",
+      "pool": "故障机器人",
+      "rarity": "稀有",
+      "description": "生成你充能球栏位数量个黑暗充能球。",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%BB%91%E6%9A%97%E7%B2%BE%E5%8D%8E"
+    }
+  ]
+}

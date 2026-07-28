@@ -93,6 +93,11 @@ RCtools/
 │  │  │  └─ styles.module.css  # 工具私有样式（按需）
 │  │  ├─ time-diff/            # 可包含专用算法、类型和样式
 │  │  └─ shared/               # 跨工具复用的 UI 与逻辑
+│  ├─ pages/
+│  │  └─ other/                # 与工具系统分离的普通页面
+│  │     ├─ page-registry.ts   # 普通页面注册表
+│  │     └─ sts2savecheat-page.tsx
+│  ├─ app-routes.ts            # 应用级路由与 /other/ 页面解析
 │  ├─ main.tsx                 # 浏览器应用入口
 │  ├─ toolbox-app.tsx          # 工具箱主界面
 │  ├─ tool-routes.ts           # Base Path、链接与路径解析
@@ -108,6 +113,8 @@ RCtools/
 ```
 
 每个工具的配置、组件、算法和专用样式都收拢在自己的目录中。工具 ID、分类、搜索、独立子路由和懒加载组件从注册表自动推导；只有被多个工具共同使用的代码才放入 `app/tools/shared/`。
+
+`app/pages/other/` 中的普通页面使用独立注册表和 `/other/<page-id>/` 路由，不注册到 `TOOLS`，也不会出现在工具列表、搜索、分类或最近使用中。
 
 ## 添加新工具
 

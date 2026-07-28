@@ -1,0 +1,2988 @@
+{
+  "source": "杀戮尖塔2中文维基",
+  "sourceUrl": "https://sts2.huijiwiki.com/wiki/首页",
+  "sourceVersion": "0.107.1",
+  "generatedAt": "2026-07-28",
+  "entries": [
+    {
+      "kind": "relic",
+      "id": "RELIC.BURNING_BLOOD",
+      "name": "燃烧之血",
+      "pool": "铁甲战士",
+      "rarity": "初始",
+      "description": "在战斗结束时，回复6点生命。",
+      "imagePath": "/sts2/uploads/thumb/2/20/Burning_blood.png/128px-Burning_blood.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%87%83%E7%83%A7%E4%B9%8B%E8%A1%80"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RING_OF_THE_SNAKE",
+      "name": "蛇之戒指",
+      "pool": "静默猎手",
+      "rarity": "初始",
+      "description": "在每场战斗开始时，额外抽2张牌。",
+      "imagePath": "/sts2/uploads/thumb/a/a2/Ring_of_the_snake.png/128px-Ring_of_the_snake.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%9B%87%E4%B9%8B%E6%88%92%E6%8C%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DIVINE_RIGHT",
+      "name": "天赋君权",
+      "pool": "储君",
+      "rarity": "初始",
+      "description": "在每场战斗开始时，获得辉星辉星辉星。",
+      "imagePath": "/sts2/uploads/thumb/6/68/Divine_right.png/128px-Divine_right.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A9%E8%B5%8B%E5%90%9B%E6%9D%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BOUND_PHYLACTERY",
+      "name": "缚魂命匣",
+      "pool": "亡灵契约师",
+      "rarity": "初始",
+      "description": "在你的回合开始时，召唤1",
+      "imagePath": "/sts2/uploads/thumb/6/6b/Bound_phylactery.png/128px-Bound_phylactery.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BC%9A%E9%AD%82%E5%91%BD%E5%8C%A3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CRACKED_CORE",
+      "name": "破损核心",
+      "pool": "故障机器人",
+      "rarity": "初始",
+      "description": "在每场战斗开始时，生成1个闪电充能球。",
+      "imagePath": "/sts2/uploads/thumb/3/3c/Cracked_core.png/128px-Cracked_core.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%A0%B4%E6%8D%9F%E6%A0%B8%E5%BF%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BLACK_BLOOD",
+      "name": "黑暗之血",
+      "pool": "铁甲战士",
+      "rarity": "初始",
+      "description": "在战斗结束时，回复12点生命。",
+      "imagePath": "/sts2/uploads/thumb/0/01/Black_blood.png/128px-Black_blood.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%BB%91%E6%9A%97%E4%B9%8B%E8%A1%80"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RING_OF_THE_DRAKE",
+      "name": "长蛇戒指",
+      "pool": "静默猎手",
+      "rarity": "初始",
+      "description": "在战斗开始时的前3个回合，你额外抽2张牌。",
+      "imagePath": "/sts2/uploads/thumb/0/0f/Ring_of_the_drake.png/128px-Ring_of_the_drake.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%95%BF%E8%9B%87%E6%88%92%E6%8C%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DIVINE_DESTINY",
+      "name": "天命所归",
+      "pool": "储君",
+      "rarity": "初始",
+      "description": "在每场战斗开始时，获得辉星辉星辉星辉星辉星辉星。",
+      "imagePath": "/sts2/uploads/thumb/b/b7/Divine_destiny.png/128px-Divine_destiny.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A9%E5%91%BD%E6%89%80%E5%BD%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PHYLACTERY_UNBOUND",
+      "name": "无界命匣",
+      "pool": "亡灵契约师",
+      "rarity": "初始",
+      "description": "在每场战斗开始时，召唤5。在你的回合开始时，召唤2。",
+      "imagePath": "/sts2/uploads/thumb/c/ce/Phylactery_unbound.png/128px-Phylactery_unbound.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%97%A0%E7%95%8C%E5%91%BD%E5%8C%A3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.INFUSED_CORE",
+      "name": "注能核心",
+      "pool": "故障机器人",
+      "rarity": "初始",
+      "description": "在每场战斗开始时，生成3个闪电充能球。闪电充能球额外造成1点伤害。",
+      "imagePath": "/sts2/uploads/thumb/5/5e/Infused_core.png/128px-Infused_core.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B3%A8%E8%83%BD%E6%A0%B8%E5%BF%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CENTENNIAL_PUZZLE",
+      "name": "百年积木",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "你在每场战斗中第一次损失生命值时，抽3张牌。",
+      "imagePath": "/sts2/uploads/thumb/d/df/Centennial_puzzle.png/128px-Centennial_puzzle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%99%BE%E5%B9%B4%E7%A7%AF%E6%9C%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PENDULUM",
+      "name": "摆动球",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "每3个回合，抽1张牌",
+      "imagePath": "/sts2/uploads/thumb/a/a8/Pendulum.png/128px-Pendulum.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%91%86%E5%8A%A8%E7%90%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MEAL_TICKET",
+      "name": "餐券",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "每当你进入商店房间时，回复15点生命。",
+      "imagePath": "/sts2/uploads/thumb/a/a8/Meal_ticket.png/128px-Meal_ticket.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%A4%90%E5%88%B8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.STRAWBERRY",
+      "name": "草莓",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "拾起时，将你的最大生命值提升7。",
+      "imagePath": "/sts2/uploads/thumb/6/6d/Strawberry.png/128px-Strawberry.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8D%89%E8%8E%93"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.STRIKE_DUMMY",
+      "name": "打击木偶",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "名字中有“打击”的卡牌造成3点额外伤害。",
+      "imagePath": "/sts2/uploads/thumb/0/01/Strike_dummy.png/128px-Strike_dummy.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%89%93%E5%87%BB%E6%9C%A8%E5%81%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BAG_OF_MARBLES",
+      "name": "弹珠袋",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，给予所有敌人1层易伤。",
+      "imagePath": "/sts2/uploads/thumb/7/72/Bag_of_marbles.png/128px-Bag_of_marbles.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%B9%E7%8F%A0%E8%A2%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LANTERN",
+      "name": "灯笼",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗的第一回合获得能量。",
+      "imagePath": "/sts2/uploads/thumb/f/f5/Lantern.png/128px-Lantern.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%81%AF%E7%AC%BC"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.JUZU_BRACELET",
+      "name": "佛珠手链",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "你在?房间中不会再遭遇常规战斗。",
+      "imagePath": "/sts2/uploads/thumb/c/c2/Juzu_bracelet.png/128px-Juzu_bracelet.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%9B%E7%8F%A0%E6%89%8B%E9%93%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.VENERABLE_TEA_SET",
+      "name": "古茶具套装",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "到达休息处后的下一场战斗开始时额外获得能量能量。",
+      "imagePath": "/sts2/uploads/thumb/3/30/Venerable_tea_set.png/128px-Venerable_tea_set.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%A4%E8%8C%B6%E5%85%B7%E5%A5%97%E8%A3%85"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RED_MASK",
+      "name": "红面具",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，给于所有敌人1层虚弱。",
+      "imagePath": "/sts2/uploads/thumb/c/c8/Red_mask.png/128px-Red_mask.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BA%A2%E9%9D%A2%E5%85%B7"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GORGET",
+      "name": "护喉甲",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，获得4层覆甲。",
+      "imagePath": "/sts2/uploads/thumb/6/68/Gorget.png/128px-Gorget.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8A%A4%E5%96%89%E7%94%B2"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.REGAL_PILLOW",
+      "name": "皇家枕头",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在休息时，额外回复15点生命。",
+      "imagePath": "/sts2/uploads/thumb/2/21/Regal_pillow.png/128px-Regal_pillow.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%9A%87%E5%AE%B6%E6%9E%95%E5%A4%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FESTIVE_POPPER",
+      "name": "节日拉炮",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，对所有敌人造成9点伤害。",
+      "imagePath": "/sts2/uploads/thumb/0/02/Festive_popper.png/128px-Festive_popper.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8A%82%E6%97%A5%E6%8B%89%E7%82%AE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.VAJRA",
+      "name": "金刚杵",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，获得1点力量。",
+      "imagePath": "/sts2/uploads/thumb/d/dc/Vajra.png/128px-Vajra.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%87%91%E5%88%9A%E6%9D%B5"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.HAPPY_FLOWER",
+      "name": "开心小花",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "每3个回合，获得能量。",
+      "imagePath": "/sts2/uploads/thumb/1/1f/Happy_flower.png/128px-Happy_flower.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%80%E5%BF%83%E5%B0%8F%E8%8A%B1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ANCHOR",
+      "name": "锚",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "每场战斗开始时获得10点格挡。",
+      "imagePath": "/sts2/uploads/thumb/c/c0/Anchor.png/128px-Anchor.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%94%9A"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WHETSTONE",
+      "name": "磨刀石",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "拾起时，随机升级2张攻击牌。",
+      "imagePath": "/sts2/uploads/thumb/9/9f/Whetstone.png/128px-Whetstone.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%A3%A8%E5%88%80%E7%9F%B3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BRONZE_SCALES",
+      "name": "铜质鳞片",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，获得3点荆棘。",
+      "imagePath": "/sts2/uploads/thumb/e/ea/Bronze_scales.png/128px-Bronze_scales.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%93%9C%E8%B4%A8%E9%B3%9E%E7%89%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BOOK_OF_FIVE_RINGS",
+      "name": "五轮书",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "你每将5张牌加入你的牌组时，回复20点生命。",
+      "imagePath": "/sts2/uploads/thumb/e/ec/Book_of_five_rings.png/128px-Book_of_five_rings.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BA%94%E8%BD%AE%E4%B9%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BLOOD_VIAL",
+      "name": "小血瓶",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，回复2点生命。",
+      "imagePath": "/sts2/uploads/thumb/3/33/Blood_vial.png/128px-Blood_vial.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%8F%E8%A1%80%E7%93%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.POTION_BELT",
+      "name": "药水腰带",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "拾起时，获得2个药水栏位。",
+      "imagePath": "/sts2/uploads/thumb/7/78/Potion_belt.png/128px-Potion_belt.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8D%AF%E6%B0%B4%E8%85%B0%E5%B8%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ODDLY_SMOOTH_STONE",
+      "name": "意外光滑的石头",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，获得1点敏捷。",
+      "imagePath": "/sts2/uploads/thumb/7/79/Oddly_smooth_stone.png/128px-Oddly_smooth_stone.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%84%8F%E5%A4%96%E5%85%89%E6%BB%91%E7%9A%84%E7%9F%B3%E5%A4%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WAR_PAINT",
+      "name": "战纹涂料",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "拾起时，随机升级2张技能牌。",
+      "imagePath": "/sts2/uploads/thumb/b/bd/War_paint.png/128px-War_paint.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%88%98%E7%BA%B9%E6%B6%82%E6%96%99"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BAG_OF_PREPARATION",
+      "name": "准备背包",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，额外抽2张牌。",
+      "imagePath": "/sts2/uploads/thumb/4/42/Bag_of_preparation.png/128px-Bag_of_preparation.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%87%86%E5%A4%87%E8%83%8C%E5%8C%85"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.AMETHYST_AUBERGINE",
+      "name": "紫水晶茄子",
+      "pool": "通用",
+      "rarity": "普通",
+      "description": "敌人额外掉落15金币。",
+      "imagePath": "/sts2/uploads/thumb/1/19/Amethyst_aubergine.png/128px-Amethyst_aubergine.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%B4%AB%E6%B0%B4%E6%99%B6%E8%8C%84%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RED_SKULL",
+      "name": "红头骨",
+      "pool": "铁甲战士",
+      "rarity": "普通",
+      "description": "当你的生命值低于或等于50%时，你额外获得3点力量",
+      "imagePath": "/sts2/uploads/thumb/6/69/Red_skull.png/128px-Red_skull.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BA%A2%E5%A4%B4%E9%AA%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SNECKO_SKULL",
+      "name": "异蛇头骨",
+      "pool": "静默猎手",
+      "rarity": "普通",
+      "description": "每当你给予敌人中毒时，所给予的中毒层数增加1层。",
+      "imagePath": "/sts2/uploads/thumb/5/57/Snecko_skull.png/128px-Snecko_skull.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%82%E8%9B%87%E5%A4%B4%E9%AA%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FENCING_MANUAL",
+      "name": "击剑指南",
+      "pool": "储君",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，铸造10。",
+      "imagePath": "/sts2/uploads/thumb/d/d9/Fencing_manual.png/128px-Fencing_manual.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%87%BB%E5%89%91%E6%8C%87%E5%8D%97"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BONE_FLUTE",
+      "name": "骨笛",
+      "pool": "亡灵契约师",
+      "rarity": "普通",
+      "description": "每当奥斯提攻击时，获得2点格挡。",
+      "imagePath": "/sts2/uploads/thumb/6/66/Bone_flute.png/128px-Bone_flute.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%AA%A8%E7%AC%9B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DATA_DISK",
+      "name": "数据磁盘",
+      "pool": "故障机器人",
+      "rarity": "普通",
+      "description": "在每场战斗开始时，获得1点集中。",
+      "imagePath": "/sts2/uploads/thumb/7/71/Data_disk.png/128px-Data_disk.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%95%B0%E6%8D%AE%E7%A3%81%E7%9B%98"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ORICHALCUM",
+      "name": "奥利哈钢",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "如果你在回合结束时没有任何格挡，获得6点格挡。",
+      "imagePath": "/sts2/uploads/thumb/8/80/Orichalcum.png/128px-Orichalcum.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A5%A5%E5%88%A9%E5%93%88%E9%92%A2"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.VAMBRACE",
+      "name": "臂甲",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "每场战斗中，你第一次从卡牌中获得的格挡值翻倍。",
+      "imagePath": "/sts2/uploads/thumb/e/ed/Vambrace.png/128px-Vambrace.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%87%82%E7%94%B2"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RIPPLE_BASIN",
+      "name": "波纹水盆",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "如果你在本回合中没有打出过攻击牌，则获得4点格挡。",
+      "imagePath": "/sts2/uploads/thumb/3/37/Ripple_basin.png/128px-Ripple_basin.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B3%A2%E7%BA%B9%E6%B0%B4%E7%9B%86"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LASTING_CANDY",
+      "name": "吃不完的糖",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "每两场战斗，你的卡牌奖励就会额外包含一张能力牌。",
+      "imagePath": "/sts2/uploads/thumb/6/62/Lasting_candy.png/128px-Lasting_candy.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%90%83%E4%B8%8D%E5%AE%8C%E7%9A%84%E7%B3%96"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.AKABEKO",
+      "name": "赤牛",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在每场战斗开始时，获得8点活力。",
+      "imagePath": "/sts2/uploads/thumb/4/4c/Akabeko.png/128px-Akabeko.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%B5%A4%E7%89%9B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.HORN_CLEAT",
+      "name": "船夹板",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在你的第二回合开始时，获得14点格挡。",
+      "imagePath": "/sts2/uploads/thumb/b/bb/Horn_cleat.png/128px-Horn_cleat.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%88%B9%E5%A4%B9%E6%9D%BF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GREMLIN_HORN",
+      "name": "地精之角",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "每当有一名敌人死亡时，获得能量并抽1张牌。",
+      "imagePath": "/sts2/uploads/thumb/0/01/Gremlin_horn.png/128px-Gremlin_horn.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%9C%B0%E7%B2%BE%E4%B9%8B%E8%A7%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PEN_NIB",
+      "name": "钢笔尖",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你每打出的第10张攻击牌将会造成双倍伤害。",
+      "imagePath": "/sts2/uploads/thumb/e/ec/Pen_nib.png/128px-Pen_nib.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%92%A2%E7%AC%94%E5%B0%96"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PLANISPHERE",
+      "name": "活动星图",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "每当你进入？房间的时候，回复5点生命。",
+      "imagePath": "/sts2/uploads/thumb/3/36/Planisphere.png/128px-Planisphere.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B4%BB%E5%8A%A8%E6%98%9F%E5%9B%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.JOSS_PAPER",
+      "name": "金纸",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你每消耗5张牌，就抽1张牌。",
+      "imagePath": "/sts2/uploads/thumb/2/23/Joss_paper.png/128px-Joss_paper.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%87%91%E7%BA%B8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ORNAMENTAL_FAN",
+      "name": "精致折扇",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你每在同一回合内打出3张攻击牌，就获得4点格挡。",
+      "imagePath": "/sts2/uploads/thumb/0/0d/Ornamental_fan.png/128px-Ornamental_fan.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%B2%BE%E8%87%B4%E6%8A%98%E6%89%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LETTER_OPENER",
+      "name": "开信刀",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你每在同一回合内打出3张技能牌，就对所有敌人造成5点伤害。",
+      "imagePath": "/sts2/uploads/thumb/c/c2/Letter_opener.png/128px-Letter_opener.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%80%E4%BF%A1%E5%88%80"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PEAR",
+      "name": "梨子",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "拾起时，将你的最大生命值提升10。",
+      "imagePath": "/sts2/uploads/thumb/b/b0/Pear.png/128px-Pear.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%A2%A8%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.REPTILE_TRINKET",
+      "name": "爬行动物饰品",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "当你使用药水时，在本回合获得3力量。",
+      "imagePath": "/sts2/uploads/thumb/5/52/Reptile_trinket.png/128px-Reptile_trinket.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%88%AC%E8%A1%8C%E5%8A%A8%E7%89%A9%E9%A5%B0%E5%93%81"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SPARKLING_ROUGE",
+      "name": "闪亮口红",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在你的第3回合开始时，获得1点力量和1点敏捷。",
+      "imagePath": "/sts2/uploads/thumb/1/1e/Sparkling_rouge.png/128px-Sparkling_rouge.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%97%AA%E4%BA%AE%E5%8F%A3%E7%BA%A2"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PETRIFIED_TOAD",
+      "name": "石化蟾蜍",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在每场战斗开始时，获得一瓶药水形状的石头",
+      "imagePath": "/sts2/uploads/thumb/8/88/Petrified_toad.png/128px-Petrified_toad.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%9F%B3%E5%8C%96%E8%9F%BE%E8%9C%8D"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NUNCHAKU",
+      "name": "双截棍",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你每打出10张攻击牌，获得能量。",
+      "imagePath": "/sts2/uploads/thumb/7/7d/Nunchaku.png/128px-Nunchaku.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%8C%E6%88%AA%E6%A3%8D"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MERCURY_HOURGLASS",
+      "name": "水银沙漏",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在你的回合开始时，对所有敌人造成3点伤害。",
+      "imagePath": "/sts2/uploads/thumb/d/d8/Mercury_hourglass.png/128px-Mercury_hourglass.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B0%B4%E9%93%B6%E6%B2%99%E6%BC%8F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.STONE_CRACKER",
+      "name": "碎石钻",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在每场战斗开始时，在本场战斗中随机升级你抽牌堆中的2张牌。",
+      "imagePath": "/sts2/uploads/thumb/2/25/Stone_cracker.png/128px-Stone_cracker.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%A2%8E%E7%9F%B3%E9%92%BB"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PANTOGRAPH",
+      "name": "缩放仪",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在Boss战开始时，回复25点生命值。",
+      "imagePath": "/sts2/uploads/thumb/8/82/Pantograph.png/128px-Pantograph.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BC%A9%E6%94%BE%E4%BB%AA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.KUSARIGAMA",
+      "name": "锁镰",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你每在同一回合内打出3张攻击牌，就随机对一名敌人造成6点伤害。",
+      "imagePath": "/sts2/uploads/thumb/d/df/Kusarigama.png/128px-Kusarigama.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%94%81%E9%95%B0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MINIATURE_CANNON",
+      "name": "微型大炮",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "升级的攻击牌额外造成3点伤害。",
+      "imagePath": "/sts2/uploads/thumb/e/eb/Miniature_cannon.png/128px-Miniature_cannon.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BE%AE%E5%9E%8B%E5%A4%A7%E7%82%AE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TINY_MAILBOX",
+      "name": "小邮箱",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "每当你休息时，获得2瓶随机药水。",
+      "imagePath": "/sts2/uploads/thumb/8/8d/Tiny_mailbox.png/128px-Tiny_mailbox.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%8F%E9%82%AE%E7%AE%B1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TUNING_FORK",
+      "name": "音叉",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你每打出10张技能牌，获得7点格挡。",
+      "imagePath": "/sts2/uploads/thumb/9/96/Tuning_fork.png/128px-Tuning_fork.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%9F%B3%E5%8F%89"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PERMAFROST",
+      "name": "永冻冰晶",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "当你在战斗中第一次打出能力牌时，获得7点格挡。",
+      "imagePath": "/sts2/uploads/thumb/6/6b/Permafrost.png/128px-Permafrost.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B0%B8%E5%86%BB%E5%86%B0%E6%99%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ETERNAL_FEATHER",
+      "name": "永恒羽毛",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "你的牌组中每有5张牌，当你进入休息处时就会回复3点生命。",
+      "imagePath": "/sts2/uploads/thumb/f/fe/Eternal_feather.png/128px-Eternal_feather.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B0%B8%E6%81%92%E7%BE%BD%E6%AF%9B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BOWLER_HAT",
+      "name": "圆顶礼帽",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "额外获得25%的金币。",
+      "imagePath": "/sts2/uploads/thumb/a/ac/Bowler_hat.png/128px-Bowler_hat.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%9C%86%E9%A1%B6%E7%A4%BC%E5%B8%BD"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LUCKY_FYSH",
+      "name": "招财异鱼",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "每当你将一张卡牌加入你的牌组时，获得15金币。",
+      "imagePath": "/sts2/uploads/thumb/b/b4/Lucky_fysh.png/128px-Lucky_fysh.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8B%9B%E8%B4%A2%E5%BC%82%E9%B1%BC"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PARRYING_SHIELD",
+      "name": "招架盾",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "如果你在回合结束时拥有至少10点格挡，则对随机敌人造成6点伤害。",
+      "imagePath": "/sts2/uploads/thumb/a/ac/Parrying_shield.png/128px-Parrying_shield.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8B%9B%E6%9E%B6%E7%9B%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CANDELABRA",
+      "name": "烛台",
+      "pool": "通用",
+      "rarity": "罕见",
+      "description": "在你的第2回合开始时，获得能量能量。",
+      "imagePath": "/sts2/uploads/thumb/a/a7/Candelabra.png/128px-Candelabra.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%83%9B%E5%8F%B0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAPER_PHROG",
+      "name": "纸蛙",
+      "pool": "铁甲战士",
+      "rarity": "罕见",
+      "description": "有易伤状态的敌人受到的伤害增加75%而非50%。",
+      "imagePath": "/sts2/uploads/thumb/7/7f/Paper_phrog.png/128px-Paper_phrog.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BA%B8%E8%9B%99"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SELF_FORMING_CLAY",
+      "name": "自成型黏土",
+      "pool": "铁甲战士",
+      "rarity": "罕见",
+      "description": "每当你在战斗中失去生命，就在下回合获得3点格挡。",
+      "imagePath": "/sts2/uploads/thumb/c/ce/Self_forming_clay.png/128px-Self_forming_clay.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%87%AA%E6%88%90%E5%9E%8B%E9%BB%8F%E5%9C%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TINGSHA",
+      "name": "铜钹",
+      "pool": "静默猎手",
+      "rarity": "罕见",
+      "description": "你每在你的回合丢弃一张牌，就对一名随机敌人造成3点伤害。",
+      "imagePath": "/sts2/uploads/thumb/7/78/Tingsha.png/128px-Tingsha.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%93%9C%E9%92%B9"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TWISTED_FUNNEL",
+      "name": "扭曲漏斗",
+      "pool": "静默猎手",
+      "rarity": "罕见",
+      "description": "在每场战斗开始时，给予所有敌人4层中毒。",
+      "imagePath": "/sts2/uploads/thumb/5/52/Twisted_funnel.png/128px-Twisted_funnel.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%89%AD%E6%9B%B2%E6%BC%8F%E6%96%97"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GALACTIC_DUST",
+      "name": "星系尘埃",
+      "pool": "储君",
+      "rarity": "罕见",
+      "description": "每消耗10点辉星，就获得10格挡。",
+      "imagePath": "/sts2/uploads/thumb/a/ad/Galactic_dust.png/128px-Galactic_dust.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%98%9F%E7%B3%BB%E5%B0%98%E5%9F%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.REGALITE",
+      "name": "君王矿石",
+      "pool": "储君",
+      "rarity": "罕见",
+      "description": "每当你生成一张牌时，获得2点格挡。",
+      "imagePath": "/sts2/uploads/thumb/f/fb/Regalite.png/128px-Regalite.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%90%9B%E7%8E%8B%E7%9F%BF%E7%9F%B3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BOOK_REPAIR_KNIFE",
+      "name": "修书小刀",
+      "pool": "亡灵契约师",
+      "rarity": "罕见",
+      "description": "每当有一名不是“爪牙”的敌人死于灾厄时，回复3点生命。",
+      "imagePath": "/sts2/uploads/thumb/5/52/Book_repair_knife.png/128px-Book_repair_knife.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BF%AE%E4%B9%A6%E5%B0%8F%E5%88%80"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FUNERARY_MASK",
+      "name": "葬礼面具",
+      "pool": "亡灵契约师",
+      "rarity": "罕见",
+      "description": "在每场战斗开始时，将3张灵魂加入你的抽牌堆。",
+      "imagePath": "/sts2/uploads/thumb/2/22/Funerary_mask.png/128px-Funerary_mask.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%91%AC%E7%A4%BC%E9%9D%A2%E5%85%B7"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GOLD_PLATED_CABLES",
+      "name": "镀金缆线",
+      "pool": "故障机器人",
+      "rarity": "罕见",
+      "description": "你最右侧的充能球会额外触发一次被动效果。",
+      "imagePath": "/sts2/uploads/thumb/0/0d/Gold_plated_cables.png/128px-Gold_plated_cables.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%95%80%E9%87%91%E7%BC%86%E7%BA%BF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SYMBIOTIC_VIRUS",
+      "name": "共生病毒",
+      "pool": "故障机器人",
+      "rarity": "罕见",
+      "description": "在每场战斗开始时，生成1个黑暗充能球。",
+      "imagePath": "/sts2/uploads/thumb/2/28/Symbiotic_virus.png/128px-Symbiotic_virus.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%85%B1%E7%94%9F%E7%97%85%E6%AF%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WHITE_BEAST_STATUE",
+      "name": "白兽雕像",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "战斗结束后必定掉落药水。",
+      "imagePath": "/sts2/uploads/thumb/7/7a/White_beast_statue.png/128px-White_beast_statue.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%99%BD%E5%85%BD%E9%9B%95%E5%83%8F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WHITE_STAR",
+      "name": "白星",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "精英敌人额外掉落一次稀有卡牌奖励。",
+      "imagePath": "/sts2/uploads/thumb/7/71/White_star.png/128px-White_star.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%99%BD%E6%98%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ICE_CREAM",
+      "name": "冰淇淋",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "多余的能量可以留到下一回合。",
+      "imagePath": "/sts2/uploads/thumb/2/22/Ice_cream.png/128px-Ice_cream.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%86%B0%E6%B7%87%E6%B7%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.UNSETTLING_LAMP",
+      "name": "不安油灯",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你在每场战斗中第一次打出能给予敌人负面状态的牌时，将其效果翻倍。",
+      "imagePath": "/sts2/uploads/thumb/f/f9/Unsettling_lamp.png/128px-Unsettling_lamp.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%B8%8D%E5%AE%89%E6%B2%B9%E7%81%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.UNCEASING_TOP",
+      "name": "不休陀螺",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在你的回合，当你没有手牌时，抽一张牌。",
+      "imagePath": "/sts2/uploads/thumb/4/43/Unceasing_top.png/128px-Unceasing_top.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%B8%8D%E4%BC%91%E9%99%80%E8%9E%BA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RAINBOW_RING",
+      "name": "彩虹戒指",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "每回合，你第一次打出攻击牌、技能牌和能力牌各一张时，获得1点力量和1点敏捷。",
+      "imagePath": "/sts2/uploads/thumb/4/42/Rainbow_ring.png/128px-Rainbow_ring.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BD%A9%E8%99%B9%E6%88%92%E6%8C%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SHOVEL",
+      "name": "铲子",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "现在你可以在休息处挖掘遗物。",
+      "imagePath": "/sts2/uploads/thumb/7/77/Shovel.png/128px-Shovel.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%93%B2%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MEAT_ON_THE_BONE",
+      "name": "带骨肉",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "如果你在战斗结束时生命值等于或低于50%，回复12点生命。",
+      "imagePath": "/sts2/uploads/thumb/9/95/Meat_on_the_bone.png/128px-Meat_on_the_bone.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B8%A6%E9%AA%A8%E8%82%89"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CHANDELIER",
+      "name": "吊灯",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在你的第三回合开始时，获得能量能量能量。",
+      "imagePath": "/sts2/uploads/thumb/4/40/Chandelier.png/128px-Chandelier.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%90%8A%E7%81%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FROZEN_EGG",
+      "name": "冻结之蛋",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "每当你获得能力牌时，将其升级。",
+      "imagePath": "/sts2/uploads/thumb/7/75/Frozen_egg.png/128px-Frozen_egg.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%86%BB%E7%BB%93%E4%B9%8B%E8%9B%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CLOAK_CLASP",
+      "name": "斗篷扣",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在你的回合结束时，每有一张手牌，就获得1点格挡",
+      "imagePath": "/sts2/uploads/thumb/2/21/Cloak_clasp.png/128px-Cloak_clasp.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%96%97%E7%AF%B7%E6%89%A3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TOXIC_EGG",
+      "name": "毒素之蛋",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "每当你获得技能牌时，将其升级。",
+      "imagePath": "/sts2/uploads/thumb/8/8b/Toxic_egg.png/128px-Toxic_egg.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%AF%92%E7%B4%A0%E4%B9%8B%E8%9B%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GAMBLING_CHIP",
+      "name": "赌博筹码",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在每场战斗开始时，丢弃任意张牌，然后抽相同数量张牌。",
+      "imagePath": "/sts2/uploads/thumb/1/1a/Gambling_chip.png/128px-Gambling_chip.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%B5%8C%E5%8D%9A%E7%AD%B9%E7%A0%81"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CAPTAINS_WHEEL",
+      "name": "舵盘",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在你的第三回合开始时，获得18点格挡。",
+      "imagePath": "/sts2/uploads/thumb/1/1b/Captains_wheel.png/128px-Captains_wheel.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%88%B5%E7%9B%98"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.VEXING_PUZZLEBOX",
+      "name": "烦人机关盒",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在每场战斗开始时，将一张随机卡牌加入你的手牌。这张牌在本回合可以免费打出。",
+      "imagePath": "/sts2/uploads/thumb/4/43/Vexing_puzzlebox.png/128px-Vexing_puzzlebox.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%83%A6%E4%BA%BA%E6%9C%BA%E5%85%B3%E7%9B%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BELLOWS",
+      "name": "风箱",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你在每场战斗开始时的手牌，将被升级。",
+      "imagePath": "/sts2/uploads/thumb/6/6f/Bellows.png/128px-Bellows.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%A3%8E%E7%AE%B1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MUMMIFIED_HAND",
+      "name": "干瘪之手",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你每打出一张能力牌，手牌中就有一张随机牌在这个回合可以免费打出。",
+      "imagePath": "/sts2/uploads/thumb/1/10/Mummified_hand.png/128px-Mummified_hand.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B9%B2%E7%98%AA%E4%B9%8B%E6%89%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.OLD_COIN",
+      "name": "古钱币",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "拾起时，获得300金币。",
+      "imagePath": "/sts2/uploads/thumb/6/62/Old_coin.png/128px-Old_coin.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%A4%E9%92%B1%E5%B8%81"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.INTIMIDATING_HELMET",
+      "name": "骇人头盔",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "每当你打出一张耗能大于等于能量能量的牌，获得4点格挡。",
+      "imagePath": "/sts2/uploads/thumb/6/63/Intimidating_helmet.png/128px-Intimidating_helmet.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%AA%87%E4%BA%BA%E5%A4%B4%E7%9B%94"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GIRYA",
+      "name": "壶铃",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你现在能在休息处获得力量。（最多3次）",
+      "imagePath": "/sts2/uploads/thumb/9/92/Girya.png/128px-Girya.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A3%B6%E9%93%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.POCKETWATCH",
+      "name": "怀表",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "当你在本回合打出的牌少于等于3张时，则在你的下个回合开始时额外抽3张牌。",
+      "imagePath": "/sts2/uploads/thumb/1/1c/Pocketwatch.png/128px-Pocketwatch.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%80%80%E8%A1%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.STURDY_CLAMP",
+      "name": "坚固钳子",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "可以跨回合保留最多10点格挡。",
+      "imagePath": "/sts2/uploads/thumb/b/b9/Sturdy_clamp.png/128px-Sturdy_clamp.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%9D%9A%E5%9B%BA%E9%92%B3%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.KUNAI",
+      "name": "苦无",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你每在同一回合内打出3张攻击牌，就获得1点敏捷。",
+      "imagePath": "/sts2/uploads/thumb/d/d7/Kunai.png/128px-Kunai.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8B%A6%E6%97%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.STONE_CALENDAR",
+      "name": "历石",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "在第7回合结束时，对所有敌人造成52点伤害。",
+      "imagePath": "/sts2/uploads/thumb/3/3a/Stone_calendar.png/128px-Stone_calendar.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8E%86%E7%9F%B3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BEATING_REMNANT",
+      "name": "律动残余",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你在一回合内失去的生命值不会超过20点。",
+      "imagePath": "/sts2/uploads/thumb/6/69/Beating_remnant.png/128px-Beating_remnant.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BE%8B%E5%8A%A8%E6%AE%8B%E4%BD%99"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MANGO",
+      "name": "芒果",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "拾起时，将你的最大生命值提升14。",
+      "imagePath": "/sts2/uploads/thumb/3/38/Mango.png/128px-Mango.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8A%92%E6%9E%9C"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GAME_PIECE",
+      "name": "棋子",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "每当你打出能力牌时，抽1张牌。",
+      "imagePath": "/sts2/uploads/thumb/b/b1/Game_piece.png/128px-Game_piece.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%A3%8B%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MOLTEN_EGG",
+      "name": "熔火之蛋",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "每当你获得攻击牌时，将其升级。",
+      "imagePath": "/sts2/uploads/thumb/b/ba/Molten_egg.png/128px-Molten_egg.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%86%94%E7%81%AB%E4%B9%8B%E8%9B%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SHURIKEN",
+      "name": "手里剑",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你每在同一回合内打出3张攻击牌，获得1点力量。",
+      "imagePath": "/sts2/uploads/thumb/a/ac/Shuriken.png/128px-Shuriken.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%89%8B%E9%87%8C%E5%89%91"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.THE_COURIER",
+      "name": "送货员",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "商人的卡牌、遗物和药水不再会卖光，并且所有商品打折20%。",
+      "imagePath": "/sts2/uploads/thumb/1/18/The_courier.png/128px-The_courier.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%80%81%E8%B4%A7%E5%91%98"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ART_OF_WAR",
+      "name": "孙子兵法",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "如果你在本回合中没有打出过攻击牌，则在下一回合额外获得1点能量。",
+      "imagePath": "/sts2/uploads/thumb/e/ec/Art_of_war.png/128px-Art_of_war.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%AD%99%E5%AD%90%E5%85%B5%E6%B3%95"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RAZOR_TOOTH",
+      "name": "剃刀牙",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你打出攻击牌和技能牌时，将其在本场战斗内升级。",
+      "imagePath": "/sts2/uploads/thumb/1/19/Razor_tooth.png/128px-Razor_tooth.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%89%83%E5%88%80%E7%89%99"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TUNGSTEN_ROD",
+      "name": "钨合金棍",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "你每次失去生命时，减少失去的生命值1点。",
+      "imagePath": "/sts2/uploads/thumb/b/b0/Tungsten_rod.png/128px-Tungsten_rod.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%92%A8%E5%90%88%E9%87%91%E6%A3%8D"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LIZARD_TAIL",
+      "name": "蜥蜴尾巴",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "当你的生命值将要降低至0或以下时，回复到最大生命值的50%（仅能起效一次）。",
+      "imagePath": "/sts2/uploads/thumb/b/b2/Lizard_tail.png/128px-Lizard_tail.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%9C%A5%E8%9C%B4%E5%B0%BE%E5%B7%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PRAYER_WHEEL",
+      "name": "转经轮",
+      "pool": "通用",
+      "rarity": "稀有",
+      "description": "普通敌人额外掉落一次卡牌奖励。",
+      "imagePath": "/sts2/uploads/thumb/d/df/Prayer_wheel.png/128px-Prayer_wheel.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%BD%AC%E7%BB%8F%E8%BD%AE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CHARONS_ASHES",
+      "name": "卡戎之灰",
+      "pool": "铁甲战士",
+      "rarity": "稀有",
+      "description": "每当你消耗一张牌，对所有敌人造成3点伤害。",
+      "imagePath": "/sts2/uploads/thumb/c/c0/Charons_ashes.png/128px-Charons_ashes.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8D%A1%E6%88%8E%E4%B9%8B%E7%81%B0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DEMON_TONGUE",
+      "name": "恶魔之舌",
+      "pool": "铁甲战士",
+      "rarity": "稀有",
+      "description": "每回合第一次在回合内失去生命值时，回复等量的生命值。",
+      "imagePath": "/sts2/uploads/thumb/1/1b/Demon_tongue.png/128px-Demon_tongue.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%81%B6%E9%AD%94%E4%B9%8B%E8%88%8C"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RUINED_HELMET",
+      "name": "损毁头盔",
+      "pool": "铁甲战士",
+      "rarity": "稀有",
+      "description": "你在每场战斗中第一次获得的力量值翻倍。",
+      "imagePath": "/sts2/uploads/thumb/9/98/Ruined_helmet.png/128px-Ruined_helmet.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8D%9F%E6%AF%81%E5%A4%B4%E7%9B%94"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.HELICAL_DART",
+      "name": "螺线飞镖",
+      "pool": "静默猎手",
+      "rarity": "稀有",
+      "description": "你每打出一张小刀，就在本回合获得1点敏捷。",
+      "imagePath": "/sts2/uploads/thumb/d/de/Helical_dart.png/128px-Helical_dart.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%9E%BA%E7%BA%BF%E9%A3%9E%E9%95%96"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAPER_KRANE",
+      "name": "纸鹤",
+      "pool": "静默猎手",
+      "rarity": "稀有",
+      "description": "有虚弱状态的敌人造成的伤害降低40%而非25%。",
+      "imagePath": "/sts2/uploads/thumb/9/96/Paper_krane.png/128px-Paper_krane.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BA%B8%E9%B9%A4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TOUGH_BANDAGES",
+      "name": "结实绷带",
+      "pool": "静默猎手",
+      "rarity": "稀有",
+      "description": "你每在你的回合丢弃一张牌，就获得3点格挡。",
+      "imagePath": "/sts2/uploads/thumb/5/59/Tough_bandages.png/128px-Tough_bandages.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BB%93%E5%AE%9E%E7%BB%B7%E5%B8%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LUNAR_PASTRY",
+      "name": "月亮糕点",
+      "pool": "储君",
+      "rarity": "稀有",
+      "description": "在你的回合结束时，获得辉星。",
+      "imagePath": "/sts2/uploads/thumb/9/96/Lunar_pastry.png/128px-Lunar_pastry.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%9C%88%E4%BA%AE%E7%B3%95%E7%82%B9"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MINI_REGENT",
+      "name": "迷你储君",
+      "pool": "储君",
+      "rarity": "稀有",
+      "description": "每回合你第一次花费辉星时，获得1点力量。",
+      "imagePath": "/sts2/uploads/thumb/8/83/Mini_regent.png/128px-Mini_regent.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%BF%B7%E4%BD%A0%E5%82%A8%E5%90%9B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ORANGE_DOUGH",
+      "name": "橙色团块",
+      "pool": "储君",
+      "rarity": "稀有",
+      "description": "在每场战斗开始时，将2张随机无色牌加入你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/0/01/Orange_dough.png/128px-Orange_dough.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%A9%99%E8%89%B2%E5%9B%A2%E5%9D%97"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BIG_HAT",
+      "name": "大帽子",
+      "pool": "亡灵契约师",
+      "rarity": "稀有",
+      "description": "在每场战斗开始时，将2张随机虚无牌加入你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/8/88/Big_hat.png/128px-Big_hat.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A7%E5%B8%BD%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BOOKMARK",
+      "name": "书签",
+      "pool": "亡灵契约师",
+      "rarity": "稀有",
+      "description": "每回合结束时，随机一张被保留的牌在被打出前的耗能减少1。",
+      "imagePath": "/sts2/uploads/thumb/5/58/Bookmark.png/128px-Bookmark.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%B9%A6%E7%AD%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.IVORY_TILE",
+      "name": "象牙麻将牌",
+      "pool": "亡灵契约师",
+      "rarity": "稀有",
+      "description": "每当你打出一张耗能大于等于能量能量能量的牌时，获得能量。",
+      "imagePath": "/sts2/uploads/thumb/8/85/Ivory_tile.png/128px-Ivory_tile.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%B1%A1%E7%89%99%E9%BA%BB%E5%B0%86%E7%89%8C"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.EMOTION_CHIP",
+      "name": "情感芯片",
+      "pool": "故障机器人",
+      "rarity": "稀有",
+      "description": "在每回合开始时，如果你在之前回合受到过伤害，则触发所有充能球的被动效果。",
+      "imagePath": "/sts2/uploads/thumb/e/e6/Emotion_chip.png/128px-Emotion_chip.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%83%85%E6%84%9F%E8%8A%AF%E7%89%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.METRONOME",
+      "name": "节拍器",
+      "pool": "故障机器人",
+      "rarity": "稀有",
+      "description": "每场战斗中你首次生成7个充能球时，对所有敌人造成30点伤害。",
+      "imagePath": "/sts2/uploads/thumb/1/1c/Metronome.png/128px-Metronome.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8A%82%E6%8B%8D%E5%99%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.POWER_CELL",
+      "name": "能量电池",
+      "pool": "故障机器人",
+      "rarity": "稀有",
+      "description": "在每场战斗开始时，将2张耗能为0的卡牌从你的抽牌堆放入你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/d/de/Power_cell.png/128px-Power_cell.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%83%BD%E9%87%8F%E7%94%B5%E6%B1%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DINGY_RUG",
+      "name": "肮脏地毯",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "卡牌奖励现在会包括无色牌。",
+      "imagePath": "/sts2/uploads/thumb/4/48/Dingy_rug.png/128px-Dingy_rug.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%82%AE%E8%84%8F%E5%9C%B0%E6%AF%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CAULDRON",
+      "name": "大锅",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，制作5瓶随机药水。",
+      "imagePath": "/sts2/uploads/thumb/3/37/Cauldron.png/128px-Cauldron.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A7%E9%94%85"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DOLLYS_MIRROR",
+      "name": "多利之镜",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，从你的牌组中选择一张牌进行复制。",
+      "imagePath": "/sts2/uploads/thumb/3/3b/Dollys_mirror.png/128px-Dollys_mirror.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%9A%E5%88%A9%E4%B9%8B%E9%95%9C"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TOOLBOX",
+      "name": "工具箱",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "在每场战斗开始时，从3张随机无色牌中选择1张加入你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/4/46/Toolbox.png/128px-Toolbox.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B7%A5%E5%85%B7%E7%AE%B1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CHEMICAL_X",
+      "name": "化学物X",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "耗能为X的牌的效果数值增加2点。",
+      "imagePath": "/sts2/uploads/thumb/4/45/Chemical_x.png/128px-Chemical_x.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8C%96%E5%AD%A6%E7%89%A9X"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MEMBERSHIP_CARD",
+      "name": "会员卡",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "所有商品打折50%！",
+      "imagePath": "/sts2/uploads/thumb/e/e9/Membership_card.png/128px-Membership_card.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BC%9A%E5%91%98%E5%8D%A1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DRAGON_FRUIT",
+      "name": "火龙果",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "每当你获得金币时，提升1点你的最大生命值。",
+      "imagePath": "/sts2/uploads/thumb/4/44/Dragon_fruit.png/128px-Dragon_fruit.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%81%AB%E9%BE%99%E6%9E%9C"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SCREAMING_FLAGON",
+      "name": "尖叫酒壶",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "如果你在回合结束时没有任何手牌，则对所有敌人造成20点伤害。",
+      "imagePath": "/sts2/uploads/thumb/2/2f/Screaming_flagon.png/128px-Screaming_flagon.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%96%E5%8F%AB%E9%85%92%E5%A3%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LEES_WAFFLE",
+      "name": "李家华夫饼",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，将你的最大生命值提升7点，并回复所有生命。",
+      "imagePath": "/sts2/uploads/thumb/f/f7/Lees_waffle.png/128px-Lees_waffle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%9D%8E%E5%AE%B6%E5%8D%8E%E5%A4%AB%E9%A5%BC"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BREAD",
+      "name": "面包",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "在你的第一个回合开始时，失去能量能量。在其余的回合开始时，获得能量。",
+      "imagePath": "/sts2/uploads/thumb/e/e1/Bread.png/128px-Bread.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%9D%A2%E5%8C%85"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.KIFUDA",
+      "name": "木札",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，从你的牌组中选择至多3张牌，附魔：伶俐。",
+      "imagePath": "/sts2/uploads/thumb/4/46/Kifuda.png/128px-Kifuda.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%9C%A8%E6%9C%AD"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GNARLED_HAMMER",
+      "name": "扭曲锤子",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，从你的牌组中选择至多3张攻击牌，附魔：锋利3。",
+      "imagePath": "/sts2/uploads/thumb/a/a8/Gnarled_hammer.png/128px-Gnarled_hammer.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%89%AD%E6%9B%B2%E9%94%A4%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PUNCH_DAGGER",
+      "name": "拳刃",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，选择一张攻击牌为它附魔：动量5。",
+      "imagePath": "/sts2/uploads/thumb/c/cf/Punch_dagger.png/128px-Punch_dagger.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8B%B3%E5%88%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BURNING_STICKS",
+      "name": "燃烧木棍",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "每场战斗中你第一次消耗技能牌时，将那张牌的复制品加入你的手牌",
+      "imagePath": "/sts2/uploads/thumb/c/c3/Burning_sticks.png/128px-Burning_sticks.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%87%83%E7%83%A7%E6%9C%A8%E6%A3%8D"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LAVA_LAMP",
+      "name": "熔岩灯",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "在战斗结束时，如果你没有受到伤害，则升级你的所有卡牌奖励。",
+      "imagePath": "/sts2/uploads/thumb/f/f7/Lava_lamp.png/128px-Lava_lamp.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%86%94%E5%B2%A9%E7%81%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RINGING_TRIANGLE",
+      "name": "三角铃鼓",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "在每场战斗的第一回合保留你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/f/f6/Ringing_triangle.png/128px-Ringing_triangle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%B8%89%E8%A7%92%E9%93%83%E9%BC%93"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MYSTIC_LIGHTER",
+      "name": "神秘打火机",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "有附魔的攻击牌额外造成9点伤害。",
+      "imagePath": "/sts2/uploads/thumb/8/82/Mystic_lighter.png/128px-Mystic_lighter.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%A5%9E%E7%A7%98%E6%89%93%E7%81%AB%E6%9C%BA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.THE_ABACUS",
+      "name": "算盘",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "你每次将抽牌堆洗牌时，获得6点格挡。",
+      "imagePath": "/sts2/uploads/thumb/e/e8/The_abacus.png/128px-The_abacus.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%AE%97%E7%9B%98"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ROYAL_STAMP",
+      "name": "王室印章",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，从牌组中选择一张攻击牌或技能牌，为它附魔：王室认证。",
+      "imagePath": "/sts2/uploads/thumb/3/3a/Royal_stamp.png/128px-Royal_stamp.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8E%8B%E5%AE%A4%E5%8D%B0%E7%AB%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MINIATURE_TENT",
+      "name": "微型帐篷",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "你可以在休息处选择任意数量的选项。",
+      "imagePath": "/sts2/uploads/thumb/e/e9/Miniature_tent.png/128px-Miniature_tent.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BE%AE%E5%9E%8B%E5%B8%90%E7%AF%B7"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ORRERY",
+      "name": "星系仪",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "拾起时，获得5次卡牌奖励",
+      "imagePath": "/sts2/uploads/thumb/7/75/Orrery.png/128px-Orrery.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%98%9F%E7%B3%BB%E4%BB%AA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BELT_BUCKLE",
+      "name": "腰带扣",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "当你没有药水时，你额外拥有2点敏捷。",
+      "imagePath": "/sts2/uploads/thumb/a/ae/Belt_buckle.png/128px-Belt_buckle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%85%B0%E5%B8%A6%E6%89%A3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SLING_OF_COURAGE",
+      "name": "勇气投石索",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "在与精英敌人战斗时，获得2点力量。",
+      "imagePath": "/sts2/uploads/thumb/7/70/Sling_of_courage.png/128px-Sling_of_courage.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8B%87%E6%B0%94%E6%8A%95%E7%9F%B3%E7%B4%A2"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GHOST_SEED",
+      "name": "幽灵种子",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "打击和防御获得虚无。",
+      "imagePath": "/sts2/uploads/thumb/6/6d/Ghost_seed.png/128px-Ghost_seed.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B9%BD%E7%81%B5%E7%A7%8D%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WING_CHARM",
+      "name": "羽翼护符",
+      "pool": "通用",
+      "rarity": "商店",
+      "description": "每次卡牌奖励中，都会有随机一张牌被附魔：迅捷1。",
+      "imagePath": "/sts2/uploads/thumb/2/28/Wing_charm.png/128px-Wing_charm.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BE%BD%E7%BF%BC%E6%8A%A4%E7%AC%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BRIMSTONE",
+      "name": "硫磺",
+      "pool": "铁甲战士",
+      "rarity": "商店",
+      "description": "在你的每个回合开始时，你获得2点力量，所有敌人获得1点力量。",
+      "imagePath": "/sts2/uploads/thumb/2/25/Brimstone.png/128px-Brimstone.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%A1%AB%E7%A3%BA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NINJA_SCROLL",
+      "name": "忍术卷轴",
+      "pool": "静默猎手",
+      "rarity": "商店",
+      "description": "每场战斗开始时，将3张小刀加入你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/2/24/Ninja_scroll.png/128px-Ninja_scroll.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BF%8D%E6%9C%AF%E5%8D%B7%E8%BD%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.VITRUVIAN_MINION",
+      "name": "维特鲁威仆从",
+      "pool": "储君",
+      "rarity": "商店",
+      "description": "名字中有“仆从”的卡牌造成双倍的伤害与格挡。",
+      "imagePath": "/sts2/uploads/thumb/6/6e/Vitruvian_minion.png/128px-Vitruvian_minion.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BB%B4%E7%89%B9%E9%B2%81%E5%A8%81%E4%BB%86%E4%BB%8E"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.UNDYING_SIGIL",
+      "name": "不死符文",
+      "pool": "亡灵契约师",
+      "rarity": "商店",
+      "description": "当敌人的灾厄层数大于等于其生命值时，它造成的伤害降低50%。",
+      "imagePath": "/sts2/uploads/thumb/0/02/Undying_sigil.png/128px-Undying_sigil.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%B8%8D%E6%AD%BB%E7%AC%A6%E6%96%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RUNIC_CAPACITOR",
+      "name": "符文电容器",
+      "pool": "故障机器人",
+      "rarity": "商店",
+      "description": "每场战斗开始时，获得3个额外充能球栏位。",
+      "imagePath": "/sts2/uploads/thumb/2/2c/Runic_capacitor.png/128px-Runic_capacitor.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%AC%A6%E6%96%87%E7%94%B5%E5%AE%B9%E5%99%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ARCANE_SCROLL",
+      "name": "奥术卷轴",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将一张随机稀有牌加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/0/08/Arcane_scroll.png/128px-Arcane_scroll.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A5%A5%E6%9C%AF%E5%8D%B7%E8%BD%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SILVER_CRUCIBLE",
+      "name": "白银熔炉",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你遇到的前3次卡牌奖励将是被升级过的。你打开的第一个宝箱将是空的",
+      "imagePath": "/sts2/uploads/thumb/9/93/Silver_crucible.png/128px-Silver_crucible.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%99%BD%E9%93%B6%E7%86%94%E7%82%89"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.HEFTY_TABLET",
+      "name": "沉重石板",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从3张稀有牌中选择1张加入你的牌组，同时将1张受伤加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/f/f5/Hefty_tablet.png/128px-Hefty_tablet.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B2%89%E9%87%8D%E7%9F%B3%E6%9D%BF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.POMANDER",
+      "name": "橙型香盒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，升级一张牌。",
+      "imagePath": "/sts2/uploads/thumb/4/4e/Pomander.png/128px-Pomander.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%A9%99%E5%9E%8B%E9%A6%99%E7%9B%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FISHING_ROD",
+      "name": "钓鱼竿",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "每3场普通战斗，随机升级你牌组中的一张牌。",
+      "imagePath": "/sts2/uploads/thumb/e/ed/Fishing_rod.png/128px-Fishing_rod.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%92%93%E9%B1%BC%E7%AB%BF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BOOMING_CONCH",
+      "name": "轰鸣海螺",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在精英战的战斗开始时，额外抽2张牌并获得能量。",
+      "imagePath": "/sts2/uploads/thumb/2/25/Booming_conch.png/128px-Booming_conch.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%BD%B0%E9%B8%A3%E6%B5%B7%E8%9E%BA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SILKEN_TRESS",
+      "name": "华美发束",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，失去所有金币。为第一次卡牌奖励中的所有牌附魔：华彩。",
+      "imagePath": "/sts2/uploads/thumb/c/c9/Silken_tress.png/128px-Silken_tress.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8D%8E%E7%BE%8E%E5%8F%91%E6%9D%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GOLDEN_PEARL",
+      "name": "金色珍珠",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得150金币。",
+      "imagePath": "/sts2/uploads/thumb/4/44/Golden_pearl.png/128px-Golden_pearl.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%87%91%E8%89%B2%E7%8F%8D%E7%8F%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PRECISE_SCISSORS",
+      "name": "精准剪刀",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从你的牌组中移除1张牌。",
+      "imagePath": "/sts2/uploads/thumb/8/81/Precise_scissors.png/128px-Precise_scissors.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%B2%BE%E5%87%86%E5%89%AA%E5%88%80"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MASSIVE_SCROLL",
+      "name": "巨大卷轴",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从3张多人游戏牌中选择1张加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/2/25/Massive_scroll.png/128px-Massive_scroll.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B7%A8%E5%A4%A7%E5%8D%B7%E8%BD%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LARGE_CAPSULE",
+      "name": "巨大扭蛋",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得2件随机遗物。额外将一对打击和防御，加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/5/54/Large_capsule.png/128px-Large_capsule.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B7%A8%E5%A4%A7%E6%89%AD%E8%9B%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SCROLL_BOXES",
+      "name": "卷轴箱",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从2个卡牌包中选择1包加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/b/b5/Scroll_boxes.png/128px-Scroll_boxes.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8D%B7%E8%BD%B4%E7%AE%B1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NEOWS_TALISMAN",
+      "name": "涅奥的护符",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，升级你的1张打击和1张防御。",
+      "imagePath": "/sts2/uploads/thumb/8/8f/Neows_talisman.png/128px-Neows_talisman.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B6%85%E5%A5%A5%E7%9A%84%E6%8A%A4%E7%AC%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NEOWS_TORMENT",
+      "name": "涅奥的苦痛",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将1张涅奥之怒加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/c/c3/Neows_torment.png/128px-Neows_torment.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B6%85%E5%A5%A5%E7%9A%84%E8%8B%A6%E7%97%9B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NEOWS_BONES",
+      "name": "涅奥骨骰",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得2件随机涅奥遗物。将1张随机诅咒加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/e/e1/Neows_bones.png/128px-Neows_bones.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B6%85%E5%A5%A5%E9%AA%A8%E9%AA%B0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LEAD_PAPERWEIGHT",
+      "name": "铅制镇纸",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从2张无色牌中选择1张加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/d/da/Lead_paperweight.png/128px-Lead_paperweight.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%93%85%E5%88%B6%E9%95%87%E7%BA%B8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LAVA_ROCK",
+      "name": "熔岩石",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "第一阶段的Boss敌人额外掉落2件遗物。",
+      "imagePath": "/sts2/uploads/thumb/a/af/Lava_rock.png/128px-Lava_rock.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%86%94%E5%B2%A9%E7%9F%B3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LOST_COFFER",
+      "name": "失物盒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得1次卡牌奖励和1瓶随机药水。",
+      "imagePath": "/sts2/uploads/thumb/1/15/Lost_coffer.png/128px-Lost_coffer.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%B1%E7%89%A9%E7%9B%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.STONE_HUMIDIFIER",
+      "name": "石炉加湿器",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "每当你在休息处休息时，将你的最大生命值提升5点。",
+      "imagePath": "/sts2/uploads/thumb/b/bc/Stone_humidifier.png/128px-Stone_humidifier.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%9F%B3%E7%82%89%E5%8A%A0%E6%B9%BF%E5%99%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LEAFY_POULTICE",
+      "name": "树叶药膏",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，变化你的1张打击和1张防御，然后失去12点最大生命。",
+      "imagePath": "/sts2/uploads/thumb/d/d4/Leafy_poultice.png/128px-Leafy_poultice.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%A0%91%E5%8F%B6%E8%8D%AF%E8%86%8F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PRECARIOUS_SHEARS",
+      "name": "松动羊毛剪",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从你的牌组中移除2张牌并失去16点生命。",
+      "imagePath": "/sts2/uploads/thumb/4/4c/Precarious_shears.png/128px-Precarious_shears.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%9D%BE%E5%8A%A8%E7%BE%8A%E6%AF%9B%E5%89%AA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.KALEIDOSCOPE",
+      "name": "万花筒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得2次来自其他角色的卡牌奖励。",
+      "imagePath": "/sts2/uploads/thumb/8/86/Kaleidoscope.png/128px-Kaleidoscope.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%B8%87%E8%8A%B1%E7%AD%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SMALL_CAPSULE",
+      "name": "小型扭蛋",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得一件随机遗物。",
+      "imagePath": "/sts2/uploads/thumb/7/7b/Small_capsule.png/128px-Small_capsule.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%8F%E5%9E%8B%E6%89%AD%E8%9B%8B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NEW_LEAF",
+      "name": "新叶",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，变化1张牌。",
+      "imagePath": "/sts2/uploads/thumb/0/05/New_leaf.png/128px-New_leaf.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%96%B0%E5%8F%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PHIAL_HOLSTER",
+      "name": "药瓶皮套",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得1个药水栏位并获得2瓶随机药水。",
+      "imagePath": "/sts2/uploads/thumb/b/b7/Phial_holster.png/128px-Phial_holster.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8D%AF%E7%93%B6%E7%9A%AE%E5%A5%97"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NUTRITIOUS_OYSTER",
+      "name": "营养牡蛎",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将你的最大生命值提升11。",
+      "imagePath": "/sts2/uploads/thumb/1/1b/Nutritious_oyster.png/128px-Nutritious_oyster.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%90%A5%E5%85%BB%E7%89%A1%E8%9B%8E"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WINGED_BOOTS",
+      "name": "羽翼之靴",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你在选择下一层的房间时有3次机会可以无视当前的路线。",
+      "imagePath": "/sts2/uploads/thumb/9/9a/Winged_boots.png/128px-Winged_boots.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BE%BD%E7%BF%BC%E4%B9%8B%E9%9D%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CURSED_PEARL",
+      "name": "诅咒珍珠",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得一张贪婪，获得333金币。",
+      "imagePath": "/sts2/uploads/thumb/c/c9/Cursed_pearl.png/128px-Cursed_pearl.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%AF%85%E5%92%92%E7%8F%8D%E7%8F%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GLASS_EYE",
+      "name": "玻璃眼珠",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得2组普通、2组罕见、和1组稀有卡牌奖励。",
+      "imagePath": "/sts2/uploads/thumb/6/65/Glass_eye.png/128px-Glass_eye.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8E%BB%E7%92%83%E7%9C%BC%E7%8F%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RADIANT_PEARL",
+      "name": "发光珍珠",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每场战斗开始时，将1张冷光加入你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/9/94/Radiant_pearl.png/128px-Radiant_pearl.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%91%E5%85%89%E7%8F%8D%E7%8F%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ELECTRIC_SHRYMP",
+      "name": "放电异虾",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，选择一张技能牌为它附魔：注能。",
+      "imagePath": "/sts2/uploads/thumb/8/88/Electric_shrymp.png/128px-Electric_shrymp.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%94%BE%E7%94%B5%E5%BC%82%E8%99%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DRIFTWOOD",
+      "name": "浮木",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你可以在每一个卡牌奖励中重掷一次。",
+      "imagePath": "/sts2/uploads/thumb/6/63/Driftwood.png/128px-Driftwood.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B5%AE%E6%9C%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ARCHAIC_TOOTH",
+      "name": "古老牙齿",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将一张初始卡牌变化为先古版本。",
+      "imagePath": "/sts2/uploads/thumb/f/fe/Archaic_tooth.png/128px-Archaic_tooth.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%A4%E8%80%81%E7%89%99%E9%BD%BF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SEA_GLASS",
+      "name": "海玻璃",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "查看15张来自其他角色的牌。从中选择任意数量的卡牌加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/d/d3/Sea_glass.png/128px-Sea_glass.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B5%B7%E7%8E%BB%E7%92%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PRISMATIC_GEM",
+      "name": "棱彩宝石",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每个回合开始时获得能量。卡牌奖励现在会包含其他颜色的卡牌。",
+      "imagePath": "/sts2/uploads/thumb/1/14/Prismatic_gem.png/128px-Prismatic_gem.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%A3%B1%E5%BD%A9%E5%AE%9D%E7%9F%B3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ALCHEMICAL_COFFER",
+      "name": "炼金箱",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得4个放有随机药水的药水栏位。",
+      "imagePath": "/sts2/uploads/thumb/0/00/Alchemical_coffer.png/128px-Alchemical_coffer.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%82%BC%E9%87%91%E7%AE%B1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TOUCH_OF_OROBAS",
+      "name": "欧洛巴斯之触",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将你的初始遗物替换为先古版本。",
+      "imagePath": "/sts2/uploads/thumb/2/28/Touch_of_orobas.png/128px-Touch_of_orobas.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%AC%A7%E6%B4%9B%E5%B7%B4%E6%96%AF%E4%B9%8B%E8%A7%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SAND_CASTLE",
+      "name": "沙堡",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，随机升级6张牌。",
+      "imagePath": "/sts2/uploads/thumb/3/31/Sand_castle.png/128px-Sand_castle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B2%99%E5%A0%A1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_LEGION",
+      "name": "佩尔的士兵",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "将你从一张卡牌中获得的格挡翻倍，然后此遗物会休眠2回合。",
+      "imagePath": "/sts2/uploads/thumb/9/9c/Paels_legion.png/128px-Paels_legion.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E7%9A%84%E5%A3%AB%E5%85%B5"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_GROWTH",
+      "name": "佩尔的增生组织",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从牌组中选择一张牌，为其附魔：克隆。",
+      "imagePath": "/sts2/uploads/thumb/c/c4/Paels_growth.png/128px-Paels_growth.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E7%9A%84%E5%A2%9E%E7%94%9F%E7%BB%84%E7%BB%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_HORN",
+      "name": "佩尔之角",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将2张放松加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/e/e0/Paels_horn.png/128px-Paels_horn.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E8%A7%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_TEARS",
+      "name": "佩尔之泪",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "如果你在拥有未花费的能量情况下结束回合，则下个回合额外获得能量能量。",
+      "imagePath": "/sts2/uploads/thumb/9/9e/Paels_tears.png/128px-Paels_tears.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E6%B3%AA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_FLESH",
+      "name": "佩尔之肉",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "从你的第3回合开始，在回合开始时额外获得能量。",
+      "imagePath": "/sts2/uploads/thumb/0/02/Paels_flesh.png/128px-Paels_flesh.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E8%82%89"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_BLOOD",
+      "name": "佩尔之血",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在你的回合开始时，额外抽1张牌",
+      "imagePath": "/sts2/uploads/thumb/4/47/Paels_blood.png/128px-Paels_blood.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E8%A1%80"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_TOOTH",
+      "name": "佩尔之牙",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从你的牌组中选择5张牌移除。在每场战斗结束时，将其中随机1张牌升级然后返还。",
+      "imagePath": "/sts2/uploads/thumb/b/ba/Paels_tooth.png/128px-Paels_tooth.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E7%89%99"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_EYE",
+      "name": "佩尔之眼",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你在每场战斗中第一次没有打出任何牌就结束回合时，消耗所有手牌然后进行一个额外回合。",
+      "imagePath": "/sts2/uploads/thumb/3/3f/Paels_eye.png/128px-Paels_eye.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E7%9C%BC"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_WING",
+      "name": "佩尔之翼",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你可以将你的卡牌奖励献祭给佩尔。每献祭2次，就能获得一件遗物。",
+      "imagePath": "/sts2/uploads/thumb/5/54/Paels_wing.png/128px-Paels_wing.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E7%BF%BC"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PAELS_CLAW",
+      "name": "佩尔之爪",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，为所有的“防御”附魔：黏糊。",
+      "imagePath": "/sts2/uploads/thumb/7/76/Paels_claw.png/128px-Paels_claw.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%A9%E5%B0%94%E4%B9%8B%E7%88%AA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BIIIG_HUG",
+      "name": "大～抱抱",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从你的牌组中移除4张牌。每当你的抽牌堆打乱洗牌时，将一张煤灰加入你的抽牌堆。",
+      "imagePath": "/sts2/uploads/thumb/2/2f/Biiig_hug.png/128px-Biiig_hug.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A7%EF%BD%9E%E6%8A%B1%E6%8A%B1"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.STORYBOOK",
+      "name": "故事书",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将1张至亮之焰添加到你的牌组中。",
+      "imagePath": "/sts2/uploads/thumb/e/e1/Storybook.png/128px-Storybook.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%95%85%E4%BA%8B%E4%B9%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TOASTY_MITTENS",
+      "name": "烘焙手套",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在你的回合开始时，消耗你抽牌堆顶部的牌并获得1点力量。",
+      "imagePath": "/sts2/uploads/thumb/f/f4/Toasty_mittens.png/128px-Toasty_mittens.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%83%98%E7%84%99%E6%89%8B%E5%A5%97"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GOLDEN_COMPASS",
+      "name": "黄金罗盘",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将第2阶段的地图替换为一条特殊的直道。",
+      "imagePath": "/sts2/uploads/thumb/2/2a/Golden_compass.png/128px-Golden_compass.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%BB%84%E9%87%91%E7%BD%97%E7%9B%98"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SEAL_OF_GOLD",
+      "name": "黄金印",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在你的回合开始时，花费5金币来获得能量。",
+      "imagePath": "/sts2/uploads/thumb/9/93/Seal_of_gold.png/128px-Seal_of_gold.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%BB%84%E9%87%91%E5%8D%B0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.YUMMY_COOKIE",
+      "name": "美味饼干",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，升级4张牌。",
+      "imagePath": "/sts2/uploads/thumb/b/b3/Yummy_cookie.png/128px-Yummy_cookie.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%BE%8E%E5%91%B3%E9%A5%BC%E5%B9%B2"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PUMPKIN_CANDLE",
+      "name": "南瓜蜡烛",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每个回合开始时获得能量。这件遗物会在5场战斗后熄灭。可以在休息处为其添火。",
+      "imagePath": "/sts2/uploads/thumb/d/d9/Pumpkin_candle.png/128px-Pumpkin_candle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8D%97%E7%93%9C%E8%9C%A1%E7%83%9B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.VERY_HOT_COCOA",
+      "name": "烫嘴可可",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每场战斗的第一回合额外获得能量能量能量能量。",
+      "imagePath": "/sts2/uploads/thumb/6/65/Very_hot_cocoa.png/128px-Very_hot_cocoa.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%83%AB%E5%98%B4%E5%8F%AF%E5%8F%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TOY_BOX",
+      "name": "玩具盒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得4件蜡制遗物。每经过3场战斗，你最左侧的蜡制遗物将会融化。",
+      "imagePath": "/sts2/uploads/thumb/d/d2/Toy_box.png/128px-Toy_box.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8E%A9%E5%85%B7%E7%9B%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NUTRITIOUS_SOUP",
+      "name": "营养汤",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，为你牌组中的所有“打击”附魔：特兹卡塔拉的余烬",
+      "imagePath": "/sts2/uploads/thumb/6/69/Nutritious_soup.png/128px-Nutritious_soup.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%90%A5%E5%85%BB%E6%B1%A4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LOOMING_FRUIT",
+      "name": "布质果实",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将你的最大生命值提升31。",
+      "imagePath": "/sts2/uploads/thumb/3/3b/Looming_fruit.png/128px-Looming_fruit.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B8%83%E8%B4%A8%E6%9E%9C%E5%AE%9E"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BLESSED_ANTLER",
+      "name": "赐福鹿角",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每回合开始时获得能量。在战斗开始时，将3张晕眩放入你的抽牌堆。",
+      "imagePath": "/sts2/uploads/thumb/6/6a/Blessed_antler.png/128px-Blessed_antler.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%B5%90%E7%A6%8F%E9%B9%BF%E8%A7%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BEAUTIFUL_BRACELET",
+      "name": "华美手镯",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从你的牌组中选择3张牌，附魔：迅捷3。",
+      "imagePath": "/sts2/uploads/thumb/0/0e/Beautiful_bracelet.png/128px-Beautiful_bracelet.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8D%8E%E7%BE%8E%E6%89%8B%E9%95%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DELICATE_FROND",
+      "name": "娇嫩蕨草",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每场战斗开始时，用随机药水将你的空药水栏位填满。",
+      "imagePath": "/sts2/uploads/thumb/f/f5/Delicate_frond.png/128px-Delicate_frond.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A8%87%E5%AB%A9%E8%95%A8%E8%8D%89"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.GLITTER",
+      "name": "亮片",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "为之后的所有卡牌奖励附魔：华彩。",
+      "imagePath": "/sts2/uploads/thumb/6/63/Glitter.png/128px-Glitter.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BA%AE%E7%89%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FUR_COAT",
+      "name": "皮草大衣",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，随机标记7处战斗。这些战斗中的敌人将只有1点生命。",
+      "imagePath": "/sts2/uploads/thumb/d/dc/Fur_coat.png/128px-Fur_coat.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%9A%AE%E8%8D%89%E5%A4%A7%E8%A1%A3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SIGNET_RING",
+      "name": "图章戒指",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得999金币。",
+      "imagePath": "/sts2/uploads/thumb/0/01/Signet_ring.png/128px-Signet_ring.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%9B%BE%E7%AB%A0%E6%88%92%E6%8C%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BRILLIANT_SCARF",
+      "name": "艳丽围巾",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你每回合从你的手牌打出的第5张牌可以被免费打出。",
+      "imagePath": "/sts2/uploads/thumb/5/5a/Brilliant_scarf.png/128px-Brilliant_scarf.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%89%B3%E4%B8%BD%E5%9B%B4%E5%B7%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.JEWELRY_BOX",
+      "name": "珠宝盒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将1张神化加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/4/43/Jewelry_box.png/128px-Jewelry_box.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8F%A0%E5%AE%9D%E7%9B%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DIAMOND_DIADEM",
+      "name": "钻石头冠",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "如果你在本回合打出的牌少于等于2张，则受到敌人的伤害减半。",
+      "imagePath": "/sts2/uploads/thumb/0/0e/Diamond_diadem.png/128px-Diamond_diadem.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%92%BB%E7%9F%B3%E5%A4%B4%E5%86%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SAI",
+      "name": "钗",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在你的回合开始时，获得7点格挡。",
+      "imagePath": "/sts2/uploads/thumb/d/d3/Sai.png/128px-Sai.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%92%97"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SPIKED_GAUNTLETS",
+      "name": "带刺手甲",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每回合开始时获得能量。能力牌的耗能增加1能量。",
+      "imagePath": "/sts2/uploads/thumb/3/3a/Spiked_gauntlets.png/128px-Spiked_gauntlets.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B8%A6%E5%88%BA%E6%89%8B%E7%94%B2"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CLAWS",
+      "name": "利爪",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将至多6张牌变化为撕咬。",
+      "imagePath": "/sts2/uploads/thumb/9/91/Claws.png/128px-Claws.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%88%A9%E7%88%AA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MEAT_CLEAVER",
+      "name": "切肉刀",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你可以在休息处进行烹饪。",
+      "imagePath": "/sts2/uploads/thumb/a/a8/Meat_cleaver.png/128px-Meat_cleaver.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%88%87%E8%82%89%E5%88%80"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TRI_BOOMERANG",
+      "name": "三刃回旋镖",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "从你的牌组中选择3张攻击牌。为这些牌附魔：本能。",
+      "imagePath": "/sts2/uploads/thumb/9/9f/Tri_boomerang.png/128px-Tri_boomerang.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%B8%89%E5%88%83%E5%9B%9E%E6%97%8B%E9%95%96"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CROSSBOW",
+      "name": "十字弓",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在你的回合开始时，将一张随机攻击牌加入你的手牌。这张牌在本回合可以免费打出。",
+      "imagePath": "/sts2/uploads/thumb/7/79/Crossbow.png/128px-Crossbow.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8D%81%E5%AD%97%E5%BC%93"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TANXS_WHISTLE",
+      "name": "坦克斯的哨子",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将1张吹哨加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/d/d8/Tanxs_whistle.png/128px-Tanxs_whistle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%9D%A6%E5%85%8B%E6%96%AF%E7%9A%84%E5%93%A8%E5%AD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.IRON_CLUB",
+      "name": "铁棒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你每打出4张牌，就抽1张牌。",
+      "imagePath": "/sts2/uploads/thumb/f/f8/Iron_club.png/128px-Iron_club.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%93%81%E6%A3%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.THROWING_AXE",
+      "name": "投斧",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你在每场战斗中打出的第一张牌会多打出一次。",
+      "imagePath": "/sts2/uploads/thumb/2/25/Throwing_axe.png/128px-Throwing_axe.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8A%95%E6%96%A7"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WAR_HAMMER",
+      "name": "战锤",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "每当你击败一名精英敌人的时候，随机升级4张牌。",
+      "imagePath": "/sts2/uploads/thumb/a/ab/War_hammer.png/128px-War_hammer.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%88%98%E9%94%A4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.JEWELED_MASK",
+      "name": "宝石面具",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每场战斗开始时，将一张随机能力牌从你的抽牌堆放入你的手牌，这张牌在本场战斗可以免费打出。",
+      "imagePath": "/sts2/uploads/thumb/5/57/Jeweled_mask.png/128px-Jeweled_mask.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%AE%9D%E7%9F%B3%E9%9D%A2%E5%85%B7"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WHISPERING_EARRING",
+      "name": "低语耳环",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每个回合开始时，获得能量。瓦库将接管你的第一回合。",
+      "imagePath": "/sts2/uploads/thumb/c/cb/Whispering_earring.png/128px-Whispering_earring.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%8E%E8%AF%AD%E8%80%B3%E7%8E%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LORDS_PARASOL",
+      "name": "领主阳伞",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "当你遇见商人时，立刻获得他所出售的所有物品。",
+      "imagePath": "/sts2/uploads/thumb/d/d5/Lords_parasol.png/128px-Lords_parasol.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%A2%86%E4%B8%BB%E9%98%B3%E4%BC%9E"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FIDDLE",
+      "name": "小提琴",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每个回合开始时，额外抽2张牌。你在回合进行中不再能抽任何牌。",
+      "imagePath": "/sts2/uploads/thumb/8/8a/Fiddle.png/128px-Fiddle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%8F%E6%8F%90%E7%90%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CHOICES_PARADOX",
+      "name": "选择悖论",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每场战斗开始时，从5张随机牌中选择1张放入你的手牌。被选中的牌获得保留。",
+      "imagePath": "/sts2/uploads/thumb/d/da/Choices_paradox.png/128px-Choices_paradox.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%80%89%E6%8B%A9%E6%82%96%E8%AE%BA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BLOOD_SOAKED_ROSE",
+      "name": "血染玫瑰",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将1张执迷加入你的牌组。在回合开始时获得能量。",
+      "imagePath": "/sts2/uploads/thumb/e/e8/Blood_soaked_rose.png/128px-Blood_soaked_rose.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%A1%80%E6%9F%93%E7%8E%AB%E7%91%B0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PRESERVED_FOG",
+      "name": "腌制活雾",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，从你的牌组中移除3张牌。将一张愚行加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/5/5d/Preserved_fog.png/128px-Preserved_fog.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%85%8C%E5%88%B6%E6%B4%BB%E9%9B%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MUSIC_BOX",
+      "name": "音乐盒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "将你每回合打出的第一张攻击牌的一张虚无复制品加入你的手牌。",
+      "imagePath": "/sts2/uploads/thumb/b/b1/Music_box.png/128px-Music_box.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%9F%B3%E4%B9%90%E7%9B%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SERE_TALON",
+      "name": "原初之爪",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将2张随机诅咒牌和3张许愿加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/0/0c/Sere_talon.png/128px-Sere_talon.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8E%9F%E5%88%9D%E4%B9%8B%E7%88%AA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DISTINGUISHED_CAPE",
+      "name": "卓越斗篷",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，失去9点最大生命值。将3张灵体加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/2/22/Distinguished_cape.png/128px-Distinguished_cape.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8D%93%E8%B6%8A%E6%96%97%E7%AF%B7"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DUSTY_TOME",
+      "name": "尘封魔典",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得一张先古牌。",
+      "imagePath": "/sts2/uploads/thumb/8/80/Dusty_tome.png/128px-Dusty_tome.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%98%E5%B0%81%E9%AD%94%E5%85%B8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.RUNIC_PYRAMID",
+      "name": "符文金字塔",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你在回合结束时不再自动丢弃所有手牌。",
+      "imagePath": "/sts2/uploads/thumb/9/97/Runic_pyramid.png/128px-Runic_pyramid.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%AC%A6%E6%96%87%E9%87%91%E5%AD%97%E5%A1%94"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BLACK_STAR",
+      "name": "黑星",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "精英敌人在被打败时多掉落一件遗物。",
+      "imagePath": "/sts2/uploads/thumb/c/c9/Black_star.png/128px-Black_star.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%BB%91%E6%98%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.EMPTY_CAGE",
+      "name": "空鸟笼",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，选择移除牌组中的2张牌。",
+      "imagePath": "/sts2/uploads/thumb/3/35/Empty_cage.png/128px-Empty_cage.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%A9%BA%E9%B8%9F%E7%AC%BC"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ECTOPLASM",
+      "name": "灵体外质",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你不能再获得任何金币。在回合开始时获得能量",
+      "imagePath": "/sts2/uploads/thumb/3/36/Ectoplasm.png/128px-Ectoplasm.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%81%B5%E4%BD%93%E5%A4%96%E8%B4%A8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PANDORAS_BOX",
+      "name": "潘多拉魔盒",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "变化所有“打击”和“防御”。",
+      "imagePath": "/sts2/uploads/thumb/d/d0/Pandoras_box.png/128px-Pandoras_box.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%BD%98%E5%A4%9A%E6%8B%89%E9%AD%94%E7%9B%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.VELVET_CHOKER",
+      "name": "天鹅绒颈圈",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每回合开始时获得能量。你每回合不能打出超过6张牌。",
+      "imagePath": "/sts2/uploads/thumb/f/f4/Velvet_choker.png/128px-Velvet_choker.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A9%E9%B9%85%E7%BB%92%E9%A2%88%E5%9C%88"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SOZU",
+      "name": "添水",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "你无法再获得药水。在每回合开始时获得能量。",
+      "imagePath": "/sts2/uploads/thumb/5/53/Sozu.png/128px-Sozu.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B7%BB%E6%B0%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.PHILOSOPHERS_STONE",
+      "name": "贤者之石",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "在每回合开始时获得能量。所有敌人初始获得1点力量。",
+      "imagePath": "/sts2/uploads/thumb/3/3d/Philosophers_stone.png/128px-Philosophers_stone.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%B4%A4%E8%80%85%E4%B9%8B%E7%9F%B3"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ASTROLABE",
+      "name": "星盘",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，选择3张牌进行变化，然后将这些牌升级。",
+      "imagePath": "/sts2/uploads/thumb/8/83/Astrolabe.png/128px-Astrolabe.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%98%9F%E7%9B%98"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SNECKO_EYE",
+      "name": "异蛇之眼",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "每回合多抽2张牌。每场战斗开始时获得混乱效果。",
+      "imagePath": "/sts2/uploads/thumb/0/0c/Snecko_eye.png/128px-Snecko_eye.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%82%E8%9B%87%E4%B9%8B%E7%9C%BC"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CALLING_BELL",
+      "name": "召唤铃铛",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得一个独特的诅咒和3件遗物。",
+      "imagePath": "/sts2/uploads/thumb/f/fa/Calling_bell.png/128px-Calling_bell.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%AC%E5%94%A4%E9%93%83%E9%93%9B"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_ORICHALCUM",
+      "name": "奥利哈钢？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "如果你在回合结束时没有任何格挡，获得3点格挡。",
+      "imagePath": "/sts2/uploads/thumb/1/1b/Fake_orichalcum.png/128px-Fake_orichalcum.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A5%A5%E5%88%A9%E5%93%88%E9%92%A2%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MR_STRUGGLES",
+      "name": "抱抱先生",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在你的回合开始时，对所有敌人造成等量于当前回合数的伤害。",
+      "imagePath": "/sts2/uploads/thumb/1/19/Mr_struggles.png/128px-Mr_struggles.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8A%B1%E6%8A%B1%E5%85%88%E7%94%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BING_BONG",
+      "name": "宾邦",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你往牌组中增添卡牌时，都将额外添加一张相同的牌。",
+      "imagePath": "/sts2/uploads/thumb/e/ea/Bing_bong.png/128px-Bing_bong.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%AE%BE%E9%82%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DREAM_CATCHER",
+      "name": "捕梦网",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你休息时，可以添加一张牌到你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/f/f5/Dream_catcher.png/128px-Dream_catcher.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%8D%95%E6%A2%A6%E7%BD%91"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_STRIKE_DUMMY",
+      "name": "打击木偶？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "名字中有“打击”的卡牌造成1点额外伤害。",
+      "imagePath": "/sts2/uploads/thumb/7/73/Fake_strike_dummy.png/128px-Fake_strike_dummy.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%89%93%E5%87%BB%E6%9C%A8%E5%81%B6%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BIG_MUSHROOM",
+      "name": "大蘑菇",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "拾起时，将你的最大生命值提升20。在每场战斗开始时，少抽2张牌。",
+      "imagePath": "/sts2/uploads/thumb/c/cd/Big_mushroom.png/128px-Big_mushroom.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A7%E8%98%91%E8%8F%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.THE_BOOT",
+      "name": "发条靴",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你造成小于等于4点未被格挡的攻击伤害时，将伤害提升为5。",
+      "imagePath": "/sts2/uploads/thumb/1/13/The_boot.png/128px-The_boot.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%91%E6%9D%A1%E9%9D%B4"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FRAGRANT_MUSHROOM",
+      "name": "芳香蘑菇",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "拾起时，失去15点生命，然后随机升级2张牌。",
+      "imagePath": "/sts2/uploads/thumb/2/26/Fragrant_mushroom.png/128px-Fragrant_mushroom.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8A%B3%E9%A6%99%E8%98%91%E8%8F%87"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FRESNEL_LENS",
+      "name": "菲涅耳透镜",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你将一张带有格挡的牌加入你的牌组时，为那张牌附魔：灵巧2",
+      "imagePath": "/sts2/uploads/thumb/0/07/Fresnel_lens.png/128px-Fresnel_lens.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8F%B2%E6%B6%85%E8%80%B3%E9%80%8F%E9%95%9C"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DAUGHTER_OF_THE_WIND",
+      "name": "风的女儿",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你打出一张攻击牌时，获得1点格挡。",
+      "imagePath": "/sts2/uploads/thumb/5/51/Daughter_of_the_wind.png/128px-Daughter_of_the_wind.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%A3%8E%E7%9A%84%E5%A5%B3%E5%84%BF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_VENERABLE_TEA_SET",
+      "name": "古茶具套装？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "到达休息处后的下一场战斗开始时额外获得能量。",
+      "imagePath": "/sts2/uploads/thumb/4/47/Fake_venerable_tea_set.png/128px-Fake_venerable_tea_set.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8F%A4%E8%8C%B6%E5%85%B7%E5%A5%97%E8%A3%85%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BONE_TEA",
+      "name": "骨茶",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在你接下来的1场战斗开始时，升级你的初始手牌。",
+      "imagePath": "/sts2/uploads/thumb/2/2e/Bone_tea.png/128px-Bone_tea.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%AA%A8%E8%8C%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DARKSTONE_PERIAPT",
+      "name": "黑石护符",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你获得一张诅咒，就将你的最大生命值提升6。",
+      "imagePath": "/sts2/uploads/thumb/a/ab/Darkstone_periapt.png/128px-Darkstone_periapt.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%BB%91%E7%9F%B3%E6%8A%A4%E7%AC%A6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.POLLINOUS_CORE",
+      "name": "花粉核心",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每4个回合，额外抽2张牌。",
+      "imagePath": "/sts2/uploads/thumb/f/f3/Pollinous_core.png/128px-Pollinous_core.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8A%B1%E7%B2%89%E6%A0%B8%E5%BF%83"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.MAW_BANK",
+      "name": "巨口储蓄罐",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每攀爬一层楼层，就获得12金币。一旦在商店中花费金币就会使其失效。",
+      "imagePath": "/sts2/uploads/thumb/0/06/Maw_bank.png/128px-Maw_bank.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B7%A8%E5%8F%A3%E5%82%A8%E8%93%84%E7%BD%90"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_HAPPY_FLOWER",
+      "name": "开心小花？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每5个回合，获得能量。",
+      "imagePath": "/sts2/uploads/thumb/c/c3/Fake_happy_flower.png/128px-Fake_happy_flower.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%80%E5%BF%83%E5%B0%8F%E8%8A%B1%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_LEES_WAFFLE",
+      "name": "李家华夫饼？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "拾起时，回复你10%的生命值。",
+      "imagePath": "/sts2/uploads/thumb/9/95/Fake_lees_waffle.png/128px-Fake_lees_waffle.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%9D%8E%E5%AE%B6%E5%8D%8E%E5%A4%AB%E9%A5%BC%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.HISTORY_COURSE",
+      "name": "历史课",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在你的回合开始时，打出一张你上一回合最后打出的攻击牌或技能牌的复制品。",
+      "imagePath": "/sts2/uploads/thumb/a/a4/History_course.png/128px-History_course.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%8E%86%E5%8F%B2%E8%AF%BE"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_MANGO",
+      "name": "芒果？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "拾起时，将你的最大生命值提升3。",
+      "imagePath": "/sts2/uploads/thumb/3/39/Fake_mango.png/128px-Fake_mango.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%8A%92%E6%9E%9C%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_ANCHOR",
+      "name": "锚？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在每场战斗开始时，获得4点格挡。",
+      "imagePath": "/sts2/uploads/thumb/8/82/Fake_anchor.png/128px-Fake_anchor.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%94%9A%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.LOST_WISP",
+      "name": "迷失鬼火",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "你每打出一张能力牌，就对所有敌人造成8点伤害。",
+      "imagePath": "/sts2/uploads/thumb/5/5c/Lost_wisp.png/128px-Lost_wisp.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E8%BF%B7%E5%A4%B1%E9%AC%BC%E7%81%AB(%E9%81%97%E7%89%A9)"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_MERCHANTS_RUG",
+      "name": "商人的地毯？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "低劣的仿制品。没有任何作用。",
+      "imagePath": "/sts2/uploads/thumb/c/cd/Fake_merchants_rug.png/128px-Fake_merchants_rug.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%95%86%E4%BA%BA%E7%9A%84%E5%9C%B0%E6%AF%AF%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SWORD_OF_STONE",
+      "name": "石之剑",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在击败5名精英敌人之后将变化为一件强力遗物。",
+      "imagePath": "/sts2/uploads/thumb/8/82/Sword_of_stone.png/128px-Sword_of_stone.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%9F%B3%E4%B9%8B%E5%89%91"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.HAND_DRILL",
+      "name": "手钻",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你突破敌人的格挡时，给予其2层易伤。",
+      "imagePath": "/sts2/uploads/thumb/8/80/Hand_drill.png/128px-Hand_drill.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%89%8B%E9%92%BB"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CHOSEN_CHEESE",
+      "name": "天选芝士",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在战斗结束时，获得1点最大生命值。",
+      "imagePath": "/sts2/uploads/thumb/4/48/Chosen_cheese.png/128px-Chosen_cheese.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%A9%E9%80%89%E8%8A%9D%E5%A3%AB"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.ROYAL_POISON",
+      "name": "王室猛毒",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在每场战斗开始时，失去4点生命。",
+      "imagePath": "/sts2/uploads/thumb/8/81/Royal_poison.png/128px-Royal_poison.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8E%8B%E5%AE%A4%E7%8C%9B%E6%AF%92"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WONGO_CUSTOMER_APPRECIATION_BADGE",
+      "name": "旺购客户感恩徽章",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "没有任何作用。",
+      "imagePath": "/sts2/uploads/thumb/3/35/Wongo_customer_appreciation_badge.png/128px-Wongo_customer_appreciation_badge.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%97%BA%E8%B4%AD%E5%AE%A2%E6%88%B7%E6%84%9F%E6%81%A9%E5%BE%BD%E7%AB%A0"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.WONGOS_MYSTERY_TICKET",
+      "name": "旺购神秘券",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在5场战斗后，获得随机3件遗物。",
+      "imagePath": "/sts2/uploads/thumb/b/bf/Wongos_mystery_ticket.png/128px-Wongos_mystery_ticket.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%97%BA%E8%B4%AD%E7%A5%9E%E7%A7%98%E5%88%B8"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.TEA_OF_DISCOURTESY",
+      "name": "无礼之茶",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在下一场战斗开始时，将2张晕眩放入你的抽牌堆。",
+      "imagePath": "/sts2/uploads/thumb/6/62/Tea_of_discourtesy.png/128px-Tea_of_discourtesy.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%97%A0%E7%A4%BC%E4%B9%8B%E8%8C%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_BLOOD_VIAL",
+      "name": "小血瓶？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在每场战斗开始时，回复1点生命。",
+      "imagePath": "/sts2/uploads/thumb/d/d5/Fake_blood_vial.png/128px-Fake_blood_vial.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%B0%8F%E8%A1%80%E7%93%B6%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FORGOTTEN_SOUL",
+      "name": "遗忘之魂",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每当你消耗一张牌，随机对一名敌人造成1点伤害。",
+      "imagePath": "/sts2/uploads/thumb/2/29/Forgotten_soul.png/128px-Forgotten_soul.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E9%81%97%E5%BF%98%E4%B9%8B%E9%AD%82"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.BYRDPIP",
+      "name": "异鸟宝宝",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "拾起时，获得一张异鸟扑击。一只幼年异鸟会在战斗中陪伴你。",
+      "imagePath": "/sts2/uploads/thumb/7/70/Byrdpip.png/128px-Byrdpip.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%82%E9%B8%9F%E5%AE%9D%E5%AE%9D"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.FAKE_SNECKO_EYE",
+      "name": "异蛇之眼？？？",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "每场战斗开始时获得混乱效果。",
+      "imagePath": "/sts2/uploads/thumb/3/3a/Fake_snecko_eye.png/128px-Fake_snecko_eye.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%BC%82%E8%9B%87%E4%B9%8B%E7%9C%BC%EF%BC%9F%EF%BC%9F%EF%BC%9F"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.EMBER_TEA",
+      "name": "余烬茶",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在接下来的5场战斗开始时，获得2点力量。",
+      "imagePath": "/sts2/uploads/thumb/c/c6/Ember_tea.png/128px-Ember_tea.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E4%BD%99%E7%83%AC%E8%8C%B6"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.SWORD_OF_JADE",
+      "name": "玉之剑",
+      "pool": "通用",
+      "rarity": "事件",
+      "description": "在每场战斗开始时，获得3点力量。",
+      "imagePath": "/sts2/uploads/thumb/4/4d/Sword_of_jade.png/128px-Sword_of_jade.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E7%8E%89%E4%B9%8B%E5%89%91"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.CIRCLET",
+      "name": "头环",
+      "pool": "通用",
+      "rarity": "遗物",
+      "description": "这是一个头环。",
+      "imagePath": "/sts2/uploads/thumb/5/50/Circlet.png/128px-Circlet.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%A4%B4%E7%8E%AF"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.DOWSING_ROD",
+      "name": "寻龙尺",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，将1张探寻加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/6/6e/Dowsing_rod.png/128px-Dowsing_rod.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E5%AF%BB%E9%BE%99%E5%B0%BA"
+    },
+    {
+      "kind": "relic",
+      "id": "RELIC.NEOWS_SACRIFICE",
+      "name": "涅奥的牺牲",
+      "pool": "通用",
+      "rarity": "先古之民",
+      "description": "拾起时，获得1瓶龙涎香，并将1张愧疚加入你的牌组。",
+      "imagePath": "/sts2/uploads/thumb/0/0b/Neows_sacrifice.png/128px-Neows_sacrifice.png",
+      "sourceUrl": "https://sts2.huijiwiki.com/wiki/%E6%B6%85%E5%A5%A5%E7%9A%84%E7%89%BA%E7%89%B2"
+    }
+  ]
+}

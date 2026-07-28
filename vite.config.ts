@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { OTHER_PAGE_METADATA } from "./app/pages/other/page-metadata";
 import { readRegisteredTools } from "./scripts/read-tool-registry.mjs";
 
 const basePath = process.env.PAGES_BASE_PATH ?? "/";
@@ -26,7 +27,7 @@ function escapeHtml(value: string) {
     .replaceAll('"', "&quot;");
 }
 
-function withToolMetadata(html: string, title: string, description: string) {
+function withPageMetadata(html: string, title: string, description: string) {
   return html
     .replace(
       /<title>[^<]*<\/title>/,
@@ -64,7 +65,7 @@ export default defineConfig({
   plugins: [
     react(),
     {
-      name: "static-tool-routes",
+      name: "static-app-routes",
 
       async closeBundle() {
         const tools = await readRegisteredTools(import.meta.dirname);
@@ -99,7 +100,20 @@ export default defineConfig({
             await mkdir(routeDirectory, { recursive: true });
             await writeFile(
               resolve(routeDirectory, "index.html"),
-              withToolMetadata(indexHtml, tool.title, tool.summary),
+              withPageMetadata(indexHtml, tool.title, tool.summary),
+              "utf8",
+            );
+          }),
+          ...OTHER_PAGE_METADATA.map(async (page) => {
+            const routeDirectory = resolve(
+              outputDirectory,
+              "other",
+              page.id,
+            );
+            await mkdir(routeDirectory, { recursive: true });
+            await writeFile(
+              resolve(routeDirectory, "index.html"),
+              withPageMetadata(indexHtml, page.title, page.description),
               "utf8",
             );
           }),

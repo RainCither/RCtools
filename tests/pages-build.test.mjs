@@ -14,6 +14,7 @@ test("creates only static GitHub Pages output", async () => {
     access(new URL("dist/CNAME", projectRoot)),
     access(new URL("dist/404.html", projectRoot)),
     access(new URL("dist/tool-routes.json", projectRoot)),
+    access(new URL("dist/other/sts2savecheat/index.html", projectRoot)),
   ]);
 
   const [html, cname, notFoundHtml, routeManifestSource] = await Promise.all([
@@ -40,6 +41,7 @@ test("creates only static GitHub Pages output", async () => {
     registeredTools.map((tool) => tool.id),
   );
   assert.equal(new Set(routeManifest.routes).size, routeManifest.routes.length);
+  assert.equal(routeManifest.routes.includes("sts2savecheat"), false);
 
   for (const toolId of routeManifest.routes) {
     const routeHtml = await readFile(
@@ -61,6 +63,14 @@ test("creates only static GitHub Pages output", async () => {
   );
   assert.match(jsonHtml, /<title>JSON 格式化｜工具匣<\/title>/);
   assert.match(jsonHtml, /校验、格式化或压缩 JSON 数据/);
+
+  const otherPageHtml = await readFile(
+    new URL("dist/other/sts2savecheat/index.html", projectRoot),
+    "utf8",
+  );
+  assert.match(otherPageHtml, /<title>杀戮尖塔 2 存档修改器｜工具匣<\/title>/);
+  assert.match(otherPageHtml, /纯前端的杀戮尖塔 2 存档修改器/);
+  assert.match(otherPageHtml, /\/assets\/[^"']+\.js/);
 });
 
 test("keeps every tool in an independent client chunk", async () => {
