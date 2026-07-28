@@ -52,26 +52,25 @@ npm ci
 npm run dev
 ```
 
-开发服务器默认运行在 [http://localhost:3000](http://localhost:3000)。如果端口被占用，请以终端显示的地址为准。
+Vite 开发服务器默认运行在 [http://localhost:5173](http://localhost:5173)。如果端口被占用，请以终端显示的地址为准。
 
 ### 常用命令
 
 | 命令 | 说明 |
 | --- | --- |
-| `npm run dev` | 启动 Vinext 开发服务器 |
+| `npm run dev` | 启动 Vite 前端开发服务器 |
 | `npm run typecheck` | 运行 TypeScript 类型检查 |
-| `npm test` | 运行类型检查、服务端构建和功能测试 |
+| `npm test` | 运行类型检查、前端结构测试和功能测试 |
 | `npm run build` | 生成 GitHub Pages 静态文件到 `dist/` |
 | `npm run pages:build` | GitHub Pages 构建命令，等同于 `npm run build` |
 | `npm run test:pages` | 构建并验证 GitHub Pages 静态产物 |
-| `npm run build:server` | 构建用于专项验证的 Vinext 服务端版本 |
-| `npm run start` | 启动已构建的 Vinext 服务端版本 |
+| `npm run preview` | 本地预览已构建的静态站点 |
 
 构建并预览静态站点：
 
 ```bash
 npm run build
-npx vite preview --config vite.pages.config.ts
+npm run preview
 ```
 
 提交代码前建议运行：
@@ -94,10 +93,7 @@ RCtools/
 │  │  │  └─ styles.module.css  # 工具私有样式（按需）
 │  │  ├─ time-diff/            # 可包含专用算法、类型和样式
 │  │  └─ shared/               # 跨工具复用的 UI 与逻辑
-│  ├─ [toolId]/page.tsx        # Vinext 工具子路由与未知工具处理
-│  ├─ not-found.tsx            # 其他无效路径返回首页
-│  ├─ page.tsx                 # Vinext 首页入口
-│  ├─ pages-entry.tsx          # GitHub Pages 客户端入口
+│  ├─ main.tsx                 # 浏览器应用入口
 │  ├─ toolbox-app.tsx          # 工具箱主界面
 │  ├─ tool-routes.ts           # Base Path、链接与路径解析
 │  ├─ tool-types.ts            # 工具类型与分类名称
@@ -108,9 +104,7 @@ RCtools/
 ├─ .github/workflows/          # GitHub Pages 自动部署工作流
 ├─ ADDTOOL.md                  # 添加新工具的完整指南
 ├─ index.html                  # Vite 静态页面入口
-├─ next.config.ts              # Vinext/Next 路由规范
-├─ vite.config.ts              # Vinext 开发配置
-└─ vite.pages.config.ts        # GitHub Pages 静态构建配置
+└─ vite.config.ts              # 前端开发、构建与静态路由配置
 ```
 
 每个工具的配置、组件、算法和专用样式都收拢在自己的目录中。工具 ID、分类、搜索、独立子路由和懒加载组件从注册表自动推导；只有被多个工具共同使用的代码才放入 `app/tools/shared/`。
@@ -126,6 +120,8 @@ RCtools/
 5. 运行完整验证并在浏览器中检查交互和响应式布局。
 
 `app/tool-panels.tsx` 会从注册表自动生成组件映射，静态构建也会从同一注册表生成 `/<tool-id>/` 页面；添加工具时不需要维护第二份路由清单。
+
+依赖必须遵循工具级按需加载：应用入口、注册表和 `config.ts` 不得直接导入工具专属重型库；只在用户操作时需要的压缩器、解析器、WASM 等应继续使用动态 `import()`。首屏 JavaScript 的 Gzip 体积目标保持在 `100 KiB` 以内，增长超过 `10%` 时需要检查加载链路并说明原因。完整约束和验收项见 [`ADDTOOL.md` 的“依赖与分块约束”](./ADDTOOL.md#依赖与分块约束)。
 
 ## GitHub Pages 部署
 
@@ -157,7 +153,7 @@ PAGES_BASE_PATH: /
 PAGES_CUSTOM_DOMAIN: tool.raincither.top
 ```
 
-`vite.pages.config.ts` 会把资源路径设置为根路径，为每个已注册工具生成 `dist/<tool-id>/index.html`，并生成 `dist/404.html`、`.nojekyll` 与 `CNAME`。
+`vite.config.ts` 会把资源路径设置为根路径，为每个已注册工具生成 `dist/<tool-id>/index.html`，并生成 `dist/404.html`、`.nojekyll` 与 `CNAME`。
 
 使用其他自定义域名时：
 
@@ -169,7 +165,7 @@ PAGES_CUSTOM_DOMAIN: tool.raincither.top
 不使用自定义域名、通过 `https://<用户名>.github.io/<仓库名>/` 访问时：
 
 1. 将 `PAGES_BASE_PATH` 改为 `/<仓库名>`，例如 `/RCtools`。
-2. 修改 `vite.pages.config.ts`，在没有自定义域名时不生成 `CNAME`。
+2. 修改 `vite.config.ts`，在没有自定义域名时不生成 `CNAME`。
 3. 确认 GitHub Pages 仍从 `main` 分支根目录发布。
 
 Base Path 必须以 `/` 开头；除根路径 `/` 外，末尾不要添加 `/`。

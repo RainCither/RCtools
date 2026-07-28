@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { CodeTransformTool } from "../shared/code-transform-tool";
 import {

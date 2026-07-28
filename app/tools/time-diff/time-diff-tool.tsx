@@ -1,5 +1,3 @@
-"use client";
-
 import { Fragment, useRef, useState, type KeyboardEvent } from "react";
 import {
   calculateAdjacentDifference,

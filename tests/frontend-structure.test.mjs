@@ -4,107 +4,18 @@ import test from "node:test";
 
 const templateRoot = new URL("../", import.meta.url);
 
-async function render(pathname = "/") {
-  const workerUrl = new URL("../dist/server/ssr/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-
-  return worker.fetch(
-    new Request(new URL(pathname, "http://localhost/"), {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
-}
-
-async function assertRedirectsHome(pathname) {
-  try {
-    const response = await render(pathname);
-    assert.match(String(response.status), /^30[78]$/);
-    assert.equal(
-      new URL(response.headers.get("location"), "http://localhost").pathname,
-      "/",
-    );
-  } catch (error) {
-    // Vinext's direct worker test adapter can expose the framework redirect
-    // control signal for not-found boundaries instead of converting it to a
-    // Response. Keep the assertion strict so ordinary render failures fail.
-    assert.equal(error?.digest, "NEXT_REDIRECT;;%2F");
-  }
-}
-
-test("server-renders the personal toolbox", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, /<title>工具匣｜常用小工具，一开即用<\/title>/i);
-  assert.match(html, /搜索工具或功能/);
-  assert.match(html, /JSON 格式化/);
-  assert.match(html, /CSS 格式化压缩/);
-  assert.match(html, /JavaScript 格式化压缩/);
-  assert.match(html, /HTML 格式化压缩/);
-  assert.match(html, /正则表达式测试/);
-  assert.match(html, /时间戳转换/);
-  assert.match(html, /连续时间差/);
-  assert.match(html, /故障文字生成/);
-  assert.match(html, /Base64 编解码/);
-  assert.match(html, /MD5 加密与校验/);
-  assert.match(html, /SHA-1 \/ SHA-2 哈希与校验/);
-  assert.match(html, /进制转换/);
-  assert.match(html, /IEEE-754 浮点数转换/);
-  assert.match(html, /雨寒风轻筝音悠/);
-  assert.match(html, /aria-label="搜索工具"/);
-  assert.match(html, /href="\/json\/"/);
-  assert.doesNotMatch(html, /<dialog|tool-dialog|aria-labelledby="tool-dialog-title"/);
-  assert.doesNotMatch(html, /把重复的小事|hero-copy|<h1>/);
-  assert.doesNotMatch(html, /自动保存在当前设备|>添加工具</);
-  assert.doesNotMatch(html, />扩展<|开发指南|添加一个新工具/);
-  assert.doesNotMatch(html, /↗/);
-  assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
-});
-
-test("server resolves tool routes, metadata and invalid redirects", async () => {
-  const canonicalResponse = await render("/json/");
-  assert.equal(canonicalResponse.status, 308);
-  assert.equal(
-    new URL(canonicalResponse.headers.get("location"), "http://localhost").pathname,
-    "/json",
-  );
-
-  const toolResponse = await render("/json");
-  assert.equal(toolResponse.status, 200);
-  const html = await toolResponse.text();
-  assert.match(html, /<title>JSON 格式化｜工具匣<\/title>/i);
-  assert.match(html, /校验、格式化或压缩 JSON 数据/);
-  assert.match(html, /initialToolId/);
-  assert.match(html, /json/);
-  assert.doesNotMatch(html, /搜索工具或功能/);
-
-  await assertRedirectsHome("/unknown");
-  await assertRedirectsHome("/json/details");
-});
-
-test("keeps the tool registry modular and removes the starter preview", async () => {
-  const [registry, toolTypes, panels, routes, toolbox, page, routePage, packageJson, globalStyles] = await Promise.all([
+test("keeps a modular browser-only application structure", async () => {
+  const [registry, toolTypes, panels, routes, toolbox, entry, packageJson, globalStyles, viteConfig, tsconfig] = await Promise.all([
     readFile(new URL("../app/tool-registry.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-types.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-panels.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-routes.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/[toolId]/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/main.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../vite.config.ts", import.meta.url), "utf8"),
+    readFile(new URL("../tsconfig.json", import.meta.url), "utf8"),
   ]);
 
   assert.match(registry, /export const TOOLS/);
@@ -132,13 +43,19 @@ test("keeps the tool registry modular and removes the starter preview", async ()
   assert.match(toolbox, /window\.addEventListener\("popstate"/);
   assert.doesNotMatch(toolbox, /<dialog|showModal\(|preventBackgroundWheel/);
   assert.doesNotMatch(toolbox, /developerGuide|showDeveloperGuide|添加一个新工具/);
-  assert.match(page, /initialToolId=\{null\}/);
-  assert.match(page, /PAGES_BASE_PATH/);
-  assert.match(routePage, /generateStaticParams/);
-  assert.match(routePage, /generateMetadata/);
-  assert.match(routePage, /redirect\("\/"\)/);
+  assert.match(entry, /createRoot\(root\)\.render/);
+  assert.match(entry, /parseToolRoute\(window\.location\.pathname/);
+  assert.match(entry, /route\.kind === "tool" \? route\.toolId : null/);
+  assert.match(viteConfig, /import react from "@vitejs\/plugin-react"/);
+  assert.match(viteConfig, /name: "static-tool-routes"/);
+  assert.match(viteConfig, /resolve\(routeDirectory, "index\.html"\)/);
+  assert.doesNotMatch(viteConfig, /vinext|plugin-rsc|react-server/i);
+  assert.doesNotMatch(tsconfig, /"name":\s*"next"|\.next|next-env/i);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
-  assert.doesNotMatch(packageJson, /cloudflare|drizzle|tailwind|wrangler/);
+  assert.doesNotMatch(
+    packageJson,
+    /cloudflare|drizzle|tailwind|wrangler|vinext|react-server-dom|plugin-rsc|["']next["']/i,
+  );
   const toolFiles = [
     ["base64", "base64-tool.tsx"],
     ["base-converter", "base-converter-core.ts"],
@@ -221,42 +138,16 @@ test("keeps the tool registry modular and removes the starter preview", async ()
   assert.match(registry, /from "\.\/tools\/regex\/config"/);
   assert.doesNotMatch(registry, /title: "JSON 格式化"/);
   assert.doesNotMatch(globalStyles, /\.time-diff-tool|\.stat-grid|\.range-heading|\.color-input-row/);
-  await assert.rejects(access(new URL("app/_sites-preview", templateRoot)));
-  await assert.rejects(access(new URL(".openai/hosting.json", templateRoot)));
-});
-
-test("builds each tool as an independent client chunk", async () => {
-  const clientAssets = await readdir(
-    new URL("../dist/client/assets/", import.meta.url),
-  );
-  const toolChunks = [
-    "base64-tool",
-    "base-converter-tool",
-    "ieee-754-tool",
-    "color-tool",
-    "css-formatter-tool",
-    "glitch-text-tool",
-    "html-formatter-tool",
-    "json-tool",
-    "js-formatter-tool",
-    "md5-tool",
-    "sha-tool",
-    "password-tool",
-    "regex-tool",
-    "text-stats-tool",
-    "time-diff-tool",
-    "timestamp-tool",
-  ];
-
-  for (const chunkName of toolChunks) {
-    assert.equal(
-      clientAssets.some((fileName) =>
-        fileName.startsWith(`${chunkName}-`) && fileName.endsWith(".js"),
-      ),
-      true,
-      `missing dynamic chunk for ${chunkName}`,
-    );
-  }
+  await Promise.all([
+    "app/_sites-preview",
+    ".openai/hosting.json",
+    "app/page.tsx",
+    "app/layout.tsx",
+    "app/not-found.tsx",
+    "app/[toolId]/page.tsx",
+    "next.config.ts",
+    "vite.pages.config.ts",
+  ].map((path) => assert.rejects(access(new URL(path, templateRoot)))));
 });
 
 test("guards tool behavior and accessibility contracts", async () => {
@@ -445,8 +336,10 @@ test("keeps exact audited dependency versions", async () => {
 
   assert.equal(packageJson.dependencies.postcss, "8.5.14");
   assert.equal(packageJson.dependencies["hash-wasm"], "4.12.0");
-  assert.equal(packageJson.overrides.next.postcss, "8.5.14");
   assert.match(lockSource, /"node_modules\/hash-wasm": \{/);
   assert.match(lockSource, /"version": "4\.12\.0"/);
-  assert.doesNotMatch(lockSource, /node_modules\/next\/node_modules\/postcss/);
+  assert.doesNotMatch(
+    lockSource,
+    /node_modules\/(?:next|vinext|react-server-dom-webpack|@vitejs\/plugin-rsc)/,
+  );
 });

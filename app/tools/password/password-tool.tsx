@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { CopyButton, ToolStatus } from "../shared/tool-ui";
 import styles from "./styles.module.css";

@@ -7,7 +7,7 @@ import { getHomeHref, parseToolRoute } from "./tool-routes";
 const root = document.getElementById("root");
 
 if (!root) {
-  throw new Error("Missing #root element for the GitHub Pages entry.");
+  throw new Error("Missing #root element for the application entry.");
 }
 
 const basePath = import.meta.env.BASE_URL;

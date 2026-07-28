@@ -1,5 +1,3 @@
-"use client";
-
 import { useRef, useState, type ReactNode } from "react";
 import { CopyButton, ToolStatus } from "./tool-ui";
 import styles from "./code-transform-tool.module.css";

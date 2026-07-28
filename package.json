@@ -6,19 +6,17 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vite build --config vite.pages.config.ts",
-    "build:server": "vinext build",
-    "start": "vinext start",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "pages:build": "npm run build",
     "typecheck": "tsc --noEmit --incremental false",
-    "test": "npm run typecheck && npm run build:server && node --experimental-strip-types --test tests/rendered-html.test.mjs tests/tool-routes.test.mjs tests/time-diff.test.mjs tests/glitch-text.test.mjs tests/base-converter.test.mjs tests/ieee-754.test.mjs tests/code-formatters.test.mjs tests/regex.test.mjs tests/hash-file.test.mjs tests/md5.test.mjs tests/sha.test.mjs",
+    "test": "npm run typecheck && node --experimental-strip-types --test tests/frontend-structure.test.mjs tests/tool-routes.test.mjs tests/time-diff.test.mjs tests/glitch-text.test.mjs tests/base-converter.test.mjs tests/ieee-754.test.mjs tests/code-formatters.test.mjs tests/regex.test.mjs tests/hash-file.test.mjs tests/md5.test.mjs tests/sha.test.mjs",
     "test:pages": "npm run pages:build && node --test tests/pages-build.test.mjs"
   },
   "dependencies": {
     "csso": "5.0.5",
     "hash-wasm": "4.12.0",
-    "next": "16.2.6",
     "parse5": "8.0.1",
     "postcss": "8.5.14",
     "prettier": "3.9.5",
@@ -32,16 +30,8 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
-    "@vitejs/plugin-rsc": "0.5.26",
-    "react-server-dom-webpack": "19.2.6",
     "typescript": "5.9.3",
-    "vinext": "0.0.50",
     "vite": "8.0.13"
-  },
-  "overrides": {
-    "next": {
-      "postcss": "8.5.14"
-    }
   },
   "type": "module"
 }

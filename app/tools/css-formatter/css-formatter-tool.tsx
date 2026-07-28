@@ -1,5 +1,3 @@
-"use client";
-
 import { CodeTransformTool } from "../shared/code-transform-tool";
 import { formatCss, minifyCss } from "./css-formatter-core";
 
