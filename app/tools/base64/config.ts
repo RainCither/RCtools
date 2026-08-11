@@ -1,5 +1,7 @@
+/** 注册支持 UTF-8 文本的 Base64 编解码工具。 */
 import { defineTool } from "../../tool-types";
 
+/** Base64 工具的首页元数据与懒加载入口。 */
 export const base64ToolConfig = defineTool({
   id: "base64",
   title: "Base64 编解码",

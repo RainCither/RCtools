@@ -1,3 +1,4 @@
+/* 定义文本统计结果卡片的自适应网格。 */
 .statGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

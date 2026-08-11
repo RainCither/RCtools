@@ -1,11 +1,14 @@
+/** 在 Unix 时间戳、可解析日期、本地时间与 ISO 时间之间转换。 */
 import { useState } from "react";
 import { ToolStatus } from "../shared/tool-ui";
 
+/** 渲染时间输入和多种标准化时间表示。 */
 export default function TimestampTool() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<{ local: string; iso: string; seconds: string; milliseconds: string } | null>(null);
   const [error, setError] = useState("");
 
+  /** 识别秒/毫秒时间戳或日期文本，并生成统一结果。 */
   function convert(value = input) {
     const cleanValue = value.trim();
     let date: Date;
@@ -47,6 +50,7 @@ export default function TimestampTool() {
     setError("");
   }
 
+  /** 以当前毫秒时间戳填充输入并立即转换。 */
   function useNow() {
     const now = Date.now().toString();
     setInput(now);

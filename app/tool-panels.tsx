@@ -1,3 +1,4 @@
+/** 管理工具模块的懒加载、预加载缓存、加载占位与失败重试。 */
 import {
   Component,
   lazy,
@@ -15,6 +16,7 @@ const TOOL_LOADERS = Object.fromEntries(
 
 const TOOL_LOAD_PROMISES = new Map<ToolId, ReturnType<ToolLoader>>();
 
+/** 加载指定工具，并复用仍在进行中的导入请求。 */
 function loadTool(toolId: ToolId) {
   const cached = TOOL_LOAD_PROMISES.get(toolId);
   if (cached) return cached;
@@ -34,6 +36,7 @@ const TOOL_COMPONENTS = new Map<
   LazyExoticComponent<ComponentType>
 >();
 
+/** 获取稳定的 React 懒加载组件；加载失败时允许下一次重新创建。 */
 function getToolComponent(toolId: ToolId) {
   const cached = TOOL_COMPONENTS.get(toolId);
   if (cached) return cached;
@@ -50,15 +53,18 @@ function getToolComponent(toolId: ToolId) {
   return component;
 }
 
+/** 清除指定工具的请求与组件缓存，为显式重试准备干净状态。 */
 function clearToolLoad(toolId: ToolId) {
   TOOL_LOAD_PROMISES.delete(toolId);
   TOOL_COMPONENTS.delete(toolId);
 }
 
+/** 在用户可能进入工具前提前请求对应代码块。 */
 export function preloadTool(toolId: ToolId) {
   void loadTool(toolId);
 }
 
+/** 工具代码块下载期间显示的可访问状态提示。 */
 function ToolLoading() {
   return (
     <div className="tool-loading" role="status" aria-live="polite">
@@ -68,6 +74,7 @@ function ToolLoading() {
   );
 }
 
+/** 工具加载失败后的错误信息与重试入口。 */
 function ToolLoadError({ onRetry }: { onRetry: () => void }) {
   return (
     <div className="tool-load-error" role="alert">
@@ -80,22 +87,26 @@ function ToolLoadError({ onRetry }: { onRetry: () => void }) {
   );
 }
 
+/** 隔离懒加载错误，并在切换工具或重试时恢复渲染。 */
 class ToolLoadBoundary extends Component<
   { toolId: ToolId; children: ReactNode },
   { failed: boolean; attempt: number }
 > {
   state = { failed: false, attempt: 0 };
 
+  /** 将子树错误转换为可渲染的失败状态。 */
   static getDerivedStateFromError() {
     return { failed: true };
   }
 
+  /** 切换到另一工具时清除上一个工具遗留的错误状态。 */
   componentDidUpdate(previousProps: { toolId: ToolId }) {
     if (previousProps.toolId !== this.props.toolId && this.state.failed) {
       this.setState({ failed: false, attempt: 0 });
     }
   }
 
+  /** 清缓存并递增尝试次数，强制重新挂载工具内容。 */
   handleRetry = () => {
     clearToolLoad(this.props.toolId);
     this.setState((current) => ({
@@ -104,6 +115,7 @@ class ToolLoadBoundary extends Component<
     }));
   };
 
+  /** 根据加载状态渲染错误提示或工具子树。 */
   render() {
     if (this.state.failed) {
       return <ToolLoadError onRetry={this.handleRetry} />;
@@ -113,6 +125,7 @@ class ToolLoadBoundary extends Component<
   }
 }
 
+/** 将指定工具组件置于 Suspense 加载边界内。 */
 function ToolPanelContent({ toolId }: { toolId: ToolId }) {
   const ActiveTool = getToolComponent(toolId);
 
@@ -123,6 +136,7 @@ function ToolPanelContent({ toolId }: { toolId: ToolId }) {
   );
 }
 
+/** 为当前工具组合错误边界与异步加载边界。 */
 export function ToolPanel({ toolId }: { toolId: ToolId }) {
   return (
     <ToolLoadBoundary toolId={toolId}>

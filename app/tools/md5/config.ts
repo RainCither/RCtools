@@ -1,5 +1,7 @@
+/** 注册文本和小文件的 MD5 摘要计算与校验工具。 */
 import { defineTool } from "../../tool-types";
 
+/** MD5 工具的首页元数据与懒加载入口。 */
 export const md5ToolConfig = defineTool({
   id: "md5",
   title: "MD5 加密与校验",

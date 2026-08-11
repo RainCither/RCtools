@@ -1,3 +1,4 @@
+/** 提供多算法文本/文件 SHA 计算、复制与摘要校验界面。 */
 import { useRef, useState } from "react";
 import {
   formatHashFileSize,
@@ -21,10 +22,12 @@ type VerificationState = "idle" | "match" | "mismatch";
 
 const DEFAULT_ALGORITHM: ShaAlgorithm = "SHA-256";
 
+/** 将未知计算异常转换为稳定的用户提示。 */
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : "计算失败，请稍后重试。";
 }
 
+/** 渲染 SHA 算法、来源、计算结果及候选校验流程。 */
 export default function ShaTool() {
   const [algorithm, setAlgorithm] = useState<ShaAlgorithm>(DEFAULT_ALGORITHM);
   const [sourceMode, setSourceMode] = useState<HashSourceMode>("text");
@@ -41,6 +44,7 @@ export default function ShaTool() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  /** 清除所有由当前输入和算法计算出的状态。 */
   function resetComputedState() {
     setDigest("");
     setVerification("idle");
@@ -48,6 +52,7 @@ export default function ShaTool() {
     setOperationError("");
   }
 
+  /** 切换算法，并清除与旧算法绑定的目标和结果。 */
   function selectAlgorithm(nextAlgorithm: ShaAlgorithm) {
     setAlgorithm(nextAlgorithm);
     setDigestAlgorithm(nextAlgorithm);
@@ -55,17 +60,20 @@ export default function ShaTool() {
     resetComputedState();
   }
 
+  /** 切换文本/文件来源，并丢弃旧来源的计算状态。 */
   function changeSourceMode(nextMode: HashSourceMode) {
     if (nextMode === sourceMode) return;
     setSourceMode(nextMode);
     resetComputedState();
   }
 
+  /** 更新候选文本并使旧摘要失效。 */
   function handleTextChange(value: string) {
     setInput(value);
     resetComputedState();
   }
 
+  /** 校验新文件并同步文件选择与错误状态。 */
   function handleFileChange(file: File | null) {
     resetComputedState();
 
@@ -85,12 +93,14 @@ export default function ShaTool() {
     setSelectedFile(file);
   }
 
+  /** 使用当前算法计算文本或文件来源的摘要。 */
   async function hashCurrentSource() {
     if (sourceMode === "text") return shaHex(input, algorithm);
     if (!selectedFile) throw new Error("请先选择要计算的文件。");
     return shaBytes(await readHashFileBytes(selectedFile), algorithm);
   }
 
+  /** 计算当前来源摘要并记录实际使用的算法。 */
   async function calculateDigest() {
     setBusy(true);
     setDigest("");
@@ -108,6 +118,7 @@ export default function ShaTool() {
     }
   }
 
+  /** 计算候选来源并与目标 SHA 摘要比较。 */
   async function verifyCandidate() {
     setBusy(true);
     setDigest("");
@@ -138,6 +149,7 @@ export default function ShaTool() {
     }
   }
 
+  /** 清空全部输入、结果和文件控件，并恢复合适的焦点。 */
   function clearAll() {
     setInput("");
     setSelectedFile(null);

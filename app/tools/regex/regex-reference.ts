@@ -1,7 +1,10 @@
+/** 集中维护正则语法速查、分类与常用表达式示例数据。 */
 import type { RegexFlag } from "./regex-core";
 
+/** 正则工具的三个顶层标签页。 */
 export type RegexView = "tester" | "syntax" | "common";
 
+/** 单张语法速查卡的内容结构。 */
 export type RegexSyntaxEntry = {
   id: string;
   syntax: string;
@@ -10,6 +13,7 @@ export type RegexSyntaxEntry = {
   example: string;
 };
 
+/** 一组相关语法速查卡及其说明。 */
 export type RegexSyntaxSection = {
   id: string;
   title: string;
@@ -17,6 +21,7 @@ export type RegexSyntaxSection = {
   entries: readonly RegexSyntaxEntry[];
 };
 
+/** 常用正则库的分类 id。 */
 export type CommonRegexCategory =
   | "text"
   | "number"
@@ -24,12 +29,14 @@ export type CommonRegexCategory =
   | "datetime"
   | "development";
 
+/** 常用正则分类的标题和用途说明。 */
 export type CommonRegexCategoryDefinition = {
   id: CommonRegexCategory;
   title: string;
   description: string;
 };
 
+/** 可复制并载入测试器的常用表达式条目。 */
 export type CommonRegexEntry = {
   id: string;
   category: CommonRegexCategory;
@@ -42,6 +49,7 @@ export type CommonRegexEntry = {
   note?: string;
 };
 
+/** 按主题组织的 JavaScript 正则语法速查数据。 */
 export const REGEX_SYNTAX_SECTIONS = [
   {
     id: "characters",
@@ -126,6 +134,7 @@ export const REGEX_SYNTAX_SECTIONS = [
   },
 ] as const satisfies readonly RegexSyntaxSection[];
 
+/** 常用正则在参考界面中的分类与展示顺序。 */
 export const COMMON_REGEX_CATEGORIES = [
   { id: "text", title: "文本处理", description: "空白、空行与常用字符范围。" },
   { id: "number", title: "数字格式", description: "整数、小数、百分比与千分位。" },
@@ -134,6 +143,7 @@ export const COMMON_REGEX_CATEGORIES = [
   { id: "development", title: "开发标识", description: "代码和配置中常见的标识格式。" },
 ] as const satisfies readonly CommonRegexCategoryDefinition[];
 
+/** 面向常见文本、数字、网络、日期和开发场景的表达式库。 */
 export const COMMON_REGEXES: readonly CommonRegexEntry[] = [
   {
     id: "non-empty-line",

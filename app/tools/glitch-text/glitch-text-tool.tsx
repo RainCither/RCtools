@@ -1,3 +1,4 @@
+/** 提供故障强度、符号位置和 Unicode 范围可调的文字生成界面。 */
 import { useMemo, useState } from "react";
 import { CopyButton, ToolStatus } from "../shared/tool-ui";
 import {
@@ -74,6 +75,7 @@ type OptionToggleProps<T extends string> = {
   onChange: (id: T, checked: boolean) => void;
 };
 
+/** 渲染带标签与说明的通用高级选项开关。 */
 function OptionToggle<T extends string>({
   id,
   label,
@@ -96,14 +98,17 @@ function OptionToggle<T extends string>({
   );
 }
 
+/** 创建互不共享引用的默认符号位置选项。 */
 function freshPlacements() {
   return { ...DEFAULT_PLACEMENTS };
 }
 
+/** 创建互不共享引用的默认 Unicode 范围选项。 */
 function freshRanges() {
   return { ...DEFAULT_RANGES };
 }
 
+/** 渲染故障文字输入、预设、高级设置和安全预览。 */
 export default function GlitchTextTool() {
   const [input, setInput] = useState("");
   const [preset, setPreset] = useState<IntensityPreset>("medium");
@@ -119,16 +124,19 @@ export default function GlitchTextTool() {
     [result],
   );
 
+  /** 当已有结果时标记设置已变化，并清除旧错误。 */
   function markDirty() {
     if (result) setDirty(true);
     setError("");
   }
 
+  /** 更新原文并提示结果需要重新生成。 */
   function changeInput(value: string) {
     setInput(value);
     markDirty();
   }
 
+  /** 应用预设强度及其组合符数量范围。 */
   function applyPreset(nextPreset: Exclude<IntensityPreset, "custom">) {
     const selected = PRESETS.find(({ id }) => id === nextPreset);
     if (!selected) return;
@@ -137,22 +145,26 @@ export default function GlitchTextTool() {
     markDirty();
   }
 
+  /** 更新自定义范围的一侧，并切换到自定义强度。 */
   function changeNoiseBoundary(boundary: keyof NoiseRange, value: number) {
     setPreset("custom");
     setNoiseRange((current) => ({ ...current, [boundary]: value }));
     markDirty();
   }
 
+  /** 更新一个符号位置开关。 */
   function changePlacement(id: GlitchMarkPlacement, checked: boolean) {
     setPlacements((current) => ({ ...current, [id]: checked }));
     markDirty();
   }
 
+  /** 更新一个 Unicode 字符范围开关。 */
   function changeRange(id: GlitchMarkRange, checked: boolean) {
     setRanges((current) => ({ ...current, [id]: checked }));
     markDirty();
   }
 
+  /** 校验输入和设置后生成故障文字及统计。 */
   function generate() {
     if (!input.trim()) {
       setResult(null);
@@ -206,6 +218,7 @@ export default function GlitchTextTool() {
     setDirty(false);
   }
 
+  /** 恢复输入、强度、选项和结果的初始状态。 */
   function reset() {
     setInput("");
     setPreset("medium");

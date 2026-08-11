@@ -1,5 +1,7 @@
+/** 注册连续与成对时间间隔计算工具。 */
 import { defineTool } from "../../tool-types";
 
+/** 时间差工具的首页元数据与懒加载入口。 */
 export const timeDiffToolConfig = defineTool({
   id: "time-diff",
   title: "连续时间差",

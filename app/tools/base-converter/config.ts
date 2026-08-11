@@ -1,5 +1,7 @@
+/** 注册支持常用进制精确整数互转的工具。 */
 import { defineTool } from "../../tool-types";
 
+/** 进制转换工具的首页元数据与懒加载入口。 */
 export const baseConverterToolConfig = defineTool({
   id: "base-converter",
   title: "进制转换",

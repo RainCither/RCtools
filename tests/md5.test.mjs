@@ -1,3 +1,4 @@
+/** 将 MD5 实现与 Node 标准库对照，并验证摘要校验规则。 */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";

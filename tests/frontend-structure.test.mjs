@@ -1,3 +1,4 @@
+/** 锁定浏览器端模块结构、工具注册和关键前端源码约束。 */
 import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
@@ -11,14 +12,6 @@ test("keeps a modular browser-only application structure", async () => {
     externalLinks,
     panels,
     routes,
-    appRoutes,
-    pageMetadata,
-    pageRegistry,
-    pagePanel,
-    sts2Page,
-    sts2App,
-    sts2Map,
-    sts2Misc,
     toolbox,
     entry,
     packageJson,
@@ -31,44 +24,6 @@ test("keeps a modular browser-only application structure", async () => {
     readFile(new URL("../app/external-links.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-panels.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/tool-routes.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/app-routes.ts", import.meta.url), "utf8"),
-    readFile(
-      new URL("../app/pages/page-metadata.ts", import.meta.url),
-      "utf8",
-    ),
-    readFile(
-      new URL("../app/pages/page-registry.ts", import.meta.url),
-      "utf8",
-    ),
-    readFile(
-      new URL("../app/pages/page-panel.tsx", import.meta.url),
-      "utf8",
-    ),
-    readFile(
-      new URL("../app/pages/sts2saveedit-page.tsx", import.meta.url),
-      "utf8",
-    ),
-    readFile(
-      new URL(
-        "../app/pages/sts2saveedit/sts2-save-editor.tsx",
-        import.meta.url,
-      ),
-      "utf8",
-    ),
-    readFile(
-      new URL(
-        "../app/pages/sts2saveedit/map-editor.tsx",
-        import.meta.url,
-      ),
-      "utf8",
-    ),
-    readFile(
-      new URL(
-        "../app/pages/sts2saveedit/misc-editor.tsx",
-        import.meta.url,
-      ),
-      "utf8",
-    ),
     readFile(new URL("../app/toolbox-app.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/main.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
@@ -107,46 +62,10 @@ test("keeps a modular browser-only application structure", async () => {
   assert.doesNotMatch(panels, /function JsonTool|function PasswordTool/);
   assert.match(routes, /export function parseToolRoute/);
   assert.match(routes, /export function getToolHref/);
-  assert.match(appRoutes, /export function parseAppRoute/);
-  assert.match(appRoutes, /kind: "page"/);
-  assert.doesNotMatch(appRoutes, /namespace === "other"/);
-  assert.match(pageMetadata, /id: "sts2saveedit"/);
-  assert.match(pageMetadata, /杀戮尖塔 2 存档修改器/);
-  assert.match(pageMetadata, /homeCard: \{/);
-  assert.match(pageMetadata, /category: "other"/);
-  assert.match(pageMetadata, /mark: "S2"/);
-  assert.match(pageMetadata, /"Slay the Spire 2"/);
-  assert.match(pageMetadata, /"save editor"/);
-  assert.match(pageRegistry, /export const PAGES/);
-  assert.match(pageRegistry, /\.\.\.PAGE_METADATA\[0\]/);
-  assert.match(
-    pageRegistry,
-    /load: \(\) => import\("\.\/sts2saveedit-page"\)/,
-  );
-  assert.doesNotMatch(pageRegistry, /defineTool|TOOLS/);
-  assert.match(pagePanel, /export function PagePanel/);
-  assert.match(pagePanel, /lazy\(page\.load\)/);
-  assert.doesNotMatch(panels, /PAGE_METADATA|sts2saveedit/);
-  assert.match(sts2Page, /<Sts2SaveEditor \/>/);
-  assert.match(sts2App, /parseSts2Save/);
-  assert.match(sts2App, /serializeSts2Save/);
-  assert.match(sts2App, /文件只会在当前浏览器中处理/);
-  assert.match(sts2App, /CC BY-NC-SA 4\.0/);
-  assert.match(sts2Map, /getCurrentMap/);
-  assert.match(sts2Map, /aria-label="当前地图"/);
-  assert.match(sts2Map, /save\.visited_map_coords/);
-  assert.match(sts2Map, /mapNodeCurrent/);
-  assert.doesNotMatch(sts2Map, /getActMap|mapActTabs|role="tab"/);
-  assert.match(sts2Misc, /进阶等级/);
-  assert.match(sts2Misc, /药水修改/);
-  assert.match(sts2Misc, /potionCatalogJson/);
-  assert.doesNotMatch(registry, /sts2saveedit|PAGES/);
   assert.match(toolbox, /HOVER_PRELOAD_DELAY = 120/);
-  assert.match(toolbox, /const PAGE_CARDS/);
-  assert.match(toolbox, /getPageHref\(pageCard\.pageId, basePath\)/);
   assert.match(
     toolbox,
-    /\.\.\.TOOLS,\s+\.\.\.PAGE_CARDS,\s+\.\.\.EXTERNAL_LINKS/,
+    /\.\.\.TOOLS,\s+\.\.\.EXTERNAL_LINKS/,
   );
   assert.match(toolbox, /const HOME_CARD_BY_ID/);
   assert.match(toolbox, /target=\{opensNewTab \? "_blank" : undefined\}/);
@@ -167,16 +86,10 @@ test("keeps a modular browser-only application structure", async () => {
     /developerGuide|showDeveloperGuide|添加一个新工具/,
   );
   assert.match(entry, /createRoot\(root\)\.render/);
-  assert.match(entry, /parseAppRoute\(/);
-  assert.match(entry, /isPageId/);
-  assert.match(entry, /route\.kind === "page"/);
-  assert.match(entry, /<PagePanel pageId=\{route\.pageId\} \/>/);
+  assert.match(entry, /parseToolRoute\(window\.location\.pathname/);
   assert.match(entry, /route\.kind === "tool" \? route\.toolId : null/);
   assert.match(viteConfig, /import react from "@vitejs\/plugin-react"/);
-  assert.match(viteConfig, /name: "static-app-routes"/);
-  assert.match(viteConfig, /PAGE_METADATA/);
-  assert.match(viteConfig, /resolve\(outputDirectory, page\.id\)/);
-  assert.doesNotMatch(viteConfig, /"other",\s+page\.id/);
+  assert.match(viteConfig, /name: "static-tool-routes"/);
   assert.match(viteConfig, /resolve\(routeDirectory, "index\.html"\)/);
   assert.doesNotMatch(viteConfig, /vinext|plugin-rsc|react-server/i);
   assert.doesNotMatch(tsconfig, /"name":\s*"next"|\.next|next-env/i);

@@ -1,5 +1,7 @@
+/** 注册 JavaScript 正则测试、替换与语法参考工具。 */
 import { defineTool } from "../../tool-types";
 
+/** 正则工具的首页元数据与懒加载入口。 */
 export const regexToolConfig = defineTool({
   id: "regex",
   title: "正则表达式测试",

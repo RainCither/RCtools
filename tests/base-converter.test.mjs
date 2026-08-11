@@ -1,3 +1,4 @@
+/** 验证进制转换的精确结果、前缀、符号与输入错误边界。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {

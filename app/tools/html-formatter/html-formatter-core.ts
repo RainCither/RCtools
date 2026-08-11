@@ -1,3 +1,4 @@
+/** 格式化或保守压缩 HTML，并按类型处理内嵌 CSS 与 JavaScript。 */
 import type { DefaultTreeAdapterTypes } from "parse5";
 
 type ParentNode = DefaultTreeAdapterTypes.ParentNode;
@@ -35,78 +36,95 @@ let parse5Promise: Promise<typeof import("parse5")> | undefined;
 let cssoPromise: Promise<typeof import("csso")> | undefined;
 let terserPromise: Promise<typeof import("terser")> | undefined;
 
+/** 拒绝仅包含空白的 HTML 输入。 */
 function requireHtml(input: string) {
   if (!input.trim()) throw new Error("请输入 HTML 内容。");
 }
 
+/** 延迟加载并复用 Prettier standalone 模块。 */
 function getPrettier() {
   prettierPromise ??= import("prettier/standalone");
   return prettierPromise;
 }
 
+/** 延迟加载并复用 Prettier 的 HTML 插件。 */
 function getHtmlPlugin() {
   htmlPluginPromise ??= import("prettier/plugins/html");
   return htmlPluginPromise;
 }
 
+/** 延迟加载并复用内嵌脚本所需的 Babel 插件。 */
 function getBabelPlugin() {
   babelPluginPromise ??= import("prettier/plugins/babel");
   return babelPluginPromise;
 }
 
+/** 延迟加载并复用内嵌脚本所需的 ESTree 插件。 */
 function getEstreePlugin() {
   estreePluginPromise ??= import("prettier/plugins/estree");
   return estreePluginPromise;
 }
 
+/** 延迟加载并复用内嵌样式所需的 PostCSS 插件。 */
 function getPostcssPlugin() {
   postcssPluginPromise ??= import("prettier/plugins/postcss");
   return postcssPluginPromise;
 }
 
+/** 延迟加载并复用 HTML5 解析与序列化器。 */
 function getParse5() {
   parse5Promise ??= import("parse5");
   return parse5Promise;
 }
 
+/** 延迟加载并复用内嵌 CSS 压缩器。 */
 function getCsso() {
   cssoPromise ??= import("csso");
   return cssoPromise;
 }
 
+/** 延迟加载并复用内嵌 JavaScript 压缩器。 */
 function getTerser() {
   terserPromise ??= import("terser");
   return terserPromise;
 }
 
+/** 判断 parse5 子节点是否为元素节点。 */
 function isElement(node: ChildNode): node is Element {
   return "tagName" in node;
 }
 
+/** 判断 parse5 子节点是否为文本节点。 */
 function isTextNode(node: ChildNode): node is TextNode {
   return node.nodeName === "#text";
 }
 
+/** 判断 parse5 子节点是否为注释节点。 */
 function isCommentNode(node: ChildNode): node is CommentNode {
   return node.nodeName === "#comment";
 }
 
+/** 不区分大小写地读取指定 HTML 属性。 */
 function getAttribute(element: Element, name: string) {
   return element.attrs.find((attribute) => attribute.name.toLowerCase() === name)?.value;
 }
 
+/** 识别压缩时必须保留的旧版条件注释。 */
 function isConditionalComment(comment: CommentNode) {
   return CONDITIONAL_COMMENT_PATTERN.test(comment.data);
 }
 
+/** 将普通文本节点中的连续 HTML 空白折叠为单个空格。 */
 function collapseTextWhitespace(value: string) {
   return value.replace(/[\t\n\f\r ]+/g, " ");
 }
 
+/** 拼接元素直属文本节点中的原始代码内容。 */
 function getRawText(element: Element) {
   return element.childNodes.filter(isTextNode).map((node) => node.value).join("");
 }
 
+/** 用压缩结果替换元素的直属文本内容。 */
 function replaceRawText(element: Element, value: string) {
   const textNode = element.childNodes.find(isTextNode);
   if (!textNode) return;
@@ -114,19 +132,23 @@ function replaceRawText(element: Element, value: string) {
   element.childNodes = [textNode];
 }
 
+/** 判断 style 元素是否包含可由 CSSO 处理的 CSS。 */
 function isCssStyle(element: Element) {
   const type = (getAttribute(element, "type") ?? "").trim().toLowerCase();
   return type === "" || type === "text/css";
 }
 
+/** 规范化 script 元素的 type 属性。 */
 function getJavaScriptType(element: Element) {
   return (getAttribute(element, "type") ?? "").trim().toLowerCase();
 }
 
+/** 判断脚本是否为无 src 且类型受支持的内嵌 JavaScript。 */
 function isInlineJavaScript(element: Element) {
   return !getAttribute(element, "src") && JAVASCRIPT_TYPES.has(getJavaScriptType(element));
 }
 
+/** 压缩单个可处理的内嵌 style 元素。 */
 async function minifyStyleElement(element: Element) {
   const source = getRawText(element);
   if (!source.trim()) return;
@@ -140,6 +162,7 @@ async function minifyStyleElement(element: Element) {
   }
 }
 
+/** 压缩单个可处理的内嵌 script 元素并保留标识符名称。 */
 async function minifyScriptElement(element: Element) {
   const source = getRawText(element);
   if (!source.trim()) return;
@@ -160,6 +183,7 @@ async function minifyScriptElement(element: Element) {
   }
 }
 
+/** 递归移除普通注释、折叠文本并压缩安全的内嵌资源。 */
 async function minifyTree(parent: ParentNode): Promise<void> {
   const retainedChildren: ChildNode[] = [];
 
@@ -197,6 +221,7 @@ async function minifyTree(parent: ParentNode): Promise<void> {
   parent.childNodes = retainedChildren;
 }
 
+/** 使用 Prettier 统一格式化完整文档或 HTML 片段。 */
 export async function formatHtml(input: string): Promise<string> {
   requireHtml(input);
 
@@ -224,6 +249,7 @@ export async function formatHtml(input: string): Promise<string> {
   }
 }
 
+/** 通过 parse5 保守压缩文档/片段，并序列化为有效 HTML。 */
 export async function minifyHtml(input: string): Promise<string> {
   requireHtml(input);
 

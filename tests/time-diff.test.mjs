@@ -1,3 +1,4 @@
+/** 验证时间解析、跨午夜差值、累计和两种时长格式。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {

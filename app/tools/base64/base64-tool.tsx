@@ -1,6 +1,8 @@
+/** 提供 UTF-8 文本与 Base64 字符串之间的浏览器端转换界面。 */
 import { useState } from "react";
 import { CopyButton, ToolStatus } from "../shared/tool-ui";
 
+/** 将 Unicode 文本编码为 Base64。 */
 function encodeBase64(value: string) {
   const bytes = new TextEncoder().encode(value);
   let binary = "";
@@ -8,17 +10,20 @@ function encodeBase64(value: string) {
   return btoa(binary);
 }
 
+/** 忽略空白并将 Base64 内容解码为 Unicode 文本。 */
 function decodeBase64(value: string) {
   const binary = atob(value.replace(/\s/g, ""));
   const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
   return new TextDecoder().decode(bytes);
 }
 
+/** 渲染 Base64 编解码工具并管理结果与错误状态。 */
 export default function Base64Tool() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
 
+  /** 按选择的方向执行转换，并将无效输入映射为用户提示。 */
   function transform(mode: "encode" | "decode") {
     try {
       setOutput(mode === "encode" ? encodeBase64(input) : decodeBase64(input));

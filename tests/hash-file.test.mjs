@@ -1,3 +1,4 @@
+/** 验证共享哈希文件大小策略、显示单位与浏览器读取错误。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
@@ -29,6 +30,7 @@ test("formats selected file sizes with KiB and MiB labels", () => {
 test("reads the entire file into bytes", async () => {
   const bytes = await readHashFileBytes({
     size: 3,
+    /** 模拟浏览器 File.arrayBuffer 返回完整文件字节。 */
     async arrayBuffer() {
       return Uint8Array.from([0x00, 0xff, 0x7f]).buffer;
     },
@@ -42,6 +44,7 @@ test("rejects oversized files before reading", async () => {
   await assert.rejects(
     readHashFileBytes({
       size: MAX_HASH_FILE_BYTES + 1,
+      /** 若错误地读取超限文件，该模拟方法会记录调用。 */
       async arrayBuffer() {
         read = true;
         return new ArrayBuffer(0);
@@ -56,6 +59,7 @@ test("converts browser read failures to a stable local error", async () => {
   await assert.rejects(
     readHashFileBytes({
       size: 1,
+      /** 模拟浏览器特有的底层读取失败。 */
       async arrayBuffer() {
         throw new Error("browser-specific failure");
       },

@@ -1,6 +1,8 @@
+/** 从 TypeScript 工具注册表中提取构建阶段需要的静态路由元数据。 */
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
+/** 读取配置源码中的字符串字段，并对缺失字段给出明确错误。 */
 function readStringField(source, fieldName, configPath) {
   const match = source.match(
     new RegExp(`\\b${fieldName}:\\s*("(?:\\\\.|[^"\\\\])*")`),
@@ -11,6 +13,7 @@ function readStringField(source, fieldName, configPath) {
   return JSON.parse(match[1]);
 }
 
+/** 按注册顺序读取所有工具的 id、标题和简介。 */
 export async function readRegisteredTools(projectRoot) {
   const registryPath = resolve(projectRoot, "app", "tool-registry.ts");
   const registrySource = await readFile(registryPath, "utf8");

@@ -1,3 +1,4 @@
+/** 验证故障文字的字素处理、组合符选择、限制和随机边界。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {

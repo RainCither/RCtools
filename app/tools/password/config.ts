@@ -1,5 +1,7 @@
+/** 注册使用浏览器安全随机源的密码生成工具。 */
 import { defineTool } from "../../tool-types";
 
+/** 密码生成工具的首页元数据与懒加载入口。 */
 export const passwordToolConfig = defineTool({
   id: "password",
   title: "密码生成",

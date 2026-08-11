@@ -1,5 +1,7 @@
+/** 注册 SHA-1、SHA-256 与 SHA-512 摘要计算和校验工具。 */
 import { defineTool } from "../../tool-types";
 
+/** SHA 工具的首页元数据与懒加载入口。 */
 export const shaToolConfig = defineTool({
   id: "sha",
   title: "SHA-1 / SHA-2 哈希与校验",

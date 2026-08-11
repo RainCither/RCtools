@@ -1,5 +1,7 @@
+/** 注册 IEEE-754 数值与位模式双向转换工具。 */
 import { defineTool } from "../../tool-types";
 
+/** IEEE-754 工具的首页元数据与懒加载入口。 */
 export const ieee754ToolConfig = defineTool({
   id: "ieee-754",
   title: "IEEE-754 浮点数转换",

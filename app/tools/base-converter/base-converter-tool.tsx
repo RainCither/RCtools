@@ -1,3 +1,4 @@
+/** 提供常用整数进制选择、实时转换与逐项复制界面。 */
 import { useRef, useState } from "react";
 import { CopyButton } from "../shared/tool-ui";
 import {
@@ -18,6 +19,7 @@ const BASE_OPTIONS: ReadonlyArray<{
   { value: 16, label: "十六进制", shortLabel: "Base 16" },
 ];
 
+/** 渲染支持超长 BigInt 输入的进制转换工具。 */
 export default function BaseConverterTool() {
   const [sourceBase, setSourceBase] = useState<CommonBase>(10);
   const [input, setInput] = useState("");
@@ -25,6 +27,7 @@ export default function BaseConverterTool() {
   const conversion = convertBaseInteger(input, sourceBase);
   const helperId = "base-converter-input-help";
 
+  /** 清空输入并恢复编辑器焦点。 */
   function clearInput() {
     setInput("");
     inputRef.current?.focus();

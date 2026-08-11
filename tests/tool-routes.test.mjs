@@ -1,3 +1,4 @@
+/** 验证根路径/子目录部署下的工具 URL 生成与路由解析。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
@@ -9,6 +10,7 @@ import {
 
 const toolIds = new Set(["json", "timestamp", "ieee-754"]);
 
+/** 测试用工具 id 守卫，模拟真实注册表校验。 */
 function isToolId(value) {
   return toolIds.has(value);
 }

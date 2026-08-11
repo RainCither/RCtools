@@ -1,5 +1,7 @@
+/** 注册时间戳与日期时间双向转换工具。 */
 import { defineTool } from "../../tool-types";
 
+/** 时间戳工具的首页元数据与懒加载入口。 */
 export const timestampToolConfig = defineTool({
   id: "timestamp",
   title: "时间戳转换",

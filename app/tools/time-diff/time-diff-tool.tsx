@@ -1,3 +1,4 @@
+/** 提供连续时刻与独立时间对两种间隔计算模式。 */
 import { Fragment, useRef, useState, type KeyboardEvent } from "react";
 import {
   calculateAdjacentDifference,
@@ -25,14 +26,17 @@ type TimePair = {
   end: TimeEntry;
 };
 
+/** 创建具有稳定 id 的空时间输入项。 */
 function createEntry(id: string): TimeEntry {
   return { id, raw: "", touched: false };
 }
 
+/** 创建连续模式所需的两个初始时间项。 */
 function freshContinuousEntries() {
   return [createEntry("continuous-1"), createEntry("continuous-2")];
 }
 
+/** 创建一组开始/结束时间对。 */
 function createPair(id: number): TimePair {
   return {
     id,
@@ -41,10 +45,12 @@ function createPair(id: number): TimePair {
   };
 }
 
+/** 创建成对模式的初始时间组。 */
 function freshPairs() {
   return [createPair(1)];
 }
 
+/** 渲染时间模式、格式设置、逐项差值与累计结果。 */
 export default function TimeDiffTool() {
   const [mode, setMode] = useState<TimeDiffMode>("continuous");
   const [format, setFormat] = useState<TimeFormat>("HH:mm");
@@ -79,17 +85,20 @@ export default function TimeDiffTool() {
     ? format === "HH:mm:ss" ? "例如：093015" : "例如：0930"
     : format === "HH:mm:ss" ? "例如：09:30:15" : "例如：09:30";
 
+  /** 在下一帧聚焦动态添加或切换后的输入框。 */
   function focusEntry(id: string) {
     window.requestAnimationFrame(() => {
       inputRefs.current.get(id)?.focus();
     });
   }
 
+  /** 维护时间项 id 到实际输入元素的引用映射。 */
   function registerInput(id: string, element: HTMLInputElement | null) {
     if (element) inputRefs.current.set(id, element);
     else inputRefs.current.delete(id);
   }
 
+  /** 切换计算模式并聚焦该模式的首个输入。 */
   function changeMode(nextMode: TimeDiffMode) {
     setMode(nextMode);
     const firstId = nextMode === "continuous"
@@ -98,6 +107,7 @@ export default function TimeDiffTool() {
     if (firstId) focusEntry(firstId);
   }
 
+  /** 追加连续时间项并将焦点移到新输入。 */
   function addEntry() {
     const number = nextEntryIdRef.current;
     nextEntryIdRef.current += 1;
@@ -106,6 +116,7 @@ export default function TimeDiffTool() {
     focusEntry(entry.id);
   }
 
+  /** 追加独立时间对并聚焦其开始时间。 */
   function addPair() {
     const id = nextPairIdRef.current;
     nextPairIdRef.current += 1;
@@ -114,12 +125,14 @@ export default function TimeDiffTool() {
     focusEntry(pair.start.id);
   }
 
+  /** 更新指定连续时间项的原始输入。 */
   function updateEntry(id: string, raw: string) {
     setEntries((current) =>
       current.map((entry) => entry.id === id ? { ...entry, raw } : entry),
     );
   }
 
+  /** 标记连续时间项已失焦，以便显示校验错误。 */
   function touchEntry(id: string) {
     setEntries((current) =>
       current.map((entry) =>
@@ -128,6 +141,7 @@ export default function TimeDiffTool() {
     );
   }
 
+  /** 更新指定时间对一侧的原始输入。 */
   function updatePairEntry(pairId: number, side: PairSide, raw: string) {
     setPairs((current) =>
       current.map((pair) => {
@@ -137,6 +151,7 @@ export default function TimeDiffTool() {
     );
   }
 
+  /** 标记时间对一侧已失焦，以便显示校验错误。 */
   function touchPairEntry(pairId: number, side: PairSide) {
     setPairs((current) =>
       current.map((pair) => {
@@ -146,6 +161,7 @@ export default function TimeDiffTool() {
     );
   }
 
+  /** 将一个有效输入转换到新的格式与分隔符表示。 */
   function reformatEntry(
     entry: TimeEntry,
     nextFormat: TimeFormat,
@@ -161,6 +177,7 @@ export default function TimeDiffTool() {
     };
   }
 
+  /** 在设置变化前统一重排连续项与时间对的有效值。 */
   function reformatAllEntries(
     nextFormat: TimeFormat,
     nextOmitSeparator: boolean,
@@ -179,16 +196,19 @@ export default function TimeDiffTool() {
     );
   }
 
+  /** 转换全部值后切换时分或时分秒格式。 */
   function changeFormat(nextFormat: TimeFormat) {
     reformatAllEntries(nextFormat, omitSeparator);
     setFormat(nextFormat);
   }
 
+  /** 转换全部值后切换是否省略冒号。 */
   function changeSeparator(nextOmitSeparator: boolean) {
     reformatAllEntries(format, nextOmitSeparator);
     setOmitSeparator(nextOmitSeparator);
   }
 
+  /** 清空当前模式的所有时间，同时保留已添加的行。 */
   function clearTimes() {
     if (mode === "continuous") {
       setEntries((current) =>
@@ -210,6 +230,7 @@ export default function TimeDiffTool() {
     if (firstId) focusEntry(firstId);
   }
 
+  /** 恢复默认模式、格式、计数器和初始输入行。 */
   function reset() {
     nextEntryIdRef.current = 3;
     nextPairIdRef.current = 2;
@@ -221,6 +242,7 @@ export default function TimeDiffTool() {
     focusEntry("continuous-1");
   }
 
+  /** 在连续模式最后一格按 Tab 时自动追加下一项。 */
   function handleContinuousKeyDown(
     event: KeyboardEvent<HTMLInputElement>,
     index: number,
@@ -232,6 +254,7 @@ export default function TimeDiffTool() {
     addEntry();
   }
 
+  /** 在最后一组结束时间按 Tab 时自动追加下一组。 */
   function handlePairKeyDown(
     event: KeyboardEvent<HTMLInputElement>,
     index: number,

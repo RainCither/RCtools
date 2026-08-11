@@ -1,3 +1,4 @@
+/** 将 SHA 实现与 Node 标准库对照，并验证各算法摘要规则。 */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";

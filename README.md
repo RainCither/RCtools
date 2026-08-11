@@ -15,7 +15,7 @@
 
 ## 主页功能列表
 
-| 类别 | 工具或页面               | 功能                                                                    |
+| 类别 | 工具或链接               | 功能                                                                    |
 | ---- | ------------------------ | ----------------------------------------------------------------------- |
 | 开发 | JSON 格式化              | 校验、格式化或压缩 JSON 数据                                            |
 | 开发 | CSS 格式化压缩           | 格式化或压缩标准 CSS 样式代码                                           |
@@ -33,7 +33,6 @@
 | 开发 | 进制转换                 | 在二、八、十、十六进制整数之间精确转换                                  |
 | 开发 | IEEE-754 浮点数转换      | 在十进制数与 Float32/Float64 位模式之间双向转换                         |
 | 开发 | 颜色转换                 | 将 HEX 颜色转换为 RGB 与 HSL                                            |
-| 其他 | 杀戮尖塔 2 存档修改器   | 在浏览器本地编辑卡牌、遗物、属性与地图节点                              |
 
 ## 本地开发
 
@@ -94,13 +93,6 @@ RCtools/
 │  │  │  └─ styles.module.css  # 工具私有样式（按需）
 │  │  ├─ time-diff/            # 可包含专用算法、类型和样式
 │  │  └─ shared/               # 跨工具复用的 UI 与逻辑
-│  ├─ pages/
-│  │  ├─ page-metadata.ts      # 页面元数据与可选主页卡片配置
-│  │  ├─ page-panel.tsx        # 普通页面的懒加载渲染入口
-│  │  ├─ page-registry.ts      # 页面组件的懒加载注册表
-│  │  ├─ sts2saveedit-page.tsx # 杀戮尖塔 2 页面入口
-│  │  └─ sts2saveedit/         # 页面内部组件、逻辑、样式与目录数据
-│  ├─ app-routes.ts            # 工具与独立页面的应用级路由解析
 │  ├─ external-links.ts        # 外部链接主页卡片
 │  ├─ main.tsx                 # 浏览器应用入口
 │  ├─ toolbox-app.tsx          # 工具箱主界面
@@ -118,8 +110,6 @@ RCtools/
 
 每个工具的配置、组件、算法和专用样式都收拢在自己的目录中。工具 ID、分类、搜索、独立子路由和懒加载组件从注册表自动推导；只有被多个工具共同使用的代码才放入 `app/tools/shared/`。
 
-`app/pages/` 中的普通页面使用独立注册表和根级 `/<page-id>/` 路由，不注册到 `TOOLS`。普通页面默认不出现在主页；只有声明 `homeCard` 配置的页面才会进入工具列表、搜索、分类和最近使用。杀戮尖塔 2 存档修改器的地址是 `/sts2saveedit/`。
-
 ## 添加新工具
 
 完整步骤、代码模板、测试要求和验收清单见 [`ADDTOOL.md`](./ADDTOOL.md)。基本流程是：
@@ -134,48 +124,7 @@ RCtools/
 
 依赖必须遵循工具级按需加载：应用入口、注册表和 `config.ts` 不得直接导入工具专属重型库；只在用户操作时需要的压缩器、解析器、WASM 等应继续使用动态 `import()`。首屏 JavaScript 的 Gzip 体积目标保持在 `100 KiB` 以内，增长超过 `10%` 时需要检查加载链路并说明原因。完整约束和验收项见 [`ADDTOOL.md` 的“依赖与分块约束”](./ADDTOOL.md#依赖与分块约束)。
 
-## 添加独立普通页面与主页卡片
-
-普通页面适合完整应用、说明页，以及不使用工具面板布局的功能。它们位于 `app/pages/`，使用根级 `/<page-id>/` 路由，并与 `TOOLS`、工具路由和工具组件预加载保持分离。
-
-`TOOLS`、`PAGE_METADATA` 和 `EXTERNAL_LINKS` 中的所有 `id` 必须全局唯一，包括没有 `homeCard` 的普通页面，避免根级路由、静态构建目录、列表渲染和最近使用记录发生冲突。ID 使用小写短横线格式，例如 `save-editor`。
-
-### 添加独立普通页面
-
-1. 在 `app/pages/` 中创建 `<page-id>-page.tsx` 页面组件，并使用默认导出：
-
-   ```tsx
-   export default function AboutPage() {
-     return <main>这是一个独立普通页面。</main>;
-   }
-   ```
-
-2. 在 `app/pages/page-metadata.ts` 的 `PAGE_METADATA` 中添加页面元数据：
-
-   ```ts
-   {
-     id: "about",
-     title: "关于",
-     description: "介绍这个项目及其使用方式。",
-   },
-   ```
-
-3. 在 `app/pages/page-registry.ts` 的 `PAGES` 中注册组件的动态导入：
-
-   ```ts
-   {
-     ...PAGE_METADATA[1],
-     load: () => import("./about-page"),
-   },
-   ```
-
-   `PAGE_METADATA[1]` 必须指向上一步新增的元数据；如果数组顺序发生变化，需要同步调整索引。
-
-完成后，开发环境可通过 `/about/` 访问页面。静态构建会生成 `dist/about/index.html`；部署在仓库 Base Path 下时，对应地址会自动变为 `/RCtools/about/`。普通页面不需要、也不应加入 `TOOLS`、`app/tool-registry.ts` 或 `app/tool-panels.tsx`。
-
-新增页面时还应补充路由、注册表结构和 Pages 构建测试，确保页面 ID、标题、摘要及 `dist/<page-id>/index.html` 保持一致。
-
-### 添加外部链接卡片
+## 添加外部链接卡片
 
 只需编辑 `app/external-links.ts`，使用 `defineExternalLink` 向 `EXTERNAL_LINKS` 添加配置：
 
@@ -196,31 +145,10 @@ export const EXTERNAL_LINKS = [
 - `category` 可使用 `text`、`dev`、`date` 或 `other`，分类中文名会自动生成。
 - `mark` 是卡片左侧的短标记；`searchTerms` 用于补充中文关键词、英文名和别名。
 - `href` 必须是完整的 `http://` 或 `https://` 地址。
-- 外部链接卡片会排在站内工具和普通页面卡片之后；点击时在新标签页打开，并写入最近使用。
+- 外部链接卡片会排在站内工具之后；点击时在新标签页打开，并写入最近使用。
 - 外部链接不需要本地页面组件、路由注册或静态页面构建配置。
 
-### 将普通页面添加为站内主页卡片
-
-普通页面默认只能通过地址访问。要让它出现在主页列表、搜索、分类筛选和最近使用中，请直接在对应的页面元数据上添加 `homeCard`：
-
-```ts
-{
-  id: "about",
-  title: "关于",
-  description: "介绍这个项目及其使用方式。",
-  homeCard: {
-    category: "other",
-    mark: "A",
-    searchTerms: ["项目介绍", "about"],
-  },
-},
-```
-
-卡片标题和摘要会复用页面的 `title` 与 `description`，不需要重复填写。卡片地址由 `getPageHref(pageId, basePath)` 生成，因此同时兼容 `/about/` 和 `/RCtools/about/`；点击时在新标签页打开，并先写入最近使用。
-
-不要把这种卡片重复添加到 `EXTERNAL_LINKS` 或 `TOOLS`。如果页面只需要保留独立地址而不在主页展示，删除或省略 `homeCard` 即可。
-
-完成上述任一种修改后，运行：
+完成修改后，运行：
 
 ```bash
 npm test
@@ -232,9 +160,8 @@ git diff --check
 
 - 卡片能够通过标题、关键词和别名搜索。
 - 分类筛选包含卡片，并能正确显示或隐藏。
-- 普通页面卡片和外部链接卡片会在新标签页打开。
+- 外部链接卡片会在新标签页打开。
 - 点击后返回或刷新主页，卡片会出现在最近使用中。
-- 根路径和仓库 Base Path 下的普通页面地址都能直接访问和刷新。
 
 ## GitHub Pages 部署
 
@@ -266,7 +193,7 @@ PAGES_BASE_PATH: /
 PAGES_CUSTOM_DOMAIN: tool.raincither.top
 ```
 
-`vite.config.ts` 会把资源路径设置为根路径，为每个已注册工具生成 `dist/<tool-id>/index.html`，并根据 `PAGE_METADATA` 为普通页面生成 `dist/<page-id>/index.html`；同时还会生成 `dist/404.html`、`.nojekyll` 与 `CNAME`。
+`vite.config.ts` 会把资源路径设置为根路径，为每个已注册工具生成 `dist/<tool-id>/index.html`，同时生成 `dist/404.html`、`.nojekyll` 与 `CNAME`。
 
 使用其他自定义域名时：
 
@@ -298,9 +225,9 @@ Base Path 必须以 `/` 开头；除根路径 `/` 外，末尾不要添加 `/`�
 
 检查 `PAGES_BASE_PATH` 是否与访问地址一致：自定义域名使用 `/`，仓库子路径使用 `/<仓库名>`。
 
-### 工具或普通页面子路由无法直接刷新
+### 工具子路由无法直接刷新
 
-确认部署产物中存在对应的 `dist/<tool-id>/index.html` 或 `dist/<page-id>/index.html`，并通过 `npm run test:pages` 检查所有已注册工具和普通页面的静态入口。未知或多层路径会自动返回工具匣首页。
+确认部署产物中存在对应的 `dist/<tool-id>/index.html`，并通过 `npm run test:pages` 检查所有已注册工具的静态入口。未知或多层路径会自动返回工具匣首页。
 
 ### 自定义域名在重新部署后失效
 

@@ -1,3 +1,4 @@
+/** 按所选 SHA 算法计算摘要并验证候选内容。 */
 import hashWasmSha1 from "hash-wasm/dist/sha1.umd.min.js";
 import hashWasmSha256 from "hash-wasm/dist/sha256.umd.min.js";
 import hashWasmSha512 from "hash-wasm/dist/sha512.umd.min.js";
@@ -6,10 +7,13 @@ const { sha1 } = hashWasmSha1;
 const { sha256 } = hashWasmSha256;
 const { sha512 } = hashWasmSha512;
 
+/** 工具支持的 SHA 算法及界面排列顺序。 */
 export const SHA_ALGORITHMS = ["SHA-1", "SHA-256", "SHA-512"] as const;
 
+/** 单个受支持的 SHA 算法。 */
 export type ShaAlgorithm = (typeof SHA_ALGORITHMS)[number];
 
+/** 各算法十六进制摘要必须具备的字符长度。 */
 export const SHA_DIGEST_LENGTHS: Record<ShaAlgorithm, number> = {
   "SHA-1": 40,
   "SHA-256": 64,
@@ -31,20 +35,24 @@ const SHA_HASHERS: Record<
   "SHA-512": sha512,
 };
 
+/** 使用指定 SHA 算法计算原始字节摘要。 */
 export function shaBytes(value: Uint8Array, algorithm: ShaAlgorithm) {
   return SHA_HASHERS[algorithm](value);
 }
 
+/** 按 UTF-8 编码文本并计算指定 SHA 摘要。 */
 export function shaHex(value: string, algorithm: ShaAlgorithm) {
   return shaBytes(new TextEncoder().encode(value), algorithm);
 }
 
+/** SHA 校验得到的规范摘要、匹配状态与格式错误。 */
 export type ShaVerification = {
   digest: string;
   matches: boolean | null;
   error: string;
 };
 
+/** 校验目标摘要的长度和字符，并与已计算摘要比较。 */
 export function verifyShaDigest(
   expectedDigest: string,
   digest: string,
@@ -75,6 +83,7 @@ export function verifyShaDigest(
   };
 }
 
+/** 计算候选文本摘要后与目标 SHA 摘要比较。 */
 export async function verifyShaCandidate(
   expectedDigest: string,
   candidate: string,

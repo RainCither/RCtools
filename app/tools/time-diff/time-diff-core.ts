@@ -1,5 +1,8 @@
+/** @file 解析时钟输入，计算跨午夜间隔，并格式化单项与累计时长。 */
+/** 时间输入和结果可使用的精度格式。 */
 export type TimeFormat = "HH:mm" | "HH:mm:ss";
 
+/** 时间输入解析后的当天秒数或校验错误。 */
 export type ParsedTime = {
   seconds: number | null;
   error: string;
@@ -7,10 +10,12 @@ export type ParsedTime = {
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
+/** 将时分秒字段补齐为两位数字。 */
 function pad(value: number) {
   return value.toString().padStart(2, "0");
 }
 
+/** 按当前格式与分隔符设置解析 24 小时时间。 */
 export function parseTimeInput(
   rawValue: string,
   format: TimeFormat,
@@ -58,6 +63,7 @@ export function parseTimeInput(
   };
 }
 
+/** 将当天秒数格式化为带或不带冒号的时钟文本。 */
 export function formatClockTime(
   seconds: number,
   format: TimeFormat,
@@ -71,6 +77,7 @@ export function formatClockTime(
   return parts.join(omitSeparator ? "" : ":");
 }
 
+/** 计算相邻时刻差；结束时间更小时按次日处理。 */
 export function calculateAdjacentDifference(
   startSeconds: number | null,
   endSeconds: number | null,
@@ -82,6 +89,7 @@ export function calculateAdjacentDifference(
   return adjustedEnd - startSeconds;
 }
 
+/** 所有差值均完整时求和，否则返回 null。 */
 export function sumCalculatedDifferences(
   differences: readonly (number | null)[],
 ) {
@@ -95,6 +103,7 @@ export function sumCalculatedDifferences(
   return total;
 }
 
+/** 将秒数格式化为可超过 24 小时的 HH:mm[:ss]。 */
 export function formatDuration(seconds: number, format: TimeFormat) {
   const hour = Math.floor(seconds / 3600);
   const minute = Math.floor((seconds % 3600) / 60);
@@ -104,6 +113,7 @@ export function formatDuration(seconds: number, format: TimeFormat) {
   return parts.join(":");
 }
 
+/** 将秒数格式化为中文小时、分钟和秒说明。 */
 export function formatDurationText(seconds: number, format: TimeFormat) {
   const hour = Math.floor(seconds / 3600);
   const minute = Math.floor((seconds % 3600) / 60);

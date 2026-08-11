@@ -1,3 +1,4 @@
+/** 封装代码类工具共用的输入、异步格式化/压缩和结果反馈界面。 */
 import { useRef, useState, type ReactNode } from "react";
 import { CopyButton, ToolStatus } from "./tool-ui";
 import styles from "./code-transform-tool.module.css";
@@ -15,10 +16,12 @@ type CodeTransformToolProps = {
   renderSettings?: (busy: boolean) => ReactNode;
 };
 
+/** 将未知异常收敛为适合界面展示的错误文案。 */
 function getErrorMessage(cause: unknown) {
   return cause instanceof Error ? cause.message : "处理失败，请检查输入内容。";
 }
 
+/** 渲染可复用于 CSS、HTML 与 JavaScript 的代码转换工作区。 */
 export function CodeTransformTool({
   idPrefix,
   languageLabel,
@@ -37,6 +40,7 @@ export function CodeTransformTool({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const busy = busyAction !== null;
 
+  /** 更新输入时清除与旧内容对应的输出和状态。 */
   function updateInput(value: string) {
     setInput(value);
     setOutput("");
@@ -44,6 +48,7 @@ export function CodeTransformTool({
     setMessage("");
   }
 
+  /** 串行执行格式化或压缩操作，并维护忙碌与结果状态。 */
   async function transform(kind: TransformKind) {
     if (busy) return;
 
@@ -64,6 +69,7 @@ export function CodeTransformTool({
     }
   }
 
+  /** 清空编辑器和反馈，并把焦点还给输入框。 */
   function clear() {
     setInput("");
     setOutput("");

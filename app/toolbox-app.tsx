@@ -1,3 +1,4 @@
+/** 组合工具首页、搜索筛选、最近使用记录与浏览器历史路由。 */
 import {
   useCallback,
   useDeferredValue,
@@ -7,9 +8,7 @@ import {
   useState,
   type MouseEvent,
 } from "react";
-import { getPageHref } from "./app-routes";
 import { EXTERNAL_LINKS, type ExternalLinkDefinition } from "./external-links";
-import { PAGE_METADATA, type PageMetadata } from "./pages/page-metadata";
 import { preloadTool, ToolPanel } from "./tool-panels";
 import {
   DEFAULT_RECENT,
@@ -21,7 +20,6 @@ import {
   type RegisteredTool,
   type ToolId,
 } from "./tool-registry";
-import { TOOL_CATEGORY_LABELS, type ToolCategory } from "./tool-types";
 import {
   getHomeHref,
   getToolHref,
@@ -33,40 +31,10 @@ const RECENT_STORAGE_KEY = "toolbox:recent:v1";
 const HOVER_PRELOAD_DELAY = 120;
 const HOME_TITLE = "工具匣｜常用小工具，一开即用";
 const HOME_DESCRIPTION = "一个简洁、快速、可持续扩展的个人工具站。";
-type PageCardDefinition = {
-  id: string;
-  pageId: string;
-  title: string;
-  summary: string;
-  category: ToolCategory;
-  categoryLabel: (typeof TOOL_CATEGORY_LABELS)[ToolCategory];
-  mark: string;
-  searchTerms: readonly string[];
-};
 type HomeCardDefinition =
-  RegisteredTool | PageCardDefinition | ExternalLinkDefinition;
-const PAGE_CARDS: readonly PageCardDefinition[] = (
-  PAGE_METADATA as readonly PageMetadata[]
-).flatMap((page) => {
-  const homeCard = page.homeCard;
-  if (!homeCard) return [];
-
-  return [
-    {
-      id: page.id,
-      pageId: page.id,
-      title: page.title,
-      summary: page.description,
-      category: homeCard.category,
-      categoryLabel: TOOL_CATEGORY_LABELS[homeCard.category],
-      mark: homeCard.mark,
-      searchTerms: homeCard.searchTerms,
-    },
-  ];
-});
+  RegisteredTool | ExternalLinkDefinition;
 const HOME_CARDS: readonly HomeCardDefinition[] = [
   ...TOOLS,
-  ...PAGE_CARDS,
   ...EXTERNAL_LINKS,
 ];
 const HOME_CARD_BY_ID: ReadonlyMap<string, HomeCardDefinition> = new Map(
@@ -79,28 +47,26 @@ type NavigateHandler = (
 ) => void;
 type RecordRecentHandler = (cardId: string) => void;
 
+/** 按 id 查找首页中的内置工具或外部链接卡片。 */
 function findHomeCard(cardId: string): HomeCardDefinition | undefined {
   return HOME_CARD_BY_ID.get(cardId);
 }
 
+/** 判断首页卡片是否指向站外地址。 */
 function isExternalLinkCard(
   card: HomeCardDefinition,
 ): card is ExternalLinkDefinition {
   return "href" in card;
 }
 
-function isPageCard(
-  card: HomeCardDefinition,
-): card is PageCardDefinition {
-  return "pageId" in card;
-}
-
+/** 判断首页卡片是否对应本地注册工具。 */
 function isRegisteredToolCard(
   card: HomeCardDefinition,
 ): card is RegisteredTool {
-  return !isExternalLinkCard(card) && !isPageCard(card);
+  return !isExternalLinkCard(card);
 }
 
+/** 仅拦截无修饰键的主按钮点击，保留浏览器原生打开方式。 */
 function isPlainNavigation(event: MouseEvent<HTMLAnchorElement>) {
   return (
     !event.defaultPrevented &&
@@ -112,6 +78,7 @@ function isPlainNavigation(event: MouseEvent<HTMLAnchorElement>) {
   );
 }
 
+/** 渲染可选客户端导航行为的站点品牌首页链接。 */
 function SiteBrand({
   href,
   onNavigate,
@@ -136,6 +103,7 @@ function SiteBrand({
   );
 }
 
+/** 渲染全站统一页脚。 */
 function SiteFooter() {
   return (
     <footer className="site-footer">
@@ -145,6 +113,7 @@ function SiteFooter() {
   );
 }
 
+/** 渲染工具/外链卡片，并在意图明确时预加载内部工具。 */
 function ToolCard({
   card,
   basePath,
@@ -160,21 +129,18 @@ function ToolCard({
 }) {
   const preloadTimerRef = useRef<number | null>(null);
   const externalLink = isExternalLinkCard(card) ? card : null;
-  const pageCard = isPageCard(card) ? card : null;
   const internalTool = isRegisteredToolCard(card) ? card : null;
-  const opensNewTab = Boolean(externalLink || pageCard);
-  const href =
-    externalLink?.href ??
-    (pageCard
-      ? getPageHref(pageCard.pageId, basePath)
-      : getToolHref(card.id, basePath));
+  const opensNewTab = Boolean(externalLink);
+  const href = externalLink?.href ?? getToolHref(card.id, basePath);
 
+  /** 取消尚未触发的悬停预加载任务。 */
   function cancelScheduledPreload() {
     if (preloadTimerRef.current === null) return;
     window.clearTimeout(preloadTimerRef.current);
     preloadTimerRef.current = null;
   }
 
+  /** 延迟预加载内部工具，过滤短暂划过卡片的指针。 */
   function schedulePreload() {
     if (!internalTool) return;
     cancelScheduledPreload();
@@ -247,6 +213,7 @@ function ToolCard({
   );
 }
 
+/** 渲染首页搜索、分类、最近使用与全部工具列表。 */
 function ToolboxHome({
   basePath,
   recent,
@@ -264,6 +231,7 @@ function ToolboxHome({
   const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
+    /** 在非编辑区域按斜杠时聚焦工具搜索框。 */
     function handleShortcut(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
       const isTyping =
@@ -409,6 +377,7 @@ function ToolboxHome({
   );
 }
 
+/** 渲染单个工具的标题、返回导航和懒加载内容区。 */
 function ToolPage({
   toolId,
   basePath,
@@ -466,6 +435,7 @@ function ToolPage({
   );
 }
 
+/** 管理当前工具路由、最近使用持久化和页面级元数据。 */
 export function ToolboxApp({
   initialToolId = null,
   basePath = "/",
@@ -480,6 +450,7 @@ export function ToolboxApp({
   const [activeTool, setActiveTool] = useState<ToolId | null>(initialToolId);
   const [recent, setRecent] = useState<string[]>(DEFAULT_RECENT);
 
+  /** 将卡片提升到最近使用首位，并最多保留三项。 */
   const recordRecent = useCallback((cardId: string) => {
     setRecent((current) => {
       const next = [cardId, ...current.filter((item) => item !== cardId)].slice(
@@ -533,6 +504,7 @@ export function ToolboxApp({
   }, [activeTool]);
 
   useEffect(() => {
+    /** 将浏览器前进/后退后的路径同步到应用状态。 */
     function handlePopState() {
       const route = parseToolRoute(
         window.location.pathname,
@@ -564,6 +536,7 @@ export function ToolboxApp({
     }
   }, [activeTool]);
 
+  /** 用 History API 处理普通站内点击，同时保留修饰键导航。 */
   const handleNavigate = useCallback<NavigateHandler>(
     (event, toolId) => {
       if (!isPlainNavigation(event)) return;

@@ -1,3 +1,4 @@
+/** 验证 IEEE-754 编解码、特殊数值、位长与格式错误处理。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {

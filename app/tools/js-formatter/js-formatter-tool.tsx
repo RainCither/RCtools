@@ -1,3 +1,4 @@
+/** 将 JavaScript 转换核心与名称压缩选项接入通用代码工具界面。 */
 import { useState } from "react";
 import { CodeTransformTool } from "../shared/code-transform-tool";
 import {
@@ -9,6 +10,7 @@ import styles from "./styles.module.css";
 
 const INITIAL_JAVASCRIPT = `const greet=(name)=>{const message=\`你好，\${name}\`;console.log(message)};greet("工具匣");`;
 
+/** 渲染 JavaScript 格式化、压缩及名称保留设置。 */
 export default function JsFormatterTool() {
   const [mode, setMode] = useState<JavaScriptMinifyMode>("mangle");
 

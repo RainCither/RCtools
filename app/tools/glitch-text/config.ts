@@ -1,5 +1,7 @@
+/** 注册基于 Unicode 组合符的故障文字生成工具。 */
 import { defineTool } from "../../tool-types";
 
+/** 故障文字工具的首页元数据与懒加载入口。 */
 export const glitchTextToolConfig = defineTool({
   id: "glitch-text",
   title: "故障文字生成",

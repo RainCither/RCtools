@@ -1,3 +1,4 @@
+/** 验证 CSS、JavaScript 与 HTML 格式化/压缩核心的契约。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {

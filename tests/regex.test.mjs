@@ -1,3 +1,4 @@
+/** 验证正则执行、零宽匹配、替换、flags 与参考数据完整性。 */
 import assert from "node:assert/strict";
 import test from "node:test";
 import {

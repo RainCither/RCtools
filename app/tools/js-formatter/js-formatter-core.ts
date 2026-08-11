@@ -1,3 +1,5 @@
+/** @file 借助 Prettier 与 Terser 校验、格式化或压缩标准 JavaScript。 */
+/** 压缩时是否允许 Terser 缩短标识符名称。 */
 export type JavaScriptMinifyMode = "mangle" | "preserve-names";
 
 const FORMAT_OPTIONS = {
@@ -17,30 +19,36 @@ let babelPluginPromise: Promise<typeof import("prettier/plugins/babel")> | undef
 let estreePluginPromise: Promise<typeof import("prettier/plugins/estree")> | undefined;
 let terserPromise: Promise<typeof import("terser")> | undefined;
 
+/** 拒绝仅包含空白的 JavaScript 输入。 */
 function requireJavaScript(input: string) {
   if (!input.trim()) throw new Error("请输入 JavaScript 内容。");
 }
 
+/** 延迟加载并复用 Prettier standalone 模块。 */
 function getPrettier() {
   prettierPromise ??= import("prettier/standalone");
   return prettierPromise;
 }
 
+/** 延迟加载并复用 Prettier 的 Babel 解析插件。 */
 function getBabelPlugin() {
   babelPluginPromise ??= import("prettier/plugins/babel");
   return babelPluginPromise;
 }
 
+/** 延迟加载并复用 Prettier 的 ESTree 打印插件。 */
 function getEstreePlugin() {
   estreePluginPromise ??= import("prettier/plugins/estree");
   return estreePluginPromise;
 }
 
+/** 延迟加载并复用 Terser。 */
 function getTerser() {
   terserPromise ??= import("terser");
   return terserPromise;
 }
 
+/** 将解析器异常转换为带行列信息和输入限制的错误。 */
 function syntaxError(cause: unknown): Error {
   const details = cause as { message?: unknown; line?: unknown; col?: unknown };
   const message = typeof details?.message === "string" ? details.message : "语法无效";
@@ -53,6 +61,7 @@ function syntaxError(cause: unknown): Error {
   );
 }
 
+/** 用空白遮蔽字符串与注释，避免模块语法探测出现假阳性。 */
 function maskJavaScriptStringsAndComments(input: string) {
   let result = "";
   let state: "code" | "single" | "double" | "template" | "line-comment" | "block-comment" =
@@ -123,6 +132,7 @@ function maskJavaScriptStringsAndComments(input: string) {
   return result;
 }
 
+/** 让 Terser 以脚本或模块模式执行一次纯语法解析。 */
 async function parseWithTerser(input: string, module: boolean) {
   const { minify } = await getTerser();
   await minify(input, {
@@ -133,6 +143,7 @@ async function parseWithTerser(input: string, module: boolean) {
   });
 }
 
+/** 探测输入应按经典脚本还是 ES Module 解析。 */
 export async function detectJavaScriptModule(input: string): Promise<boolean> {
   const maskedInput = maskJavaScriptStringsAndComments(input);
   if (MODULE_SYNTAX_PATTERN.test(maskedInput) || IMPORT_META_PATTERN.test(maskedInput)) {
@@ -160,6 +171,7 @@ export async function detectJavaScriptModule(input: string): Promise<boolean> {
   }
 }
 
+/** 校验语法后使用 Prettier 格式化 JavaScript。 */
 export async function formatJavaScript(input: string): Promise<string> {
   requireJavaScript(input);
 
@@ -179,6 +191,7 @@ export async function formatJavaScript(input: string): Promise<string> {
   }
 }
 
+/** 按是否改写标识符名称的选项压缩 JavaScript。 */
 export async function minifyJavaScript(
   input: string,
   mode: JavaScriptMinifyMode,

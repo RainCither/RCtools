@@ -1,3 +1,4 @@
+/** 提供 Float32/Float64 数值与位模式双向转换的交互界面。 */
 import { useRef, useState } from "react";
 import { CopyButton } from "../shared/tool-ui";
 import {
@@ -22,6 +23,7 @@ const FORMAT_LABELS: Record<FloatFormat, string> = {
   float64: "Float64",
 };
 
+/** 渲染浮点格式、输入模式和全部 IEEE-754 字段结果。 */
 export default function Ieee754Tool() {
   const [mode, setMode] = useState<FloatInputMode>("number");
   const [format, setFormat] = useState<FloatFormat>("float32");
@@ -85,15 +87,18 @@ export default function Ieee754Tool() {
     },
   ];
 
+  /** 只更新当前模式的草稿，保留另一模式的输入。 */
   function updateInput(value: string) {
     setDrafts((current) => ({ ...current, [mode]: value }));
   }
 
+  /** 切换输入模式，并在浏览器下一帧恢复输入焦点。 */
   function changeMode(nextMode: FloatInputMode) {
     setMode(nextMode);
     window.requestAnimationFrame(() => inputRef.current?.focus());
   }
 
+  /** 清空当前模式的草稿并聚焦编辑器。 */
   function clearInput() {
     setDrafts((current) => ({ ...current, [mode]: "" }));
     inputRef.current?.focus();

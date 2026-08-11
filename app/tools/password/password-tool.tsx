@@ -1,3 +1,4 @@
+/** 使用 Web Crypto 生成覆盖所选字符类别的无偏随机密码。 */
 import { useState } from "react";
 import { CopyButton, ToolStatus } from "../shared/tool-ui";
 import styles from "./styles.module.css";
@@ -11,6 +12,7 @@ const PASSWORD_POOLS = {
 
 const UINT32_RANGE = 0x1_0000_0000;
 
+/** 通过拒绝采样生成 [0, maxExclusive) 内的无偏安全随机索引。 */
 function secureRandomIndex(maxExclusive: number) {
   const unbiasedLimit = Math.floor(UINT32_RANGE / maxExclusive) * maxExclusive;
   const random = new Uint32Array(1);
@@ -22,10 +24,12 @@ function secureRandomIndex(maxExclusive: number) {
   return random[0] % maxExclusive;
 }
 
+/** 从给定字符池中安全地抽取一个字符。 */
 function randomCharacter(pool: string) {
   return pool.charAt(secureRandomIndex(pool.length));
 }
 
+/** 使用安全随机索引执行原地 Fisher–Yates 洗牌。 */
 function secureShuffle(characters: string[]) {
   for (let index = characters.length - 1; index > 0; index -= 1) {
     const target = secureRandomIndex(index + 1);
@@ -34,12 +38,14 @@ function secureShuffle(characters: string[]) {
   return characters;
 }
 
+/** 渲染密码规则选择器并生成满足每类至少一个字符的密码。 */
 export default function PasswordTool() {
   const [length, setLength] = useState(18);
   const [options, setOptions] = useState({ lower: true, upper: true, number: true, symbol: false });
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  /** 校验选项、填充各字符池并随机打散最终密码。 */
   function generate() {
     const selectedPools = (Object.keys(PASSWORD_POOLS) as Array<keyof typeof PASSWORD_POOLS>)
       .filter((key) => options[key])

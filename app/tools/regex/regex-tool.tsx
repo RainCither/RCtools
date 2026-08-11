@@ -1,3 +1,4 @@
+/** 提供正则测试器、语法速查和常用表达式库三种视图。 */
 import {
   Fragment,
   useMemo,
@@ -56,6 +57,7 @@ type RegexTesterProps = {
   onClear: () => void;
 };
 
+/** 区分未参与、空字符串和普通捕获值的展示。 */
 function MatchValue({ value }: { value: string | undefined }) {
   if (value === undefined) {
     return <span className={styles.unmatched}>未参与匹配</span>;
@@ -66,6 +68,7 @@ function MatchValue({ value }: { value: string | undefined }) {
   return <>{value}</>;
 }
 
+/** 将源文本拆成普通片段、匹配高亮和零宽标记。 */
 function HighlightedSource({
   source,
   matches,
@@ -116,6 +119,7 @@ function HighlightedSource({
   return <>{fragments}</>;
 }
 
+/** 展示单个匹配的索引、完整内容和编号/命名捕获组。 */
 function MatchDetails({ match, number }: { match: RegexMatch; number: number }) {
   const namedGroups = Object.entries(match.namedGroups);
 
@@ -149,6 +153,7 @@ function MatchDetails({ match, number }: { match: RegexMatch; number: number }) 
   );
 }
 
+/** 实时执行正则，渲染匹配预览、捕获详情与替换结果。 */
 function RegexTester({
   pattern,
   source,
@@ -166,6 +171,7 @@ function RegexTester({
     [flagString, pattern, replacement, source],
   );
 
+  /** 更新单个正则标志，同时保留其余标志状态。 */
   function updateFlag(flag: RegexFlag, checked: boolean) {
     setFlags((current) => ({ ...current, [flag]: checked }));
   }
@@ -320,6 +326,7 @@ function RegexTester({
   );
 }
 
+/** 按主题分组展示 JavaScript 正则语法速查卡片。 */
 function SyntaxReference() {
   return (
     <div className={styles.referenceView}>
@@ -351,6 +358,7 @@ function SyntaxReference() {
   );
 }
 
+/** 展示常用表达式，并允许复制或载入测试器。 */
 function CommonRegexReference({
   onLoad,
 }: {
@@ -406,6 +414,7 @@ function CommonRegexReference({
   );
 }
 
+/** 将常用表达式的标志数组转换为完整开关状态。 */
 function createFlagState(selectedFlags: readonly RegexFlag[]): RegexFlagState {
   const selected = new Set(selectedFlags);
   return Object.fromEntries(
@@ -413,6 +422,7 @@ function createFlagState(selectedFlags: readonly RegexFlag[]): RegexFlagState {
   ) as RegexFlagState;
 }
 
+/** 管理三种正则视图及测试器共享的输入状态。 */
 export default function RegexTool() {
   const [view, setView] = useState<RegexView>("tester");
   const [pattern, setPattern] = useState("");
@@ -423,6 +433,7 @@ export default function RegexTool() {
   });
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
+  /** 恢复测试器的表达式、文本、替换和标志默认值。 */
   function clearAll() {
     setPattern("");
     setSource("");
@@ -430,6 +441,7 @@ export default function RegexTool() {
     setFlags({ ...DEFAULT_REGEX_FLAGS });
   }
 
+  /** 将常用表达式及正例载入测试器并切换到测试视图。 */
   function loadCommonRegex(entry: CommonRegexEntry) {
     setPattern(entry.pattern);
     setFlags(createFlagState(entry.flags));
@@ -438,6 +450,7 @@ export default function RegexTool() {
     setView("tester");
   }
 
+  /** 实现符合 ARIA tabs 约定的左右/Home/End 键导航。 */
   function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, currentIndex: number) {
     let nextIndex: number | undefined;
 

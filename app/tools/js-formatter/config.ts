@@ -1,5 +1,7 @@
+/** 注册现代 JavaScript 格式化与压缩工具。 */
 import { defineTool } from "../../tool-types";
 
+/** JavaScript 格式化工具的首页元数据与懒加载入口。 */
 export const jsFormatterToolConfig = defineTool({
   id: "js-formatter",
   title: "JavaScript 格式化压缩",

@@ -1,3 +1,4 @@
+/** 提供文本/文件 MD5 计算、复制和候选内容校验界面。 */
 import { useRef, useState } from "react";
 import {
   formatHashFileSize,
@@ -12,10 +13,12 @@ import styles from "./styles.module.css";
 
 type VerificationState = "idle" | "match" | "mismatch";
 
+/** 将未知计算异常转换为稳定的用户提示。 */
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : "计算失败，请稍后重试。";
 }
 
+/** 渲染 MD5 来源选择、摘要计算和摘要匹配流程。 */
 export default function Md5Tool() {
   const [sourceMode, setSourceMode] = useState<HashSourceMode>("text");
   const [input, setInput] = useState("");
@@ -29,6 +32,7 @@ export default function Md5Tool() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  /** 清除所有由当前输入计算出的摘要和反馈。 */
   function resetComputedState() {
     setDigest("");
     setVerification("idle");
@@ -36,17 +40,20 @@ export default function Md5Tool() {
     setOperationError("");
   }
 
+  /** 切换文本/文件来源，并丢弃旧来源的计算状态。 */
   function changeSourceMode(nextMode: HashSourceMode) {
     if (nextMode === sourceMode) return;
     setSourceMode(nextMode);
     resetComputedState();
   }
 
+  /** 更新候选文本并使旧摘要失效。 */
   function handleTextChange(value: string) {
     setInput(value);
     resetComputedState();
   }
 
+  /** 校验新文件并同步文件选择与错误状态。 */
   function handleFileChange(file: File | null) {
     resetComputedState();
 
@@ -66,12 +73,14 @@ export default function Md5Tool() {
     setSelectedFile(file);
   }
 
+  /** 根据当前来源计算文本或文件的 MD5。 */
   async function hashCurrentSource() {
     if (sourceMode === "text") return md5Hex(input);
     if (!selectedFile) throw new Error("请先选择要计算的文件。");
     return md5Bytes(await readHashFileBytes(selectedFile));
   }
 
+  /** 计算当前来源摘要，并维护忙碌和操作错误状态。 */
   async function calculateDigest() {
     setBusy(true);
     setDigest("");
@@ -88,6 +97,7 @@ export default function Md5Tool() {
     }
   }
 
+  /** 计算候选来源并与用户输入的目标 MD5 比较。 */
   async function verifyCandidate() {
     setBusy(true);
     setDigest("");
@@ -113,6 +123,7 @@ export default function Md5Tool() {
     }
   }
 
+  /** 清空全部输入、结果和文件控件，并恢复合适的焦点。 */
   function clearAll() {
     setInput("");
     setSelectedFile(null);

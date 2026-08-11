@@ -1,9 +1,13 @@
+/** @file 按字素为可见字符追加 Unicode 组合符，生成受限且可复现的故障文字。 */
+/** 每个可见字素随机追加组合符的最小值与最大值。 */
 export interface NoiseRange {
   min: number;
   max: number;
 }
 
+/** 组合符相对基础字素的视觉位置。 */
 export type GlitchMarkPlacement = "above" | "below" | "middle" | "enclosing";
+/** 可供选择的 Unicode 组合符分区。 */
 export type GlitchMarkRange =
   | "basic"
   | "extended"
@@ -11,6 +15,7 @@ export type GlitchMarkRange =
   | "symbols"
   | "unicode17";
 
+/** 故障文字生成器可覆盖的字符池、随机源和输出上限。 */
 export interface GenerateGlitchTextOptions {
   placements?: readonly GlitchMarkPlacement[];
   ranges?: readonly GlitchMarkRange[];
@@ -18,6 +23,7 @@ export interface GenerateGlitchTextOptions {
   maxOutputCodePoints?: number;
 }
 
+/** 生成文本及本次处理的字素和组合符统计。 */
 export interface GlitchTextResult {
   text: string;
   inputGraphemes: number;
@@ -26,15 +32,20 @@ export interface GlitchTextResult {
   marksLimited: boolean;
 }
 
+/** 单次允许处理的最大输入字素数。 */
 export const MAX_INPUT_GRAPHEMES = 2_000;
+/** 单个可见字素允许追加的最大组合符数。 */
 export const MAX_MARKS_PER_GRAPHEME = 20;
+/** 生成结果允许包含的最大 Unicode 码点数。 */
 export const MAX_OUTPUT_CODE_POINTS = 30_000;
 
+/** 默认启用的组合符位置。 */
 export const DEFAULT_GLITCH_MARK_PLACEMENTS: GlitchMarkPlacement[] = [
   "above",
   "below",
   "middle",
 ];
+/** 默认启用、兼容性最好的 Unicode 范围。 */
 export const DEFAULT_GLITCH_MARK_RANGES: GlitchMarkRange[] = ["basic"];
 
 const ALL_PLACEMENTS: readonly GlitchMarkPlacement[] = [
@@ -51,6 +62,7 @@ const ALL_RANGES: readonly GlitchMarkRange[] = [
   "unicode17",
 ];
 
+/** 创建包含首尾码点的连续字符数组。 */
 function createCodePointRange(min: number, max: number): string[] {
   return Array.from(
     { length: max - min + 1 },
@@ -58,6 +70,7 @@ function createCodePointRange(min: number, max: number): string[] {
   );
 }
 
+/** 合并多段码点区间，构造可随机抽取的组合符池。 */
 function createMarkPool(ranges: ReadonlyArray<readonly [number, number]>): string[] {
   return ranges.flatMap(([min, max]) => createCodePointRange(min, max));
 }
@@ -213,20 +226,24 @@ const graphemeSegmenter = typeof Intl.Segmenter === "function"
   ? new Intl.Segmenter(undefined, { granularity: "grapheme" })
   : null;
 
+/** 按 Unicode 字素边界拆分文本；旧环境退化为码点拆分。 */
 export function segmentGraphemes(input: string): string[] {
   if (!graphemeSegmenter) return Array.from(input);
   return Array.from(graphemeSegmenter.segment(input), ({ segment }) => segment);
 }
 
+/** 统计用户感知的字素数量。 */
 export function countGraphemes(input: string): number {
   return segmentGraphemes(input).length;
 }
 
+/** 将单字素组合符数量收敛到安全整数范围。 */
 function normalizeNoiseCount(value: number | null | undefined): number {
   if (typeof value !== "number" || !Number.isFinite(value)) return 0;
   return Math.min(MAX_MARKS_PER_GRAPHEME, Math.max(0, Math.trunc(value)));
 }
 
+/** 规范化噪声上下界，并在顺序颠倒时自动交换。 */
 export function clampNoiseRange(
   min: number | null | undefined,
   max: number | null | undefined,
@@ -239,17 +256,20 @@ export function clampNoiseRange(
     : { min: normalizedMin, max: normalizedMax };
 }
 
+/** 判断字素是否是适合附加组合符的可见基础字符。 */
 export function isRenderableGrapheme(grapheme: string): boolean {
   return grapheme.length > 0
     && !/^\s+$/u.test(grapheme)
     && !/^[\p{M}\p{Cf}]+$/u.test(grapheme);
 }
 
+/** 判断字素是否包含中日韩文字，以选择更安全的组合符子集。 */
 export function isCjkGrapheme(grapheme: string): boolean {
   return /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u
     .test(grapheme);
 }
 
+/** 读取指定 Unicode 范围与位置的标准组合符池。 */
 export function getGlitchMarks(
   range: GlitchMarkRange,
   placement: GlitchMarkPlacement,
@@ -257,6 +277,7 @@ export function getGlitchMarks(
   return COMBINING_MARKS_BY_RANGE[range]?.[placement] ?? EMPTY_MARKS;
 }
 
+/** 去重输入并丢弃不在允许集合中的选项。 */
 function uniqueKnownValues<T extends string>(
   values: readonly T[],
   knownValues: readonly T[],
@@ -265,16 +286,19 @@ function uniqueKnownValues<T extends string>(
   return [...new Set(values)].filter((value) => known.has(value));
 }
 
+/** 将任意随机源结果规范到可安全索引的 [0, 1) 区间。 */
 function normalizeRandomValue(random: () => number): number {
   const value = random();
   if (!Number.isFinite(value)) return 0;
   return Math.min(1 - Number.EPSILON, Math.max(0, value));
 }
 
+/** 通过注入的随机源生成数组索引。 */
 function randomIndex(length: number, random: () => number): number {
   return Math.floor(normalizeRandomValue(random) * length);
 }
 
+/** 生成包含上下界的随机整数。 */
 function randomInt(min: number, max: number, random: () => number): number {
   return min + randomIndex(max - min + 1, random);
 }
@@ -284,6 +308,7 @@ type PlacementSource = {
   rangePools: readonly (readonly string[])[];
 };
 
+/** 为每个启用位置收集非空的 Unicode 范围字符池。 */
 function createPlacementSources(
   placements: readonly GlitchMarkPlacement[],
   ranges: readonly GlitchMarkRange[],
@@ -297,6 +322,7 @@ function createPlacementSources(
   });
 }
 
+/** 从位置、范围和字符三级池中随机选择一个组合符。 */
 function pickCombiningMark(
   sources: readonly PlacementSource[],
   random: () => number,
@@ -306,6 +332,7 @@ function pickCombiningMark(
   return pool[randomIndex(pool.length, random)];
 }
 
+/** 生成故障文字及字素、组合符和输出限制统计。 */
 export function generateGlitchTextResult(
   input: string,
   range: NoiseRange,
@@ -366,6 +393,7 @@ export function generateGlitchTextResult(
   };
 }
 
+/** 只返回生成后的故障文字，供无需统计的调用方使用。 */
 export function generateGlitchText(
   input: string,
   range: NoiseRange,

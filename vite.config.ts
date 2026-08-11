@@ -1,8 +1,8 @@
+/** 配置 Vite 构建，并为每个工具生成可直达的静态 HTML 路由。 */
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import { PAGE_METADATA } from "./app/pages/page-metadata";
 import { readRegisteredTools } from "./scripts/read-tool-registry.mjs";
 
 const basePath = process.env.PAGES_BASE_PATH ?? "/";
@@ -19,6 +19,7 @@ if (
 const outputDirectory = resolve(import.meta.dirname, "dist");
 const publicBasePath = basePath === "/" ? "/" : `${basePath}/`;
 
+/** 转义写入 HTML 文本与属性的动态元数据。 */
 function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -27,7 +28,8 @@ function escapeHtml(value: string) {
     .replaceAll('"', "&quot;");
 }
 
-function withPageMetadata(html: string, title: string, description: string) {
+/** 用工具标题和简介替换首页模板中的 SEO 元数据。 */
+function withToolMetadata(html: string, title: string, description: string) {
   return html
     .replace(
       /<title>[^<]*<\/title>/,
@@ -39,6 +41,7 @@ function withPageMetadata(html: string, title: string, description: string) {
     );
 }
 
+/** 创建静态托管环境使用的 404 首页重定向文档。 */
 function createNotFoundHtml() {
   const serializedHomePath = JSON.stringify(publicBasePath).replaceAll(
     "<",
@@ -65,8 +68,9 @@ export default defineConfig({
   plugins: [
     react(),
     {
-      name: "static-app-routes",
+      name: "static-tool-routes",
 
+      /** 构建结束后写入静态路由页、路由清单和 Pages 辅助文件。 */
       async closeBundle() {
         const tools = await readRegisteredTools(import.meta.dirname);
         const indexHtml = await readFile(
@@ -100,16 +104,7 @@ export default defineConfig({
             await mkdir(routeDirectory, { recursive: true });
             await writeFile(
               resolve(routeDirectory, "index.html"),
-              withPageMetadata(indexHtml, tool.title, tool.summary),
-              "utf8",
-            );
-          }),
-          ...PAGE_METADATA.map(async (page) => {
-            const routeDirectory = resolve(outputDirectory, page.id);
-            await mkdir(routeDirectory, { recursive: true });
-            await writeFile(
-              resolve(routeDirectory, "index.html"),
-              withPageMetadata(indexHtml, page.title, page.description),
+              withToolMetadata(indexHtml, tool.title, tool.summary),
               "utf8",
             );
           }),

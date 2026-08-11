@@ -1,7 +1,11 @@
+/** @file 编解码 Float32/Float64 的十进制值、位字段与字节表示。 */
+/** 工具支持的 IEEE-754 存储精度。 */
 export type FloatFormat = "float32" | "float64";
 
+/** 工具可接受十进制数值或原始位模式两种输入。 */
 export type FloatInputMode = "number" | "bits";
 
+/** IEEE-754 指数和尾数字段决定的数值分类。 */
 export type FloatClassification =
   | "zero"
   | "subnormal"
@@ -9,6 +13,7 @@ export type FloatClassification =
   | "infinity"
   | "nan";
 
+/** 成功转换后可展示的数值、字段、位串和端序信息。 */
 export type FloatConversionData = {
   format: FloatFormat;
   value: number;
@@ -23,6 +28,7 @@ export type FloatConversionData = {
   littleEndianBytes: string;
 };
 
+/** 浮点转换的成功数据或校验错误。 */
 export type FloatConversionResult = {
   data: FloatConversionData | null;
   error: string;
@@ -36,6 +42,7 @@ type FloatFormatDefinition = {
   hexLength: 8 | 16;
 };
 
+/** Float32 与 Float64 的字段宽度和输出长度定义。 */
 export const FLOAT_FORMATS: Record<FloatFormat, FloatFormatDefinition> = {
   float32: {
     totalBits: 32,
@@ -61,29 +68,35 @@ const CANONICAL_NAN_BYTES: Record<FloatFormat, readonly number[]> = {
   float64: [0x7f, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
 };
 
+/** 创建表示“尚未输入”的空转换结果。 */
 function emptyResult(): FloatConversionResult {
   return { data: null, error: "" };
 }
 
+/** 创建带用户可读错误的失败转换结果。 */
 function errorResult(error: string): FloatConversionResult {
   return { data: null, error };
 }
 
+/** 将大端字节序列拼接为固定位宽二进制字符串。 */
 function bytesToBinary(bytes: Uint8Array) {
   return Array.from(bytes, (byte) => byte.toString(2).padStart(8, "0")).join("");
 }
 
+/** 将字节序列拼接为大写十六进制字符串。 */
 function bytesToHex(bytes: Uint8Array) {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0"))
     .join("")
     .toUpperCase();
 }
 
+/** 将字节序列格式化为空格分隔的大写十六进制。 */
 function formatBytes(bytes: Uint8Array) {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0").toUpperCase())
     .join(" ");
 }
 
+/** 保留 -0、NaN 与无穷大的语义并格式化存储值。 */
 function formatStoredValue(value: number) {
   if (Object.is(value, -0)) return "-0";
   if (Number.isNaN(value)) return "NaN";
@@ -92,6 +105,7 @@ function formatStoredValue(value: number) {
   return String(value);
 }
 
+/** 根据指数位和尾数位判断 IEEE-754 数值分类。 */
 function classify(exponentBits: string, fractionBits: string): FloatClassification {
   const exponentIsZero = /^0+$/.test(exponentBits);
   const exponentIsOne = /^1+$/.test(exponentBits);
@@ -102,6 +116,7 @@ function classify(exponentBits: string, fractionBits: string): FloatClassificati
   return "normal";
 }
 
+/** 从大端字节读取指定精度的 JavaScript 数值。 */
 function readStoredValue(bytes: Uint8Array, format: FloatFormat) {
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   return format === "float32"
@@ -109,6 +124,7 @@ function readStoredValue(bytes: Uint8Array, format: FloatFormat) {
     : view.getFloat64(0, false);
 }
 
+/** 从规范字节生成字段拆分、分类和端序等完整结果。 */
 function resultFromBytes(bytes: Uint8Array, format: FloatFormat): FloatConversionResult {
   const definition = FLOAT_FORMATS[format];
   const binary = bytesToBinary(bytes);
@@ -136,6 +152,7 @@ function resultFromBytes(bytes: Uint8Array, format: FloatFormat): FloatConversio
   };
 }
 
+/** 将数值写入指定浮点格式；NaN 使用稳定的规范位模式。 */
 function encodeNumber(value: number, format: FloatFormat) {
   if (Number.isNaN(value)) {
     return Uint8Array.from(CANONICAL_NAN_BYTES[format]);
@@ -149,6 +166,7 @@ function encodeNumber(value: number, format: FloatFormat) {
   return new Uint8Array(buffer);
 }
 
+/** 将二进制位串按每八位还原为字节。 */
 function bytesFromBinary(binary: string) {
   const bytes = new Uint8Array(binary.length / 8);
   for (let index = 0; index < bytes.length; index += 1) {
@@ -157,6 +175,7 @@ function bytesFromBinary(binary: string) {
   return bytes;
 }
 
+/** 将十六进制位串按每两位还原为字节。 */
 function bytesFromHex(hex: string) {
   const bytes = new Uint8Array(hex.length / 2);
   for (let index = 0; index < bytes.length; index += 1) {
@@ -165,6 +184,7 @@ function bytesFromHex(hex: string) {
   return bytes;
 }
 
+/** 解析十进制特殊值或普通数值，并编码为 IEEE-754 结果。 */
 export function encodeFloatValue(
   input: string,
   format: FloatFormat,
@@ -187,6 +207,7 @@ export function encodeFloatValue(
   return resultFromBytes(encodeNumber(value, format), format);
 }
 
+/** 校验二进制/十六进制位模式，并解码为 IEEE-754 结果。 */
 export function decodeFloatPattern(
   input: string,
   format: FloatFormat,
@@ -252,6 +273,7 @@ export function decodeFloatPattern(
   );
 }
 
+/** 根据当前输入模式分派到数值编码或位模式解码。 */
 export function convertFloatInput(
   input: string,
   format: FloatFormat,

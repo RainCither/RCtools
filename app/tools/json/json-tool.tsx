@@ -1,11 +1,14 @@
+/** 校验 JSON 文本，并按用户选择输出美化或紧凑格式。 */
 import { useState } from "react";
 import { CopyButton, ToolStatus } from "../shared/tool-ui";
 
+/** 渲染 JSON 编辑器及其格式化、压缩和复制操作。 */
 export default function JsonTool() {
   const [input, setInput] = useState('{\n  "name": "工具匣",\n  "ready": true\n}');
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
 
+  /** 解析当前输入，并按可选缩进宽度重新序列化。 */
   function transform(space?: number) {
     try {
       const parsed: unknown = JSON.parse(input);

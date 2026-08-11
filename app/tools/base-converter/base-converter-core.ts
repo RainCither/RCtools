@@ -1,9 +1,14 @@
+/** @file 解析任意长度整数，并在二、八、十、十六进制之间精确转换。 */
+/** 工具同时生成结果的四种常用进制。 */
 export const COMMON_BASES = [2, 8, 10, 16] as const;
 
+/** 工具支持的常用进制联合类型。 */
 export type CommonBase = (typeof COMMON_BASES)[number];
 
+/** 每个目标进制对应的格式化结果。 */
 export type ConversionOutputs = Record<CommonBase, string>;
 
+/** 一次整数转换的数值、全部输出与校验错误。 */
 export type ConversionResult = {
   value: bigint | null;
   outputs: ConversionOutputs | null;
@@ -16,6 +21,7 @@ const PREFIX_BASES: Record<string, CommonBase> = {
   x: 16,
 };
 
+/** 将单个十六进制范围内的字符转换为数值，无效字符返回 -1。 */
 function digitValue(character: string) {
   const code = character.toUpperCase().charCodeAt(0);
   if (code >= 48 && code <= 57) return code - 48;
@@ -23,6 +29,7 @@ function digitValue(character: string) {
   return -1;
 }
 
+/** 返回指定进制允许输入的数字范围说明。 */
 function allowedDigits(base: CommonBase) {
   if (base === 2) return "0、1";
   if (base === 8) return "0–7";
@@ -30,10 +37,12 @@ function allowedDigits(base: CommonBase) {
   return "0–9、A–F";
 }
 
+/** 将 BigInt 按目标进制格式化为大写字符串。 */
 function formatValue(value: bigint, base: CommonBase) {
   return value.toString(base).toUpperCase();
 }
 
+/** 校验符号、前缀和数字后，计算全部常用进制结果。 */
 export function convertBaseInteger(
   input: string,
   sourceBase: CommonBase,

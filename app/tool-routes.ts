@@ -1,21 +1,26 @@
+/** 生成并解析兼容根域名与子目录部署的工具静态路由。 */
 export type ParsedToolRoute<TToolId extends string> =
   | { kind: "home" }
   | { kind: "tool"; toolId: TToolId }
   | { kind: "invalid" };
 
+/** 将部署基路径规范为以斜杠开头和结尾的形式。 */
 export function normalizeBasePath(basePath: string): string {
   const segments = basePath.split("/").filter(Boolean);
   return segments.length ? `/${segments.join("/")}/` : "/";
 }
 
+/** 返回当前部署环境下的首页地址。 */
 export function getHomeHref(basePath = "/"): string {
   return normalizeBasePath(basePath);
 }
 
+/** 为指定工具生成静态详情页地址。 */
 export function getToolHref(toolId: string, basePath = "/"): string {
   return `${normalizeBasePath(basePath)}${toolId}/`;
 }
 
+/** 将浏览器路径解析为首页、有效工具页或无效路由。 */
 export function parseToolRoute<TToolId extends string>(
   pathname: string,
   basePath: string,

@@ -1,6 +1,8 @@
+/** 实时统计文本字符数、非空白字符、字词与行数。 */
 import { useMemo, useState } from "react";
 import styles from "./styles.module.css";
 
+/** 渲染文本输入框和随输入派生的统计结果。 */
 export default function TextStatsTool() {
   const [input, setInput] = useState("");
   const stats = useMemo(() => {

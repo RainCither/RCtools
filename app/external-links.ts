@@ -1,7 +1,10 @@
+/** 定义首页可展示的外部工具链接及其类型安全的元数据。 */
 import { TOOL_CATEGORY_LABELS, type ToolCategory } from "./tool-types";
 
+/** 仅允许显式 HTTP(S) 协议的外部地址。 */
 export type ExternalLinkHref = `https://${string}` | `http://${string}`;
 
+/** 首页外部链接卡片所需的完整元数据。 */
 export type ExternalLinkDefinition<
   TId extends string = string,
   TCategory extends ToolCategory = ToolCategory,
@@ -16,6 +19,7 @@ export type ExternalLinkDefinition<
   href: ExternalLinkHref;
 };
 
+/** 补全外部链接的分类文案，同时保留字面量 id 与分类类型。 */
 export function defineExternalLink<
   const TId extends string,
   const TCategory extends ToolCategory,
@@ -28,6 +32,7 @@ export function defineExternalLink<
   };
 }
 
+/** 实际展示的外部链接；新增条目时通过 defineExternalLink 注册。 */
 export const EXTERNAL_LINKS = [
   // defineExternalLink({
   //   id: "example",

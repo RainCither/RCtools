@@ -1,7 +1,9 @@
+/** 将 HEX 颜色转换为 RGB/HSL，并提供同步的颜色选择与预览界面。 */
 import { useState } from "react";
 import { ToolStatus } from "../shared/tool-ui";
 import styles from "./styles.module.css";
 
+/** 校验三位或六位 HEX，并统一展开为大写六位形式。 */
 function normalizeHex(value: string) {
   const clean = value.trim().replace(/^#/, "");
   if (/^[0-9a-fA-F]{3}$/.test(clean)) {
@@ -11,11 +13,13 @@ function normalizeHex(value: string) {
   return null;
 }
 
+/** 将六位 HEX 颜色拆分为 RGB 通道。 */
 function hexToRgb(hex: string) {
   const value = Number.parseInt(hex.slice(1), 16);
   return { r: (value >> 16) & 255, g: (value >> 8) & 255, b: value & 255 };
 }
 
+/** 将 0–255 RGB 通道转换为整数 HSL 值。 */
 function rgbToHsl(r: number, g: number, b: number) {
   const red = r / 255;
   const green = g / 255;
@@ -38,6 +42,7 @@ function rgbToHsl(r: number, g: number, b: number) {
   return { h: Math.round(hue * 360), s: Math.round(saturation * 100), l: Math.round(lightness * 100) };
 }
 
+/** 渲染颜色输入、预览以及 HEX/RGB/HSL 转换结果。 */
 export default function ColorTool() {
   const [input, setInput] = useState("#F26B4D");
   const normalized = normalizeHex(input);

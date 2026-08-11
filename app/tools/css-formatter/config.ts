@@ -1,5 +1,7 @@
+/** 注册 CSS 格式化与压缩工具。 */
 import { defineTool } from "../../tool-types";
 
+/** CSS 格式化工具的首页元数据与懒加载入口。 */
 export const cssFormatterToolConfig = defineTool({
   id: "css-formatter",
   title: "CSS 格式化压缩",
