@@ -45,7 +45,7 @@ test("uses a CJK-compatible mark subset for Han graphemes", () => {
   const output = generateGlitchText(
     "故障",
     { min: 5, max: 5 },
-    { placements: ["above", "below", "middle"], ranges: ["basic"], random: () => 0 },
+    { cjkCompatible: true, placements: ["above", "below", "middle"], ranges: ["basic"], random: () => 0 },
   );
   assert.equal(output, "故\u0300\u0300\u0300\u0300\u0300障\u0300\u0300\u0300\u0300\u0300");
 
@@ -110,4 +110,18 @@ test("limits added marks without truncating the input", () => {
   assert.equal(result.text.includes("B"), true);
   assert.equal(result.marksAdded, 3);
   assert.equal(result.marksLimited, true);
+});
+
+
+test("Chinese supports lower, overlay and Cyrillic enclosing marks by default", () => {
+  for (const [placement, range, mark] of [
+    ["below", "basic", "\u0316"],
+    ["middle", "basic", "\u0334"],
+    ["enclosing", "cyrillic", "\u0488"],
+  ]) {
+    assert.equal(generateGlitchText("我", { min: 30, max: 30 }, {
+      placements: [placement], ranges: [range], random: () => 0,
+    }), "我" + mark.repeat(30));
+  }
+  assert.deepEqual(getGlitchMarks("cyrillic", "enclosing"), ["\u0488", "\u0489"]);
 });

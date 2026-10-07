@@ -16,7 +16,7 @@ import {
 } from "./glitch-text-core";
 import styles from "./styles.module.css";
 
-type IntensityPreset = "light" | "medium" | "heavy" | "custom";
+type IntensityPreset = "light" | "medium" | "heavy" | "eldritch" | "custom";
 
 const PRESETS: ReadonlyArray<{
   id: Exclude<IntensityPreset, "custom">;
@@ -27,6 +27,7 @@ const PRESETS: ReadonlyArray<{
   { id: "light", label: "轻微", hint: "1–2 个", range: { min: 1, max: 2 } },
   { id: "medium", label: "中等", hint: "3–6 个", range: { min: 3, max: 6 } },
   { id: "heavy", label: "重度", hint: "7–12 个", range: { min: 7, max: 12 } },
+  { id: "eldritch", label: "邪神", hint: "20–40 个 · 环绕", range: { min: 20, max: 40 } },
 ];
 
 const PLACEMENT_OPTIONS: ReadonlyArray<{
@@ -37,7 +38,7 @@ const PLACEMENT_OPTIONS: ReadonlyArray<{
   { id: "above", label: "上方", hint: "重音与上标符号" },
   { id: "below", label: "下方", hint: "下划与下标符号" },
   { id: "middle", label: "穿透", hint: "删除线与覆盖符号" },
-  { id: "enclosing", label: "包围", hint: "仅符号范围有效" },
+  { id: "enclosing", label: "包围", hint: "数学或西里尔符号范围有效" },
 ];
 
 const RANGE_OPTIONS: ReadonlyArray<{
@@ -45,6 +46,7 @@ const RANGE_OPTIONS: ReadonlyArray<{
   label: string;
   hint: string;
 }> = [
+  { id: "cyrillic", label: "西里尔环绕符", hint: "҈ / ҉，搭配包围位置使用" },
   { id: "basic", label: "基础字符", hint: "兼容性最好，推荐默认使用" },
   { id: "extended", label: "扩展字符", hint: "更多语音与形状符号" },
   { id: "supplement", label: "补充字符", hint: "字母、箭头与轮廓符号" },
@@ -60,6 +62,7 @@ const DEFAULT_PLACEMENTS: Record<GlitchMarkPlacement, boolean> = {
 };
 
 const DEFAULT_RANGES: Record<GlitchMarkRange, boolean> = {
+  cyrillic: false,
   basic: true,
   extended: false,
   supplement: false,
@@ -115,6 +118,7 @@ export default function GlitchTextTool() {
   const [noiseRange, setNoiseRange] = useState<NoiseRange>({ min: 3, max: 6 });
   const [placements, setPlacements] = useState(freshPlacements);
   const [ranges, setRanges] = useState(freshRanges);
+  const [cjkCompatible, setCjkCompatible] = useState(false);
   const [result, setResult] = useState<GlitchTextResult | null>(null);
   const [error, setError] = useState("");
   const [dirty, setDirty] = useState(false);
@@ -142,6 +146,11 @@ export default function GlitchTextTool() {
     if (!selected) return;
     setPreset(nextPreset);
     setNoiseRange(selected.range);
+    if (nextPreset === "eldritch") {
+      setCjkCompatible(false);
+      setPlacements({ above: true, below: true, middle: true, enclosing: true });
+      setRanges({ ...DEFAULT_RANGES, cyrillic: true });
+    }
     markDirty();
   }
 
@@ -197,7 +206,7 @@ export default function GlitchTextTool() {
     const generated = generateGlitchTextResult(
       input,
       clampNoiseRange(noiseRange.min, noiseRange.max),
-      { placements: selectedPlacements, ranges: selectedRanges },
+      { placements: selectedPlacements, ranges: selectedRanges, cjkCompatible },
     );
     if (generated.renderableGraphemes === 0) {
       setResult(null);
@@ -223,6 +232,7 @@ export default function GlitchTextTool() {
     setInput("");
     setPreset("medium");
     setNoiseRange({ min: 3, max: 6 });
+    setCjkCompatible(false);
     setPlacements(freshPlacements());
     setRanges(freshRanges());
     setResult(null);
@@ -233,7 +243,7 @@ export default function GlitchTextTool() {
   const statusMessage = dirty
     ? "输入或设置已更改，点击“重新生成”更新结果。"
     : result
-      ? `已处理 ${result.renderableGraphemes.toLocaleString("zh-CN")} 个可见字素，添加 ${result.marksAdded.toLocaleString("zh-CN")} 个组合符${result.marksLimited ? "，已达到输出上限" : ""}。`
+      ? `已处理 ${result.renderableGraphemes.toLocaleString("zh-CN")} 个可见字素，添加 ${result.marksAdded.toLocaleString("zh-CN")} 个组合符，结果共 ${Array.from(result.text).length.toLocaleString("zh-CN")} 个码点${result.marksLimited ? "，已达到输出上限" : ""}。`
       : `最多输入 ${MAX_INPUT_GRAPHEMES.toLocaleString("zh-CN")} 个字素；结果只在点击生成时更新。`;
 
   return (
@@ -253,7 +263,7 @@ export default function GlitchTextTool() {
         aria-describedby="glitch-text-help"
       />
       <p className={styles.help} id="glitch-text-help">
-        空格和换行保持不变；Emoji 会按完整字素处理，不拆开连接序列。
+        Zalgo 效果由真实 Unicode 组合字符叠加而成，复制时会一起保留。空格和换行保持不变；Emoji 会按完整字素处理，不拆开连接序列。
       </p>
 
       <fieldset className={styles.intensity}>
@@ -330,6 +340,13 @@ export default function GlitchTextTool() {
               />
             ))}
           </fieldset>
+          <OptionToggle
+            id="cjkCompatible"
+            label="中文兼容模式"
+            hint="仅使用少量上方与包围符号；关闭可生成完整叠加效果"
+            checked={cjkCompatible}
+            onChange={(_, checked) => { setCjkCompatible(checked); markDirty(); }}
+          />
           <p className={styles.experimentalNote}>
             扩展、补充、数学符号与 Unicode 17 属于实验效果，显示外观取决于系统字体。
           </p>

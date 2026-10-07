@@ -9,6 +9,7 @@ export interface NoiseRange {
 export type GlitchMarkPlacement = "above" | "below" | "middle" | "enclosing";
 /** 可供选择的 Unicode 组合符分区。 */
 export type GlitchMarkRange =
+  | "cyrillic"
   | "basic"
   | "extended"
   | "supplement"
@@ -17,6 +18,7 @@ export type GlitchMarkRange =
 
 /** 故障文字生成器可覆盖的字符池、随机源和输出上限。 */
 export interface GenerateGlitchTextOptions {
+  cjkCompatible?: boolean;
   placements?: readonly GlitchMarkPlacement[];
   ranges?: readonly GlitchMarkRange[];
   random?: () => number;
@@ -35,7 +37,7 @@ export interface GlitchTextResult {
 /** 单次允许处理的最大输入字素数。 */
 export const MAX_INPUT_GRAPHEMES = 2_000;
 /** 单个可见字素允许追加的最大组合符数。 */
-export const MAX_MARKS_PER_GRAPHEME = 20;
+export const MAX_MARKS_PER_GRAPHEME = 60;
 /** 生成结果允许包含的最大 Unicode 码点数。 */
 export const MAX_OUTPUT_CODE_POINTS = 30_000;
 
@@ -56,6 +58,7 @@ const ALL_PLACEMENTS: readonly GlitchMarkPlacement[] = [
 ];
 const ALL_RANGES: readonly GlitchMarkRange[] = [
   "basic",
+  "cyrillic",
   "extended",
   "supplement",
   "symbols",
@@ -81,6 +84,12 @@ const COMBINING_MARKS_BY_RANGE: Record<
   GlitchMarkRange,
   Record<GlitchMarkPlacement, readonly string[]>
 > = {
+  cyrillic: {
+    above: EMPTY_MARKS,
+    below: EMPTY_MARKS,
+    middle: EMPTY_MARKS,
+    enclosing: createMarkPool([[0x0488, 0x0489]]),
+  },
   basic: {
     above: createMarkPool([
       [0x0300, 0x0315],
@@ -188,6 +197,12 @@ const CJK_COMBINING_MARKS_BY_RANGE: Record<
   GlitchMarkRange,
   Record<GlitchMarkPlacement, readonly string[]>
 > = {
+  cyrillic: {
+    above: EMPTY_MARKS,
+    below: EMPTY_MARKS,
+    middle: EMPTY_MARKS,
+    enclosing: createMarkPool([[0x0488, 0x0489]]),
+  },
   basic: {
     above: [0x0300, 0x0301, 0x0304, 0x0307, 0x030c]
       .map((codePoint) => String.fromCodePoint(codePoint)),
@@ -371,7 +386,7 @@ export function generateGlitchTextResult(
     if (!isRenderableGrapheme(grapheme)) continue;
     renderableGraphemes += 1;
 
-    const sources = isCjkGrapheme(grapheme) ? cjkSources : standardSources;
+    const sources = options.cjkCompatible && isCjkGrapheme(grapheme) ? cjkSources : standardSources;
     if (sources.length === 0) continue;
     const requestedCount = randomInt(normalizedRange.min, normalizedRange.max, random);
     const count = Math.min(requestedCount, remainingMarkBudget);
