@@ -1,0 +1,15 @@
+{
+  "id": "color",
+  "title": "颜色转换",
+  "summary": "将 HEX 颜色转换为 RGB 与 HSL。",
+  "category": "dev",
+  "mark": "#",
+  "searchTerms": ["颜色", "hex", "rgb", "hsl", "color"],
+  "order": 160,
+  "appearance": {
+    "tone": "teal",
+    "size": 20,
+    "font": "mono"
+  },
+  "draft": "session"
+}

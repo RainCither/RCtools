@@ -1,0 +1,5 @@
+node_modules
+dist
+src/generated
+.react-router
+package-lock.json

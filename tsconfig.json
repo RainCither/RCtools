@@ -1,26 +1,31 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "target": "ES2022",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
-    "incremental": true,
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["vite/client", "node"],
+    "rootDirs": [".", "./.react-router/types"],
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.mts"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "build/**/*.mts",
+    "quality/**/*.ts",
+    ".react-router/types/**/*",
+    "*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "tests"]
 }

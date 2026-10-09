@@ -1,0 +1,15 @@
+{
+  "id": "timestamp",
+  "title": "时间戳转换",
+  "summary": "在时间戳、日期与标准时间之间转换。",
+  "category": "date",
+  "mark": "⌁",
+  "searchTerms": ["时间戳", "日期", "unix", "timestamp"],
+  "order": 60,
+  "appearance": {
+    "tone": "blue",
+    "size": 22,
+    "font": "mono"
+  },
+  "draft": "session"
+}

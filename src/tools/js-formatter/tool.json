@@ -1,0 +1,25 @@
+{
+  "id": "js-formatter",
+  "title": "JavaScript 格式化压缩",
+  "summary": "格式化或压缩现代 JavaScript 与 ES Modules。",
+  "category": "dev",
+  "mark": "JS",
+  "searchTerms": [
+    "javascript",
+    "js",
+    "脚本",
+    "格式化",
+    "美化",
+    "压缩",
+    "minify",
+    "beautify",
+    "esm"
+  ],
+  "order": 30,
+  "appearance": {
+    "tone": "accent",
+    "size": 14,
+    "font": "mono"
+  },
+  "draft": "session"
+}

@@ -1,252 +1,89 @@
 # 工具匣（RCtools）
 
-一个简洁、可扩展的浏览器工具箱。所有输入都在浏览器本地处理，无需上传内容，也不依赖后端服务。
+一个由 JSON 自动发现工具的浏览器平台。全部计算在本地完成，不上传输入、文件、密码或诊断记录。
 
-[在线使用](https://tool.raincither.top/) · [添加新工具指南](./ADDTOOL.md)
+[在线使用](https://tool.raincither.top/) · [架构与约束](./ARCHITECTURE.md) · [添加工具指南](./ADDTOOL.md)
 
-## 功能特点
+保留 16 个工具的 ID、独立访问路径、默认排序、输入输出格式和原有视觉风格：JSON、CSS、JavaScript、HTML、正则、时间戳、连续时间差、文本统计、故障文字、密码、Base64、MD5、SHA、进制、IEEE-754 和颜色。
 
-- 常用文本、开发、日期和其他工具集中在一个页面中。
-- 每个工具都有可直接访问、刷新和分享的独立子路由。
-- 支持标题、中文关键词、英文关键词和别名搜索。
-- 工具组件按需加载，并按访问意图预加载，避免在首屏加载全部工具代码。
-- 输入数据仅在本地处理，最近使用记录保存在当前浏览器中。
-- 可构建为纯静态站点并部署到 GitHub Pages。
+## 开发
 
-## 主页功能列表
-
-| 类别 | 工具或链接               | 功能                                                                    |
-| ---- | ------------------------ | ----------------------------------------------------------------------- |
-| 开发 | JSON 格式化              | 校验、格式化或压缩 JSON 数据                                            |
-| 开发 | CSS 格式化压缩           | 格式化或压缩标准 CSS 样式代码                                           |
-| 开发 | JavaScript 格式化压缩    | 格式化或压缩现代 JavaScript 与 ES Modules                               |
-| 开发 | HTML 格式化压缩          | 格式化或保守压缩 HTML，并处理内嵌 CSS 与 JavaScript                     |
-| 开发 | 正则表达式测试           | 实时测试 JavaScript 正则，并查看语法速查与常用表达式                    |
-| 日期 | 时间戳转换               | 在时间戳、日期与标准时间之间转换                                        |
-| 日期 | 连续时间差               | 连续或成对输入时间，计算分段差值与累计总时长                            |
-| 文本 | 文本统计                 | 统计字数、字符、单词和行数                                              |
-| 文本 | 故障文字生成             | 用 Unicode 组合符生成可复制的故障、错位文字                             |
-| 开发 | 密码生成                 | 按长度和字符规则生成随机密码                                            |
-| 开发 | Base64 编解码            | 编码或解码包含中文的文本                                                |
-| 开发 | MD5 加密与校验           | 计算文本或 20 MiB 内小文件的 MD5 摘要并校验候选内容                     |
-| 开发 | SHA-1 / SHA-2 哈希与校验 | 计算文本或 20 MiB 内小文件的 SHA-1、SHA-256、SHA-512 摘要并校验候选内容 |
-| 开发 | 进制转换                 | 在二、八、十、十六进制整数之间精确转换                                  |
-| 开发 | IEEE-754 浮点数转换      | 在十进制数与 Float32/Float64 位模式之间双向转换                         |
-| 开发 | 颜色转换                 | 将 HEX 颜色转换为 RGB 与 HSL                                            |
-
-## 本地开发
-
-### 环境要求
-
-- Node.js `>= 22.13.0`
-- npm（随 Node.js 安装）
-- Chrome、Edge、Firefox 或 Safari 等现代浏览器
-
-### 快速开始
+需要 Node.js **22.22.0 或以上**、npm 和现代浏览器。
 
 ```bash
-git clone https://github.com/RainCither/RCtools.git
-cd RCtools
-git switch dev
-npm ci
+npm ci --include=dev
 npm run dev
 ```
 
-Vite 开发服务器默认运行在 [http://localhost:5173](http://localhost:5173)。如果端口被占用，请以终端显示的地址为准。
+开发命令自动生成目录与入口映射，配置和入口增删后重新扫描；配置错误保留上一份合法生成结果。通常访问 http://127.0.0.1:5173，以启动输出为准。
 
-### 常用命令
+| 命令                         | 用途                                                     |
+| ---------------------------- | -------------------------------------------------------- |
+| `npm run generate`           | 校验 JSON 并生成目录、精确类型、视图加载器与 Worker 工厂 |
+| `npm run typecheck`          | 生成配置、路由类型并执行严格 TypeScript 检查             |
+| `npm run lint`               | ESLint 检查                                              |
+| `npm run check:architecture` | AST 依赖与循环检查                                       |
+| `npm test`                   | 类型、架构和核心/生命周期验证                            |
+| `npm run check`              | 类型、规范、格式、架构及 Vitest 门禁                     |
+| `npm run build`              | 完整门禁、客户端构建、预渲染与产物验证                   |
+| `npm run preview`            | 预览 `dist/client`                                       |
+| `npm run test:e2e`           | Playwright 桌面与手机浏览器验证                          |
 
-| 命令                  | 说明                                          |
-| --------------------- | --------------------------------------------- |
-| `npm run dev`         | 启动 Vite 前端开发服务器                      |
-| `npm run typecheck`   | 运行 TypeScript 类型检查                      |
-| `npm test`            | 运行类型检查、前端结构测试和功能测试          |
-| `npm run build`       | 生成 GitHub Pages 静态文件到 `dist/`          |
-| `npm run pages:build` | GitHub Pages 构建命令，等同于 `npm run build` |
-| `npm run test:pages`  | 构建并验证 GitHub Pages 静态产物              |
-| `npm run preview`     | 本地预览已构建的静态站点                      |
-
-构建并预览静态站点：
+`quality/unit` 和 `quality/browser` 是质量验证入口。浏览器验证默认使用本机 Chrome；CI 使用 Playwright Chromium。首次在 CI 风格环境运行时：
 
 ```bash
+npx playwright install --with-deps chromium
 npm run build
-npm run preview
+npm run test:e2e
 ```
 
-提交代码前建议运行：
+截图与失败追踪默认保存在系统临时目录的 `rctools-quality`，不进入源码目录；可用 `QA_ARTIFACTS_DIR` 指定其他输出位置。
 
-```bash
-npm test
-npm run test:pages
-git diff --check
-```
+提交源码、配置、`quality` 验证、构建脚本和 `package-lock.json`。依赖目录、构建产物、生成目录、缓存、报告、日志和本地环境文件由 `.gitignore` 排除；生成文件会在开发、检查或构建时重新创建。
 
-## 项目结构
+## 结构
 
 ```text
-RCtools/
-├─ app/
-│  ├─ tools/
-│  │  ├─ json/                 # 一个工具一个目录
-│  │  │  ├─ config.ts          # 元数据与动态导入入口
-│  │  │  ├─ json-tool.tsx      # 工具组件
-│  │  │  └─ styles.module.css  # 工具私有样式（按需）
-│  │  ├─ time-diff/            # 可包含专用算法、类型和样式
-│  │  └─ shared/               # 跨工具复用的 UI 与逻辑
-│  ├─ external-links.ts        # 外部链接主页卡片
-│  ├─ main.tsx                 # 浏览器应用入口
-│  ├─ toolbox-app.tsx          # 工具箱主界面
-│  ├─ tool-routes.ts           # Base Path、链接与路径解析
-│  ├─ tool-types.ts            # 工具类型与分类名称
-│  ├─ tool-registry.ts         # 工具配置注册表
-│  └─ tool-panels.tsx          # 懒加载与预加载管理
-├─ public/                     # favicon 等公共静态资源
-├─ tests/                      # 功能、结构与静态构建测试
-├─ .github/workflows/          # GitHub Pages 自动部署工作流
-├─ ADDTOOL.md                  # 添加新工具的完整指南
-├─ index.html                  # Vite 静态页面入口
-└─ vite.config.ts              # 前端开发、构建与静态路由配置
+src/
+├─ contracts/       # Schema、能力、结果、控制器与 Worker 协议
+├─ catalog/         # 分类/外链 JSON，纯目录查询
+├─ tools/<id>/      # tool.json / core / controller / view / worker
+├─ bindings/react/  # 生命周期订阅与能力注入
+├─ ui/              # 受控控件、布局与 CSS Modules
+├─ adapters/        # 浏览器能力与资源管理
+├─ app/             # Framework 路由、预渲染页面与工具宿主
+└─ generated/       # 自动生成，不提交、不手工编辑
+build/              # 配置生成、架构与静态产物检查
+quality/            # 新行为与浏览器验证
+dist/client/        # 唯一发布目录
 ```
 
-每个工具的配置、组件、算法和专用样式都收拢在自己的目录中。工具 ID、分类、搜索、独立子路由和懒加载组件从注册表自动推导；只有被多个工具共同使用的代码才放入 `app/tools/shared/`。
+新增工具只需要自身目录，具体模板见 [ADDTOOL.md](./ADDTOOL.md)。分类编辑 `src/catalog/categories.json`；外链编辑 `src/catalog/links.json`，字段模型与工具相同，并包含有效的 HTTP(S) `href`。不维护中央导入表、路由表或静态路径清单。
 
-## 添加新工具
+## 输入和执行
 
-完整步骤、代码模板、测试要求和验收清单见 [`ADDTOOL.md`](./ADDTOOL.md)。基本流程是：
+普通输入与选项在当前页面会话内恢复，刷新清除。密码、文件、结果、错误和运行任务不进入草稿。草稿总预算 16 MiB，超额淘汰最久未使用项，单份过大输入会提示离开后不保留。
 
-1. 在 `app/tools/<tool-id>/` 中创建配置和组件。
-2. 使用 `defineTool` 声明元数据与动态导入入口。
-3. 将配置加入 `app/tool-registry.ts` 的 `TOOLS`。
-4. 更新工具清单、功能测试和独立分块测试。
-5. 运行完整验证并在浏览器中检查交互和响应式布局。
+重计算在 Worker 执行，支持取消、超时和旧结果隔离。正则超时 2 秒，其他任务默认 30 秒；文件哈希保留 20 MiB 上限。最近使用保留原存储键，去重后最多展示 3 项，存储不可用时降级到内存。
 
-`app/tool-panels.tsx` 会从注册表自动生成组件映射，静态构建也会从同一注册表生成 `/<tool-id>/` 页面；添加工具时不需要维护第二份路由清单。
+生产诊断仅保留页面内存最近 500 条白名单事件，错误界面可主动复制；不包含输入、输出、密码、文件名、异常堆栈或完整查询参数。
 
-依赖必须遵循工具级按需加载：应用入口、注册表和 `config.ts` 不得直接导入工具专属重型库；只在用户操作时需要的压缩器、解析器、WASM 等应继续使用动态 `import()`。首屏 JavaScript 的 Gzip 体积目标保持在 `100 KiB` 以内，增长超过 `10%` 时需要检查加载链路并说明原因。完整约束和验收项见 [`ADDTOOL.md` 的“依赖与分块约束”](./ADDTOOL.md#依赖与分块约束)。
+## 静态发布
 
-## 添加外部链接卡片
+React Router 8.4.0 Framework 使用 `ssr: false`、`routeDiscovery: initial`，构建时生成首页和全部工具页的标题、简介、导航、目录或交互占位。发布目录是 **dist/client**，不发布临时服务器产物。
 
-只需编辑 `app/external-links.ts`，使用 `defineExternalLink` 向 `EXTERNAL_LINKS` 添加配置：
+默认域名仍为 `tool.raincither.top`。子路径发布可设置：
 
-```ts
-export const EXTERNAL_LINKS = [
-  defineExternalLink({
-    id: "example",
-    title: "示例网站",
-    summary: "一句话说明这个外部网站能解决什么问题。",
-    category: "dev",
-    mark: "E",
-    searchTerms: ["示例", "example"],
-    href: "https://example.com",
-  }),
-] as const satisfies readonly ExternalLinkDefinition[];
+```powershell
+$env:PAGES_BASE_PATH = "/RCtools"
+$env:PAGES_CUSTOM_DOMAIN = ""
+npm run build
 ```
 
-- `category` 可使用 `text`、`dev`、`date` 或 `other`，分类中文名会自动生成。
-- `mark` 是卡片左侧的短标记；`searchTerms` 用于补充中文关键词、英文名和别名。
-- `href` 必须是完整的 `http://` 或 `https://` 地址。
-- 外部链接卡片会排在站内工具之后；点击时在新标签页打开，并写入最近使用。
-- 外部链接不需要本地页面组件、路由注册或静态页面构建配置。
+Base Path 同时控制资源、路由和预渲染。空自定义域名不生成 CNAME。未知地址的静态 404 提供返回首页的入口。
 
-完成修改后，运行：
+GitHub 工作流对 `dev` 的推送、PR 和手动触发执行验证；PR 只验证，推送和手动触发在成功后部署 Pages 产物。首次切换需在 Settings → Pages → Build and deployment 中选择 **GitHub Actions**。旧 `main` 的最后一份产物保留，工作流不再强推该分支。
 
-```bash
-npm test
-npm run test:pages
-git diff --check
-```
+每次产物保存 `build-info.json`（构建版本、源码提交与锁文件摘要）。回滚稳定源码提交并使用对应锁文件重建，部署整套页面与资源。
 
-还应在桌面端和移动端浏览器中检查：
-
-- 卡片能够通过标题、关键词和别名搜索。
-- 分类筛选包含卡片，并能正确显示或隐藏。
-- 外部链接卡片会在新标签页打开。
-- 点击后返回或刷新主页，卡片会出现在最近使用中。
-
-## GitHub Pages 部署
-
-### 分支约定
-
-- `dev`：保存源码、测试和部署工作流，是日常开发分支。
-- `main`：由 GitHub Actions 自动生成，只保存 `dist/` 中的静态产物。
-
-推送到 `dev` 后，`.github/workflows/deploy-pages.yml` 会安装依赖、构建静态站点，并将 `dist/` 强制发布到 `main`。不要直接编辑或提交到 `main`，下一次部署会覆盖其中的内容。
-
-首次部署 Fork 后的仓库时，在 GitHub 中打开：
-
-`Settings → Pages → Build and deployment`
-
-设置为：
-
-- Source：`Deploy from a branch`
-- Branch：`main`
-- Folder：`/ (root)`
-
-工作流需要 `contents: write` 权限。如果组织策略禁止写入，请在仓库的 Actions 设置中允许工作流写入仓库内容。
-
-### 域名与 Base Path
-
-当前部署使用自定义域名 `tool.raincither.top`：
-
-```yaml
-PAGES_BASE_PATH: /
-PAGES_CUSTOM_DOMAIN: tool.raincither.top
-```
-
-`vite.config.ts` 会把资源路径设置为根路径，为每个已注册工具生成 `dist/<tool-id>/index.html`，同时生成 `dist/404.html`、`.nojekyll` 与 `CNAME`。
-
-使用其他自定义域名时：
-
-1. 将工作流中的 `PAGES_CUSTOM_DOMAIN` 改为目标域名。
-2. 保持 `PAGES_BASE_PATH: /`。
-3. 在 GitHub Pages 设置中填写相同域名。
-4. 按 GitHub 提示配置 DNS，检查通过后启用 HTTPS。
-
-不使用自定义域名、通过 `https://<用户名>.github.io/<仓库名>/` 访问时：
-
-1. 将 `PAGES_BASE_PATH` 改为 `/<仓库名>`，例如 `/RCtools`。
-2. 修改 `vite.config.ts`，在没有自定义域名时不生成 `CNAME`。
-3. 确认 GitHub Pages 仍从 `main` 分支根目录发布。
-
-Base Path 必须以 `/` 开头；除根路径 `/` 外，末尾不要添加 `/`。
-
-## 数据与隐私
-
-- 工具输入在浏览器本地处理。
-- 项目没有数据库和上传接口。
-- 最近使用记录仅保存在当前浏览器的本地存储中。
-- 最近使用只保存工具或卡片的 ID，不保存工具输入内容。
-- 清除浏览器站点数据会同时清除最近使用记录。
-- 外部链接卡片会离开本站；目标网站的数据处理方式和隐私政策由对应第三方负责。
-
-## 常见问题
-
-### 页面打开后样式或脚本返回 404
-
-检查 `PAGES_BASE_PATH` 是否与访问地址一致：自定义域名使用 `/`，仓库子路径使用 `/<仓库名>`。
-
-### 工具子路由无法直接刷新
-
-确认部署产物中存在对应的 `dist/<tool-id>/index.html`，并通过 `npm run test:pages` 检查所有已注册工具的静态入口。未知或多层路径会自动返回工具匣首页。
-
-### 自定义域名在重新部署后失效
-
-确认 `PAGES_CUSTOM_DOMAIN` 与 GitHub Pages 设置中的域名一致，并检查构建产物中是否存在内容正确的 `CNAME`。
-
-### `main` 中看不到源码
-
-这是正常现象。源码位于 `dev`，`main` 只用于 GitHub Pages 静态部署。
-
-### 新工具没有出现在页面中
-
-确认工具配置已经导入 `app/tool-registry.ts` 并加入 `TOOLS`，同时检查 `config.ts` 中的动态导入路径是否指向默认导出的组件。
-
-### 安装依赖失败
-
-确认 Node.js 版本满足要求，然后重新执行：
-
-```bash
-npm ci
-```
-
-不要手动修改 `node_modules`。如果依赖目录损坏，可以删除后重新执行 `npm ci`。
+首屏脚本、模块预加载与静态依赖的 Gzip 总量限制为 100 KiB，重型解析器和 WASM 不得进入此加载链路。更多依赖、错误、日志和代码约束见 [ARCHITECTURE.md](./ARCHITECTURE.md)。

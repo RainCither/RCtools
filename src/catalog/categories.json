@@ -1,0 +1,6 @@
+[
+  { "id": "text", "label": "文本" },
+  { "id": "dev", "label": "开发" },
+  { "id": "date", "label": "日期" },
+  { "id": "other", "label": "其他" }
+]

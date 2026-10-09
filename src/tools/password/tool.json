@@ -1,0 +1,15 @@
+{
+  "id": "password",
+  "title": "密码生成",
+  "summary": "按长度与字符规则生成随机密码。",
+  "category": "dev",
+  "mark": "✦",
+  "searchTerms": ["密码", "随机", "password", "安全"],
+  "order": 100,
+  "appearance": {
+    "tone": "purple",
+    "size": 20,
+    "font": "mono"
+  },
+  "draft": "none"
+}

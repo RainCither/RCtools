@@ -3,30 +3,32 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: [dev]
+  pull_request:
+    branches: [dev]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: github-pages
+  group: github-pages-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout dev
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 22.22.0
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=dev
 
       - name: Build static site
         env:
@@ -34,16 +36,40 @@ jobs:
           PAGES_CUSTOM_DOMAIN: tool.raincither.top
         run: npm run pages:build
 
-      - name: Publish main branch
+      - name: Install browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify browser behavior
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd dist
-          git init
-          git checkout -b main
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Deploy ${GITHUB_SHA}"
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push --force origin main
+          QA_ARTIFACTS_DIR: ${{ runner.temp }}/rctools-quality
+        run: npm run test:e2e
+
+      - name: Save browser diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-quality
+          path: ${{ runner.temp }}/rctools-quality
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/client
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy verified artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

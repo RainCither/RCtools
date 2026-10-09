@@ -1,7 +1,38 @@
+# Dependencies and generated build output
 /node_modules/
 /dist/
-/tests/
+/.react-router/
+/src/generated/
 
+# Caches and incremental compiler output
+/.cache/
+/.vite/
+.eslintcache
+*.tsbuildinfo
+
+# Browser reports and coverage; keep quality/ source files
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
+/coverage/
+/.nyc_output/
+
+# Local environment and agent/editor state
 .env*
+!.env.example
+!.env.*.example
+/.agents/
+/.codex/
+/.idea/
+/.history/
+/.vscode/*.local.*
+
+# Logs, editor backups, and operating-system metadata
 *.log
+*.swp
+*.swo
+*~
 .DS_Store
+Thumbs.db
+Desktop.ini

@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=22.13.0"
+    "node": ">=22.22.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "npm run generate && react-router dev --host 127.0.0.1",
+    "generate": "node build/generate.mts",
+    "typecheck": "npm run generate && react-router typegen && tsc --noEmit",
+    "lint": "eslint src build quality *.ts",
+    "format:check": "prettier --check src build quality *.ts *.json *.md .github/workflows/*.yml",
+    "check:architecture": "node build/check-architecture.mts",
+    "test": "npm run typecheck && npm run check:architecture && vitest run",
+    "check": "npm run typecheck && npm run lint && npm run check:architecture && npm run format:check && vitest run",
+    "build": "npm run check && react-router build && node build/prepare-pages.mts && node build/check-output.mts",
     "pages:build": "npm run build",
-    "typecheck": "tsc --noEmit --incremental false",
-    "test": "npm run typecheck && node --experimental-strip-types --test tests/frontend-structure.test.mjs tests/tool-routes.test.mjs tests/time-diff.test.mjs tests/glitch-text.test.mjs tests/base-converter.test.mjs tests/ieee-754.test.mjs tests/code-formatters.test.mjs tests/regex.test.mjs tests/hash-file.test.mjs tests/md5.test.mjs tests/sha.test.mjs",
-    "test:pages": "npm run pages:build && node --test tests/pages-build.test.mjs"
+    "test:e2e": "playwright test",
+    "preview": "vite preview --outDir dist/client --host 127.0.0.1"
   },
   "dependencies": {
     "csso": "5.0.5",
@@ -20,18 +25,25 @@
     "parse5": "8.0.1",
     "postcss": "8.5.14",
     "prettier": "3.9.5",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-router": "8.4.0",
     "terser": "5.49.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@react-router/dev": "8.4.0",
+    "@react-router/node": "8.4.0",
     "@types/csso": "5.0.4",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@vitejs/plugin-react": "6.0.2",
+    "eslint": "10.12.0",
     "typescript": "5.9.3",
-    "vite": "8.0.13"
+    "typescript-eslint": "8.71.1",
+    "valibot": "1.4.1",
+    "vite": "8.0.13",
+    "vitest": "5.0.3"
   },
   "type": "module"
 }

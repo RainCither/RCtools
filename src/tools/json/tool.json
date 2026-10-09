@@ -1,0 +1,15 @@
+{
+  "id": "json",
+  "title": "JSON 格式化",
+  "summary": "校验、格式化或压缩 JSON 数据。",
+  "category": "dev",
+  "mark": "{ }",
+  "searchTerms": ["json", "格式化", "压缩", "校验"],
+  "order": 10,
+  "appearance": {
+    "tone": "accent",
+    "size": 14,
+    "font": "mono"
+  },
+  "draft": "session"
+}
