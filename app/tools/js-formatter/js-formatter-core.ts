@@ -10,10 +10,6 @@ const FORMAT_OPTIONS = {
   endOfLine: "lf",
 } as const;
 
-const MODULE_SYNTAX_PATTERN =
-  /(^|[;}\n\r])\s*(?:import\s+(?!\s*\()|import\s*(?:\{|\*|\.\s*meta\b)|export\s+(?:default\b|const\b|let\b|var\b|function\b|class\b|async\b)|export\s*(?:\{|\*))/m;
-const IMPORT_META_PATTERN = /(^|[^\w$.])import\s*\.\s*meta\b/m;
-
 let prettierPromise: Promise<typeof import("prettier/standalone")> | undefined;
 let babelPluginPromise: Promise<typeof import("prettier/plugins/babel")> | undefined;
 let estreePluginPromise: Promise<typeof import("prettier/plugins/estree")> | undefined;
@@ -61,75 +57,42 @@ function syntaxError(cause: unknown): Error {
   );
 }
 
-/** 用空白遮蔽字符串与注释，避免模块语法探测出现假阳性。 */
-function maskJavaScriptStringsAndComments(input: string) {
-  let result = "";
-  let state: "code" | "single" | "double" | "template" | "line-comment" | "block-comment" =
-    "code";
+type SyntaxNode = { type: string; [key: string]: unknown };
+const FUNCTION_NODE_TYPES = new Set([
+  "FunctionDeclaration", "FunctionExpression", "ArrowFunctionExpression",
+  "ObjectMethod", "ClassMethod", "ClassPrivateMethod",
+]);
 
-  for (let index = 0; index < input.length; index += 1) {
-    const character = input[index];
-    const nextCharacter = input[index + 1];
+function isSyntaxNode(value: unknown): value is SyntaxNode {
+  return typeof value === "object" && value !== null &&
+    "type" in value && typeof value.type === "string";
+}
 
-    if (state === "code") {
-      if (character === "'") state = "single";
-      else if (character === '"') state = "double";
-      else if (character === "`") state = "template";
-      else if (character === "/" && nextCharacter === "/") {
-        state = "line-comment";
-        result += " ";
-        index += 1;
-      } else if (character === "/" && nextCharacter === "*") {
-        state = "block-comment";
-        result += " ";
-        index += 1;
-      } else {
-        result += character;
-        continue;
+/** 仅识别实际语法节点；字符串、注释与正则字面量不能改变解析模式。 */
+function containsModuleSyntax(ast: unknown) {
+  const pending = [{ value: ast, functionDepth: 0 }];
+  while (pending.length) {
+    const { value, functionDepth } = pending.pop()!;
+    if (!isSyntaxNode(value)) continue;
+    if (value.type === "ImportDeclaration" || value.type.startsWith("Export")) return true;
+    if (value.type === "MetaProperty" && isSyntaxNode(value.meta) &&
+      value.meta.name === "import" && isSyntaxNode(value.property) &&
+      value.property.name === "meta") return true;
+    if (functionDepth === 0 && (value.type === "AwaitExpression" ||
+      (value.type === "ForOfStatement" && value.await === true))) return true;
+
+    const nextDepth = functionDepth + Number(FUNCTION_NODE_TYPES.has(value.type));
+    for (const [key, child] of Object.entries(value)) {
+      if (key === "comments" || key.endsWith("Comments") || key === "tokens") continue;
+      // 方法的计算属性名在外层执行，不能当作函数体内的 await。
+      const childDepth = key === "key" && value.type.endsWith("Method")
+        ? functionDepth : nextDepth;
+      for (const node of Array.isArray(child) ? child : [child]) {
+        if (isSyntaxNode(node)) pending.push({ value: node, functionDepth: childDepth });
       }
-      result += " ";
-      continue;
     }
-
-    if (state === "line-comment") {
-      if (character === "\n" || character === "\r") {
-        state = "code";
-        result += character;
-      } else {
-        result += " ";
-      }
-      continue;
-    }
-
-    if (state === "block-comment") {
-      if (character === "*" && nextCharacter === "/") {
-        state = "code";
-        result += "  ";
-        index += 1;
-      } else {
-        result += character === "\n" || character === "\r" ? character : " ";
-      }
-      continue;
-    }
-
-    if (character === "\\") {
-      result += " ";
-      if (nextCharacter !== undefined) {
-        result += nextCharacter === "\n" || nextCharacter === "\r" ? nextCharacter : " ";
-        index += 1;
-      }
-      continue;
-    }
-
-    const closesString =
-      (state === "single" && character === "'") ||
-      (state === "double" && character === '"') ||
-      (state === "template" && character === "`");
-    if (closesString) state = "code";
-    result += character === "\n" || character === "\r" ? character : " ";
   }
-
-  return result;
+  return false;
 }
 
 /** 让 Terser 以脚本或模块模式执行一次纯语法解析。 */
@@ -145,29 +108,15 @@ async function parseWithTerser(input: string, module: boolean) {
 
 /** 探测输入应按经典脚本还是 ES Module 解析。 */
 export async function detectJavaScriptModule(input: string): Promise<boolean> {
-  const maskedInput = maskJavaScriptStringsAndComments(input);
-  if (MODULE_SYNTAX_PATTERN.test(maskedInput) || IMPORT_META_PATTERN.test(maskedInput)) {
-    try {
-      await parseWithTerser(input, true);
-      return true;
-    } catch (cause) {
-      throw syntaxError(cause);
-    }
-  }
-
-  let scriptError: unknown;
   try {
-    await parseWithTerser(input, false);
-    return false;
+    const babelPlugin = await getBabelPlugin();
+    // Babel 的 standalone 解析入口只需源码，不依赖 Prettier 的打印选项。
+    const parse = babelPlugin.parsers.babel.parse as (text: string) => unknown;
+    const module = containsModuleSyntax(await parse(input));
+    await parseWithTerser(input, module);
+    return module;
   } catch (cause) {
-    scriptError = cause;
-  }
-
-  try {
-    await parseWithTerser(input, true);
-    return true;
-  } catch (moduleError) {
-    throw syntaxError(moduleError ?? scriptError);
+    throw syntaxError(cause);
   }
 }
 

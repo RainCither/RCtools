@@ -1,7 +1,6 @@
 /** 提供正则测试器、语法速查和常用表达式库三种视图。 */
 import {
   Fragment,
-  useMemo,
   useRef,
   useState,
   type Dispatch,
@@ -11,7 +10,6 @@ import {
 import { CopyButton } from "../shared/tool-ui";
 import {
   DEFAULT_REGEX_FLAGS,
-  evaluateRegex,
   REGEX_FLAGS,
   type RegexFlag,
   type RegexFlagState,
@@ -26,6 +24,7 @@ import {
   type RegexView,
 } from "./regex-reference";
 import styles from "./styles.module.css";
+import { useRegexEvaluation } from "./use-regex-evaluation";
 
 const FLAG_OPTIONS: Array<{
   flag: RegexFlag;
@@ -166,31 +165,31 @@ function RegexTester({
   onClear,
 }: RegexTesterProps) {
   const flagString = serializeRegexFlags(flags);
-  const evaluation = useMemo(
-    () => evaluateRegex(pattern, flagString, source, replacement),
-    [flagString, pattern, replacement, source],
-  );
+  const evaluation = useRegexEvaluation(pattern, flagString, source, replacement);
 
   /** 更新单个正则标志，同时保留其余标志状态。 */
   function updateFlag(flag: RegexFlag, checked: boolean) {
     setFlags((current) => ({ ...current, [flag]: checked }));
   }
 
-  const error = evaluation.status === "error" ? evaluation.error : "";
+  const error = "error" in evaluation ? evaluation.error : "";
+  const syntaxError = evaluation.status === "error" ? evaluation.error : "";
   const matches = evaluation.status === "success" ? evaluation.matches : [];
   const replacedText = evaluation.status === "success"
     ? evaluation.replacedText
     : "";
   const statusMessage = evaluation.status === "idle"
     ? "输入正则表达式后会实时显示结果。"
-    : evaluation.status === "error"
-      ? evaluation.error
-      : evaluation.truncated
-        ? `已显示前 ${evaluation.matches.length} 个匹配，更多结果已截断。`
-        : `找到 ${evaluation.matches.length} 个匹配。`;
+    : evaluation.status === "running"
+      ? "正在计算…"
+      : "error" in evaluation
+        ? evaluation.error
+        : evaluation.truncated
+          ? `已显示前 ${evaluation.matches.length} 个匹配，更多结果已截断。`
+          : `找到 ${evaluation.matches.length} 个匹配。`;
 
   return (
-    <div className={styles.viewContent}>
+    <div className={styles.viewContent} aria-busy={evaluation.status === "running"}>
       <section className={styles.section} aria-labelledby="regex-pattern-label">
         <div className={styles.sectionHeading}>
           <div>
@@ -209,7 +208,7 @@ function RegexTester({
             value={pattern}
             onChange={(event) => setPattern(event.target.value)}
             placeholder="例如：(?<word>\\w+)"
-            aria-invalid={Boolean(error)}
+            aria-invalid={Boolean(syntaxError)}
             aria-describedby="regex-pattern-help regex-status"
             spellCheck={false}
           />

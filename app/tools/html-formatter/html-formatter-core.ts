@@ -114,11 +114,6 @@ function isConditionalComment(comment: CommentNode) {
   return CONDITIONAL_COMMENT_PATTERN.test(comment.data);
 }
 
-/** 将普通文本节点中的连续 HTML 空白折叠为单个空格。 */
-function collapseTextWhitespace(value: string) {
-  return value.replace(/[\t\n\f\r ]+/g, " ");
-}
-
 /** 拼接元素直属文本节点中的原始代码内容。 */
 function getRawText(element: Element) {
   return element.childNodes.filter(isTextNode).map((node) => node.value).join("");
@@ -183,7 +178,7 @@ async function minifyScriptElement(element: Element) {
   }
 }
 
-/** 递归移除普通注释、折叠文本并压缩安全的内嵌资源。 */
+/** 保留文本空白，递归移除普通注释并压缩安全的内嵌资源。 */
 async function minifyTree(parent: ParentNode): Promise<void> {
   const retainedChildren: ChildNode[] = [];
 
@@ -194,7 +189,7 @@ async function minifyTree(parent: ParentNode): Promise<void> {
     }
 
     if (isTextNode(child)) {
-      child.value = collapseTextWhitespace(child.value);
+      // 任意元素都可能从内联或外部 CSS 继承 white-space，不能折叠文本。
       retainedChildren.push(child);
       continue;
     }
