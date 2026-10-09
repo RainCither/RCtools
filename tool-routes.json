@@ -1,0 +1,21 @@
+{
+  "basePath": "/",
+  "routes": [
+    "json",
+    "css-formatter",
+    "js-formatter",
+    "html-formatter",
+    "regex",
+    "timestamp",
+    "time-diff",
+    "text-stats",
+    "glitch-text",
+    "password",
+    "base64",
+    "md5",
+    "sha",
+    "base-converter",
+    "ieee-754",
+    "color"
+  ]
+}
