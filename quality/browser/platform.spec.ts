@@ -1,3 +1,4 @@
+/** @file 真实浏览器综合验证。覆盖全部工具直访/刷新、搜索分类、导航、草稿、Worker、文件摘要、故障恢复、键盘、密码清除和截图。 */
 import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { readdirSync, readFileSync } from "node:fs";
@@ -13,6 +14,7 @@ const catalogSize =
 const qualityErrors = new WeakMap<Page, string[]>();
 const basePath = process.env.PAGES_BASE_PATH ?? "/";
 const sitePath = (path: string) => `${basePath === "/" ? "" : basePath}${path}`;
+/** 访问 id 对应工具并等待表单可见，使后续交互断言在页面加载完成后执行。 */
 async function ready(page: Page, id: string) {
   await page.goto(sitePath(`/${id}/`));
   await expect(page.locator(".tool-form")).toBeVisible();
@@ -24,12 +26,13 @@ test.beforeEach(async ({ page }) => {
     if (message.type() === "error" && !message.text().startsWith("Failed to load resource:"))
       errors.push(message.text());
   });
-  // Browser exceptions are asserted by each test's teardown, including hydration.
+  // 在每个用例结束时统一断言浏览器异常，覆盖页面接管阶段发生的错误。
   qualityErrors.set(page, errors);
 });
 test.afterEach(async ({ page }) => {
   expect(qualityErrors.get(page)).toEqual([]);
 });
+/** 验证组合键打开独立页面后，原目录的筛选条件仍保持。 */
 test("modifier link opens a separate tab while preserving the catalog filter", async ({
   page,
   context,
@@ -56,6 +59,7 @@ for (const tool of tools)
       true,
     );
   });
+/** 验证目录筛选、往返导航与草稿恢复，并区分页面导航和刷新后的保留边界。 */
 test("catalog, filtering, navigation, draft and refresh boundaries", async ({ page }) => {
   await page.goto(sitePath("/"));
   await expect(page.locator(".tool-grid .tool-card")).toHaveCount(catalogSize);
@@ -79,6 +83,7 @@ test("catalog, filtering, navigation, draft and refresh boundaries", async ({ pa
   await page.reload();
   await expect(page.locator("#json-input")).not.toHaveValue('{"privateDraft":42}');
 });
+/** 验证各代码格式化工具和 Base64 能通过后台任务返回正确结果。 */
 test("code formatter workers and Base64", async ({ page }) => {
   for (const [id, input, expected] of [
     ["css-formatter", "a { color: red; }", "color"],
@@ -96,6 +101,7 @@ test("code formatter workers and Base64", async ({ page }) => {
   await page.getByRole("button", { name: "编码", exact: true }).click();
   await expect(page.locator("#base64-output")).toHaveValue("5Lit5paH");
 });
+/** 验证文本与文件按原始字节计算摘要，并确认离开后不恢复文件。 */
 test("hash bytes and non-retained files", async ({ page }) => {
   await ready(page, "md5");
   await page.locator("#md5-input").fill("abc");
@@ -117,6 +123,7 @@ test("hash bytes and non-retained files", async ({ page }) => {
     await page.locator("#md5-file").evaluate((input) => (input as HTMLInputElement).files?.length),
   ).toBe(0);
 });
+/** 模拟后台线程不可用，验证中文错误及恢复入口。 */
 test("unavailable worker has a recoverable Chinese error", async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(window, "Worker", { value: undefined }));
   await ready(page, "base64");
@@ -124,6 +131,7 @@ test("unavailable worker has a recoverable Chinese error", async ({ page }) => {
   await page.getByRole("button", { name: "编码", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("无法启动后台计算");
 });
+/** 模拟视图模块加载失败，验证有限重试与诊断复制。 */
 test("failed view import exposes bounded retry and diagnostics", async ({ page }) => {
   await page.route("**/assets/view-*.js", (route) => route.abort());
   await page.goto(sitePath("/json/"));
@@ -132,6 +140,7 @@ test("failed view import exposes bounded retry and diagnostics", async ({ page }
   await expect(page.getByRole("alert")).toContainText("资源仍未能加载");
   await expect(page.getByRole("button", { name: "复制诊断信息" })).toBeVisible();
 });
+/** 验证存储受限、未知地址和键盘导航的降级行为。 */
 test("storage unavailable, unknown path and keyboard navigation", async ({ page, isMobile }) => {
   await page.addInitScript(() =>
     Object.defineProperty(window, "localStorage", {
@@ -152,6 +161,7 @@ test("storage unavailable, unknown path and keyboard navigation", async ({ page,
   await page.goBack();
   await expect(page.getByRole("textbox", { name: "搜索工具" })).toHaveValue("颜色");
 });
+/** 保存目录和后台计算工具截图，供桌面与手机布局验收。 */
 test("screenshots of catalog and worker tool", async ({ page }, info) => {
   await page.goto(sitePath("/"));
   await expect(page.locator(".tool-grid .tool-card")).toHaveCount(catalogSize);
@@ -167,6 +177,7 @@ test("screenshots of catalog and worker tool", async ({ page }, info) => {
     fullPage: true,
   });
 });
+/** 验证正则超时、主动取消、编辑及离开页面都能终止过期线程。 */
 test("regex timeout, explicit cancel, edits and navigation release workers", async ({ page }) => {
   await ready(page, "regex");
   await page.locator("#regex-source").fill("a".repeat(32) + "!");
@@ -188,6 +199,7 @@ test("regex timeout, explicit cancel, edits and navigation release workers", asy
   await expect(page.getByRole("heading", { name: "全部工具", exact: true })).toBeVisible();
   await expect.poll(() => page.workers().length).toBe(0);
 });
+/** 验证密码离开后遗忘，以及格式化工具明确清空后的输入语义。 */
 test("password forgets values and formatters clear instead of restoring samples", async ({
   page,
 }) => {
@@ -206,6 +218,7 @@ test("password forgets values and formatters clear instead of restoring samples"
   await expect(page.getByRole("alert")).toContainText("JSON 语法无效");
   await expect(page.locator("#json-input")).toHaveAttribute("aria-invalid", "true");
 });
+/** 验证文本统计、精确整数进制、故障文字和 SHA 的完整后台交互。 */
 test("text statistics, precise bases, glitch output and SHA workers", async ({ page }) => {
   await ready(page, "text-stats");
   await page.locator("#stats-input").fill("中文\nword");
@@ -224,6 +237,7 @@ test("text statistics, precise bases, glitch output and SHA workers", async ({ p
     "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
   );
 });
+/** 验证时间差工具的键盘新增行和清空后的焦点恢复。 */
 test("time difference keyboard rows and clear focus", async ({ page }) => {
   await ready(page, "time-diff");
   await page.locator("#time-diff-input-continuous-1").fill("23:59");
@@ -235,6 +249,7 @@ test("time difference keyboard rows and clear focus", async ({ page }) => {
   await expect(page.locator("#time-diff-input-continuous-1")).toHaveValue("");
   await expect(page.locator("#time-diff-input-continuous-1")).toBeFocused();
 });
+/** 模拟组件渲染失败，验证重置工具和不含业务内容的诊断复制。 */
 test("render boundary resets the tool and copies sanitized diagnostics", async ({ page }) => {
   await page.addInitScript(() =>
     Object.defineProperty(navigator, "clipboard", {

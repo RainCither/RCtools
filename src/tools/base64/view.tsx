@@ -1,3 +1,4 @@
+/** @file 展示原始内容、编码/解码/清空/取消按钮、状态、只读结果和复制。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";
@@ -13,6 +14,7 @@ export default function ToolView() {
     output = s.output,
     error = s.error?.message ?? "";
   const setInput = actions.update;
+  /** 按 mode 提交编码或解码任务，让相同输入与结果状态共用后台执行流程。 */
   const transform = (mode: "encode" | "decode") => {
     void actions.run(mode, input);
   };

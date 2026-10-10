@@ -1,3 +1,4 @@
+/** @file 配置代码规范检查。检查未使用变量、类型导入、非空断言和控制台使用等；排除生成目录和构建产物。 */
 import tseslint from "typescript-eslint";
 export default tseslint.config(
   {

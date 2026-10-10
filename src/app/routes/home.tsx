@@ -1,3 +1,4 @@
+/** @file 工具匣首页。展示最近使用和工具卡片，处理搜索、分类筛选、URL 查询参数、搜索快捷键和返回首页后的焦点恢复。 */
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { useOptionalServices } from "../../bindings/react/services";
@@ -7,6 +8,7 @@ import { shellClasses as uiClasses } from "../../ui/shell-classes";
 import { useCatalog } from "../catalog-context";
 const DEFAULT_RECENT = ["json", "timestamp", "text-stats"] as const;
 const noopSubscribe = () => () => {};
+/** 按 entry 渲染工具或外链卡片，compact 控制简略展示，returnTo 保留工具打开前的筛选地址。 */
 function ToolCard({
   entry,
   compact = false,
@@ -57,6 +59,7 @@ function ToolCard({
     </Link>
   );
 }
+/** 渲染工具目录、搜索和最近使用；让查询条件跟随 URL，并管理键盘与返回焦点。 */
 export default function HomePage() {
   const location = useLocation();
   const { categories: CATEGORIES, filterEntries, findEntry } = useCatalog();
@@ -66,6 +69,7 @@ export default function HomePage() {
   const searchRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     setHydrated(true);
+    /** 处理搜索快捷键时排除正在编辑的输入区域，防止打断正常文本输入。 */
     const listener = (event: KeyboardEvent) => {
       const target = event.target instanceof HTMLElement ? event.target : null;
       if (
@@ -81,11 +85,13 @@ export default function HomePage() {
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
   }, []);
+  // 最近使用由外部存储订阅驱动，预渲染使用固定默认值。
   const recent = useSyncExternalStore(
     services?.recent.subscribe ?? noopSubscribe,
     services?.recent.getSnapshot ?? (() => DEFAULT_RECENT),
     () => DEFAULT_RECENT,
   );
+  // 首次浏览器渲染与预渲染目录一致，挂载后再应用 URL 筛选以避免接管差异。
   const query = hydrated ? (params.get("q") ?? "") : "";
   const requestedCategory = hydrated ? (params.get("category") ?? "all") : "all";
   const category = CATEGORIES.some((item) => item.id === requestedCategory)
@@ -104,6 +110,7 @@ export default function HomePage() {
     )
       document.getElementById(`tool-card-${state.focusTool}`)?.focus();
   }, [hydrated, location.state]);
+  /** 将 nextQuery 与 nextCategory 写入 URL，省略默认项并替换历史，避免每次键入产生新的返回记录。 */
   function update(nextQuery: string, nextCategory: string) {
     const next = new URLSearchParams();
     if (nextQuery) next.set("q", nextQuery);

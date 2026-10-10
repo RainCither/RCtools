@@ -1,3 +1,4 @@
+/** @file 验证各工具核心行为，包括空输入、解析错误、JSON 大数、BigInt、浮点特殊值、Unicode、正则、摘要字节、格式化和跨午夜间隔。 */
 import { describe, expect, it } from "vitest";
 import { convertBaseInteger } from "../../src/tools/base-converter/core";
 import { decodeBase64, encodeBase64 } from "../../src/tools/base64/core";
@@ -20,7 +21,9 @@ import {
   parseTimeInput,
 } from "../../src/tools/time-diff/core";
 import { convertTimestamp } from "../../src/tools/timestamp/core";
+/** 集中回归各工具已有的输入输出与边界语义。 */
 describe("preserved tool semantics", () => {
+  /** 验证各工具对空输入、无效参数和常见错误的既定处理。 */
   it("handles empty inputs and expected validation across all utility types", async () => {
     expect(countText("")).toEqual({ characters: 0, noSpaces: 0, words: 0, lines: 0 });
     expect(encodeBase64("")).toBe("");
@@ -45,6 +48,7 @@ describe("preserved tool semantics", () => {
     expect(generateGlitchTextResult("", { min: 1, max: 1 }, { random: () => 0 }).text).toBe("");
     expect(evaluateRegex("", "g", "", "").status).toBe("idle");
   });
+  /** 验证匹配数量、文件大小上限及目标摘要格式约束。 */
   it("enforces regex display and file size limits and validates hash targets", () => {
     const evaluated = evaluateRegex("a", "g", "a".repeat(501), "");
     expect(evaluated.status).toBe("success");
@@ -58,12 +62,14 @@ describe("preserved tool semantics", () => {
     expect(verifyMd5Digest("not-a-digest", "x").matches).toBeNull();
     expect(verifyShaDigest("short", "x", "SHA-256").error).toBeTruthy();
   });
+  /** 验证 JSON 排版只改空白，原始大数和重复键保持不变。 */
   it("formats JSON without changing large numbers or duplicate keys", () => {
     const input = '{"a":9007199254740993,"a":1.2300,"s":"\\u4e2d"}';
     expect(minifyJson(formatJson(input))).toBe(input);
     expect(formatJson("{}")).toBe("{}");
     expect(() => formatJson("{bad")).toThrow();
   });
+  /** 验证带符号超长整数的进制转换保持精度。 */
   it("converts signed integers with exact BigInt precision", () => {
     expect(convertBaseInteger("-0xFFFFFFFFFFFFFFFF", 16).outputs?.[10]).toBe(
       "-18446744073709551615",
@@ -71,6 +77,7 @@ describe("preserved tool semantics", () => {
     expect(convertBaseInteger("0xFF", 10).error).toBeTruthy();
     expect(convertBaseInteger("", 10).outputs).toBeNull();
   });
+  /** 验证浮点负零、无穷和位模式不会被普通数字格式化丢失。 */
   it("preserves IEEE-754 negative zero and infinity", () => {
     expect(convertFloatInput("-0", "float32", "number").data?.hex).toBe("80000000");
     expect(convertFloatInput("Infinity", "float64", "number").data?.classification).toBe(
@@ -78,12 +85,14 @@ describe("preserved tool semantics", () => {
     );
     expect(convertFloatInput("3F800000", "float32", "bits").data?.storedValue).toBe("1");
   });
+  /** 验证按字素处理 Unicode，并限制组合符和输出规模。 */
   it("handles Unicode graphemes and bounded glitch output", () => {
     expect(countGraphemes("👨‍👩‍👧‍👦")).toBe(1);
     const result = generateGlitchTextResult("中文", { min: 3, max: 3 }, { random: () => 0.5 });
     expect(result.marksAdded).toBe(6);
     expect(result.text).toContain("中");
   });
+  /** 验证零长度匹配可以推进，以及替换占位符采用原生正则语义。 */
   it("advances zero-width regex matches and expands replacement groups", () => {
     const result = evaluateRegex("(?=a)", "g", "aa", "X");
     expect(result.status).toBe("success");
@@ -93,6 +102,7 @@ describe("preserved tool semantics", () => {
     }
     expect(evaluateRegex("[", "g", "x", "").status).toBe("error");
   });
+  /** 验证摘要计算使用完整字节内容，保留文字中的空白。 */
   it("hashes bytes and preserves whitespace", async () => {
     expect(await md5Hex("")).toBe("d41d8cd98f00b204e9800998ecf8427e");
     expect(await md5Hex(" 中文 ")).not.toBe(await md5Hex("中文"));
@@ -101,6 +111,7 @@ describe("preserved tool semantics", () => {
       "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
     );
   });
+  /** 验证 HTML 格式化与保守压缩同时正确处理内嵌资源。 */
   it("formats and conservatively minifies HTML including embedded resources", async () => {
     expect(await formatHtml("<div>中文</div>")).toContain("中文");
     const result = await minifyHtml("<div>a  b</div><!-- remove --><pre> x  y </pre>");
@@ -108,6 +119,7 @@ describe("preserved tool semantics", () => {
     expect(result).toContain(" x  y ");
     expect(result).not.toContain("remove");
   });
+  /** 验证保留标识符压缩选项以及 CSS 的输入校验。 */
   it("keeps JavaScript names when requested and validates CSS", async () => {
     expect(await formatJavaScript("const x=1")).toContain("const x = 1");
     expect(
@@ -116,10 +128,12 @@ describe("preserved tool semantics", () => {
     expect(await formatCss("a{color:red}")).toContain("color: red");
     expect(await minifyCss("a { color: red; }")).toBe("a{color:red}");
   });
+  /** 验证中文 Base64 往返和既有文本统计口径。 */
   it("converts UTF-8 Base64 and reports text counts", () => {
     expect(decodeBase64(encodeBase64("中文🙂"))).toBe("中文🙂");
     expect(countText("中文\nword")).toEqual({ characters: 7, noSpaces: 6, words: 3, lines: 2 });
   });
+  /** 验证时间戳、注入随机源的密码及颜色转换结果。 */
   it("keeps timestamp, secure password and color behavior", () => {
     expect(convertTimestamp("1720584000").seconds).toBe("1720584000");
     expect(() => convertTimestamp("123")).toThrow();
@@ -140,6 +154,7 @@ describe("preserved tool semantics", () => {
       l: 50,
     });
   });
+  /** 验证结束时间早于开始时间时，间隔按跨午夜计算。 */
   it("computes continuous time differences across midnight", () => {
     expect(parseTimeInput("23:59", "HH:mm", false).seconds).toBe(86340);
     expect(formatDuration(calculateAdjacentDifference(86340, 60) ?? 0, "HH:mm")).toBe("00:02");

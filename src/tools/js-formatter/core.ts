@@ -60,6 +60,7 @@ const FUNCTION_NODE_TYPES = new Set([
   "ClassPrivateMethod",
 ]);
 
+/** 检查 value 是否具有语法节点类型，供模块语法遍历跳过普通字段与元数据。 */
 function isSyntaxNode(value: unknown): value is SyntaxNode {
   return (
     typeof value === "object" && value !== null && "type" in value && typeof value.type === "string"

@@ -1,3 +1,5 @@
+/** @file 规范化 3 位或 6 位 HEX 颜色，计算 RGB 数值，再转换为 HSL。 */
+/** 校验 value 的 3 位或 6 位 HEX 格式，返回统一大写颜色或空值。 */
 export function normalizeHex(value: string) {
   const clean = value.trim().replace(/^#/, "");
   if (/^[0-9a-fA-F]{3}$/.test(clean)) {
@@ -9,10 +11,12 @@ export function normalizeHex(value: string) {
   if (/^[0-9a-fA-F]{6}$/.test(clean)) return `#${clean}`.toUpperCase();
   return null;
 }
+/** 从规范化 hex 提取三个颜色通道，返回整数 RGB 数值。 */
 export function hexToRgb(hex: string) {
   const value = Number.parseInt(hex.slice(1), 16);
   return { r: (value >> 16) & 255, g: (value >> 8) & 255, b: value & 255 };
 }
+/** 将 r、g、b 归一化并计算色相、饱和度和亮度，返回适合展示的 HSL 整数。 */
 export function rgbToHsl(r: number, g: number, b: number) {
   const red = r / 255;
   const green = g / 255;

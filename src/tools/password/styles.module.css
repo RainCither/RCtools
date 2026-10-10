@@ -1,4 +1,4 @@
-/* 定义密码长度滑块、字符选项和生成结果的局部样式。 */
+/* @file 定义密码长度滑块、字符选项和生成结果的局部样式。 */
 .rangeHeading {
   display: flex;
   align-items: center;

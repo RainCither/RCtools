@@ -1,3 +1,4 @@
+/** @file 使用按算法拆分的 hash-wasm 实现文本/字节哈希，并按所选算法校验目标摘要格式和匹配情况。 */
 /** 按所选 SHA 算法计算摘要并验证候选内容。 */
 import hashWasmSha1 from "hash-wasm/dist/sha1.umd.min.js";
 import hashWasmSha256 from "hash-wasm/dist/sha256.umd.min.js";

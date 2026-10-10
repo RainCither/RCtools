@@ -1,3 +1,4 @@
+/** @file 管理输入、强度、噪声数量、位置、范围和兼容选项，验证选择并提交后台任务，管理结果、重新生成提示和重置。 */
 import { createModelController } from "../../contracts/model";
 import type { ControllerPorts } from "../../contracts/ports";
 import {
@@ -26,12 +27,15 @@ const DEFAULT_RANGES: Record<GlitchMarkRange, boolean> = {
   symbols: false,
   unicode17: false,
 };
+/** 返回独立的默认组合符位置开关副本，避免重置状态与常量共享可变对象。 */
 function freshPlacements() {
   return { ...DEFAULT_PLACEMENTS };
 }
+/** 返回独立的默认 Unicode 范围开关副本，供控制器初始化和重置使用。 */
 function freshRanges() {
   return { ...DEFAULT_RANGES };
 }
+/** 通过 ports 组装 故障文字生成的输入、动作和结果，返回可订阅控制器并按工具策略保留草稿。 */
 export function createController(ports: ControllerPorts) {
   return createModelController(
     "glitch-text",
@@ -125,16 +129,20 @@ export function createController(ports: ControllerPorts) {
       const setError = (value: string | ((current: string) => string)) => set("error", value);
       const dirty = state.dirty;
       const setDirty = (value: boolean | ((current: boolean) => boolean)) => set("dirty", value);
+      // 超大输入把准确统计留给后台校验，避免主线程立即进行昂贵字素分割。
       const inputGraphemes = input.length < 16_000 ? countGraphemes(input) : null;
       const resultGraphemes = result ? segmentGraphemes(result.text) : [];
+      /** 已有结果时标记需要重新生成，并清理输入修改后过时的错误提示。 */
       function markDirty() {
         if (result) setDirty(true);
         setError("");
       }
+      /** 修改生成源文本并标记旧结果过期，保留手动重新生成的交互节奏。 */
       function changeInput(value: string) {
         setInput(value);
         markDirty();
       }
+      /** 按 nextPreset 应用噪声范围；环绕预设同时调整兼容选项和字符池，避免组合设置失配。 */
       function applyPreset(nextPreset: Exclude<IntensityPreset, "custom">) {
         const selected = PRESETS.find(({ id }) => id === nextPreset);
         if (!selected) return;
@@ -147,19 +155,23 @@ export function createController(ports: ControllerPorts) {
         }
         markDirty();
       }
+      /** 修改 boundary 对应噪声上下界并切换为自定义强度，使显示预设与实际参数一致。 */
       function changeNoiseBoundary(boundary: keyof NoiseRange, value: number) {
         setPreset("custom");
         setNoiseRange((current) => ({ ...current, [boundary]: value }));
         markDirty();
       }
+      /** 更新 id 对应位置开关并标记结果需重新生成。 */
       function changePlacement(id: GlitchMarkPlacement, checked: boolean) {
         setPlacements((current) => ({ ...current, [id]: checked }));
         markDirty();
       }
+      /** 更新 id 对应 Unicode 范围开关并标记结果需重新生成。 */
       function changeRange(id: GlitchMarkRange, checked: boolean) {
         setRanges((current) => ({ ...current, [id]: checked }));
         markDirty();
       }
+      /** 校验当前输入与选项后生成结果，将失败转换为用户可见状态。 */
       function generate() {
         if (!input.trim()) {
           setResult(null);
@@ -174,6 +186,7 @@ export function createController(ports: ControllerPorts) {
           return;
         }
 
+        // 只把启用选项转换为可序列化数组，后台算法独立于页面开关模型。
         const selectedPlacements = PLACEMENT_OPTIONS.filter(({ id }) => placements[id]).map(
           ({ id }) => id,
         );
@@ -217,6 +230,7 @@ export function createController(ports: ControllerPorts) {
           },
         );
       }
+      /** 恢复当前工具的默认输入和结果状态，并清理需要显式遗忘的旧数据。 */
       function reset() {
         setInput("");
         setPreset("medium");

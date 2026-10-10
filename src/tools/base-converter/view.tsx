@@ -1,3 +1,4 @@
+/** @file 展示来源进制选择、超长整数输入、四种结果和逐项复制，清空后恢复输入焦点。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

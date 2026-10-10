@@ -96,6 +96,7 @@ export function convertBaseInteger(input: string, sourceBase: CommonBase): Conve
     };
   }
 
+  // 按位累积 BigInt，避免先经过 Number 时超长整数已经丢失精度。
   let value = BigInt(0);
   const baseValue = BigInt(sourceBase);
 

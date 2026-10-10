@@ -1,4 +1,4 @@
-/* 定义文本统计结果卡片的自适应网格。 */
+/* @file 定义文本统计结果卡片的自适应网格。 */
 .statGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -26,6 +26,7 @@
   letter-spacing: -0.04em;
 }
 
+/* 窄屏下调整控件与结果布局，在 640px 以下保持内容可读和操作可达。 */
 @media (max-width: 640px) {
   .statGrid {
     grid-template-columns: repeat(2, 1fr);

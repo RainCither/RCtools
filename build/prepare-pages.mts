@@ -1,3 +1,4 @@
+/** @file 构建后的 Pages 整理入口。调整目录层级，生成 .nojekyll、CNAME、静态 404.html、工具路径清单和构建版本信息。 */
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
@@ -10,6 +11,7 @@ await flattenPages(output, site.basename);
 const tools = await readCatalog();
 const home = site.assetBase;
 const href = home.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
+// 静态发布辅助文件与页面一同生成，让 Pages 直接服务构建输出。
 await writeFile(join(output, ".nojekyll"), "", "utf8");
 if (site.domain) await writeFile(join(output, "CNAME"), `${site.domain}\n`, "utf8");
 else await rm(join(output, "CNAME"), { force: true });
@@ -23,6 +25,7 @@ await writeFile(
   JSON.stringify({ basePath: home, routes: tools.tools.map((tool) => tool.id) }, null, 2) + "\n",
   "utf8",
 );
+// 记录源码与锁文件指纹，使回滚能够重建同一套依赖和页面资源。
 await writeFile(
   join(output, "build-info.json"),
   JSON.stringify(

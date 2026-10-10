@@ -1,78 +1,231 @@
-# 工具匣（RCtools）
+<img src="./public/favicon.svg" alt="工具匣图标" width="64" height="64" />
 
-一个由 JSON 自动发现工具的浏览器平台。全部计算在本地完成，不上传输入、文件、密码或诊断记录。
+# 工具匣 · RCtools
 
-[在线使用](https://tool.raincither.top/) · [架构与约束](./ARCHITECTURE.md) · [添加工具指南](./ADDTOOL.md)
+> 常用小工具，一开即用。
 
-保留 16 个工具的 ID、独立访问路径、默认排序、输入输出格式和原有视觉风格：JSON、CSS、JavaScript、HTML、正则、时间戳、连续时间差、文本统计、故障文字、密码、Base64、MD5、SHA、进制、IEEE-754 和颜色。
+RCtools 是一个在浏览器中处理数据的工具集合，提供代码格式化、正则测试、时间计算、文本处理、密码生成、摘要校验和数值转换等 **16 个工具**。可以直接访问在线站点，也可以在本地运行或部署为静态网站。
 
-## 开发
+工具计算在浏览器本地完成，输入、文件、密码和诊断记录不会由工具上传。
 
-需要 Node.js **22.22.0 或以上**、npm 和现代浏览器。
+**[在线使用](https://tool.raincither.top/)** · [源码仓库](https://github.com/RainCither/RCtools) · [架构说明](./ARCHITECTURE.md) · [添加工具](./ADDTOOL.md) · [文件指南](./FILE_GUIDE.md)
+
+[功能一览](#功能一览) · [快速开始](#快速开始) · [数据与计算](#数据与计算) · [开发命令](#开发命令) · [项目结构](#项目结构) · [添加工具](#添加工具) · [部署](#部署) · [常见问题](#常见问题)
+
+## 项目特点
+
+- **快速找到工具**：按名称、简介或关键词搜索，支持分类筛选和最近使用；首页按 `/` 可聚焦搜索框。
+- **独立访问与返回**：每个工具拥有独立地址，支持直接打开和刷新，返回目录时保留原来的筛选条件。
+- **计算可控**：较重的处理交给 Web Worker，支持取消、超时和旧结果隔离；轻量工具直接计算。
+- **会话内恢复输入**：工具切换时恢复普通输入和选项，密码和所选文件按各自策略释放。
+- **配置发现工具**：新增工具放入自己的目录，通过 JSON 描述配置生成目录、视图入口和 Worker 工厂。
+- **静态发布**：构建生成首页与工具入口页面，发布 `dist/client/` 即可部署。
+
+## 功能一览
+
+以下按首页的工具顺序列出。点击工具名称可打开在线页面。
+
+| 工具                                                               | 分类 | 主要功能                                                                   |
+| ------------------------------------------------------------------ | ---- | -------------------------------------------------------------------------- |
+| [JSON 格式化](https://tool.raincither.top/json/)                   | 开发 | 校验、格式化和压缩 JSON，保留大整数、键顺序和重复键原文。                  |
+| [CSS 格式化压缩](https://tool.raincither.top/css-formatter/)       | 开发 | 美化 CSS，或删除注释并压缩样式。                                           |
+| [JavaScript 格式化压缩](https://tool.raincither.top/js-formatter/) | 开发 | 处理现代脚本与 ES Modules，支持改名压缩或保留标识符名称。                  |
+| [HTML 格式化压缩](https://tool.raincither.top/html-formatter/)     | 开发 | 格式化或保守压缩 HTML，处理内嵌 CSS 与 JavaScript，保留敏感空白。          |
+| [正则表达式测试](https://tool.raincither.top/regex/)               | 开发 | 实时匹配、高亮、捕获组和替换预览，附语法速查及 24 个常用表达式。           |
+| [时间戳转换](https://tool.raincither.top/timestamp/)               | 日期 | 转换 10 位秒时间戳、13 位毫秒时间戳和日期文本，查看本地时间与 ISO 时间。   |
+| [连续时间差](https://tool.raincither.top/time-diff/)               | 日期 | 连续或成对录入时间，计算跨午夜间隔与累计时长，支持时分或时分秒格式。       |
+| [文本统计](https://tool.raincither.top/text-stats/)                | 文本 | 统计字符、去空白字符、字词和行数。                                         |
+| [故障文字生成](https://tool.raincither.top/glitch-text/)           | 文本 | 使用 Unicode 组合符生成故障效果，调整强度、位置、字符范围与 CJK 兼容选项。 |
+| [密码生成](https://tool.raincither.top/password/)                  | 开发 | 生成 8–40 位密码，选择字母、数字和符号，使用浏览器安全随机源。             |
+| [Base64 编解码](https://tool.raincither.top/base64/)               | 开发 | UTF-8 文本与 Base64 相互转换，支持中文和 Emoji。                           |
+| [MD5 摘要与校验](https://tool.raincither.top/md5/)                 | 开发 | 计算文本或文件摘要，将候选内容与指定摘要比较。                             |
+| [SHA 哈希与校验](https://tool.raincither.top/sha/)                 | 开发 | 计算或校验 SHA-1、SHA-256、SHA-512，支持文本与文件。                       |
+| [进制转换](https://tool.raincither.top/base-converter/)            | 开发 | 用 BigInt 在二、八、十、十六进制间精确转换带符号整数。                     |
+| [IEEE-754 浮点数转换](https://tool.raincither.top/ieee-754/)       | 开发 | Float32/Float64 数值与位模式双向转换，展示字段、数值分类和大小端字节。     |
+| [颜色转换](https://tool.raincither.top/color/)                     | 开发 | 规范化 3 位或 6 位 HEX，转换 RGB、HSL，并同步预览颜色。                    |
+
+## 快速开始
+
+### 环境要求
+
+- **Node.js 22.22.0 或以上**，以及 npm。
+- 现代浏览器，支持 Web Worker 和 Web Crypto；复制按钮使用 Clipboard API。
+- 本地浏览器测试默认使用已安装的 Chrome，CI 使用 Playwright Chromium。
+
+### 本地开发
+
+源码维护在 `dev` 分支：
 
 ```bash
+git clone --branch dev https://github.com/RainCither/RCtools.git
+cd RCtools
 npm ci --include=dev
 npm run dev
 ```
 
-开发命令自动生成目录与入口映射，配置和入口增删后重新扫描；配置错误保留上一份合法生成结果。通常访问 http://127.0.0.1:5173，以启动输出为准。
+默认开发地址为 [http://127.0.0.1:5173](http://127.0.0.1:5173)，实际端口以终端输出为准。已有项目目录时，从安装依赖开始即可。
 
-| 命令                         | 用途                                                     |
-| ---------------------------- | -------------------------------------------------------- |
-| `npm run generate`           | 校验 JSON 并生成目录、精确类型、视图加载器与 Worker 工厂 |
-| `npm run typecheck`          | 生成配置、路由类型并执行严格 TypeScript 检查             |
-| `npm run lint`               | ESLint 检查                                              |
-| `npm run check:architecture` | AST 依赖与循环检查                                       |
-| `npm test`                   | 类型、架构和核心/生命周期验证                            |
-| `npm run check`              | 类型、规范、格式、架构及 Vitest 门禁                     |
-| `npm run build`              | 完整门禁、客户端构建、预渲染与产物验证                   |
-| `npm run preview`            | 预览 `dist/client`                                       |
-| `npm run test:e2e`           | Playwright 桌面与手机浏览器验证                          |
+启动前会自动校验配置并生成工具入口。开发服务器监听工具配置和约定入口的变化；非法配置会显示错误，并保留上一份合法生成文件。
 
-`quality/unit` 和 `quality/browser` 是质量验证入口。浏览器验证默认使用本机 Chrome；CI 使用 Playwright Chromium。首次在 CI 风格环境运行时：
+### 构建与本地预览
 
 ```bash
-npx playwright install --with-deps chromium
+npm run build
+npm run preview
+```
+
+默认预览地址为 [http://127.0.0.1:4173](http://127.0.0.1:4173)。`build` 包含类型、代码规范、格式、架构、单元测试和静态产物检查；`preview` 服务于生成的 `dist/client/`。
+
+## 数据与计算
+
+### 数据保留规则
+
+| 数据                     | 保留方式                                                    |
+| ------------------------ | ----------------------------------------------------------- |
+| 普通输入与选项           | 保存在页面会话内存中，工具切换时恢复，刷新后清除。          |
+| 密码规则与生成结果       | 当前密码工具实例使用，离开后不恢复。                        |
+| 所选文件                 | 当前工具实例持有，离开或清空时释放，不进入草稿。            |
+| 计算结果、错误和运行任务 | 由控制器管理，不作为输入草稿保存。                          |
+| 最近使用                 | 浏览器本地存储，最多 3 个有效工具；存储受限时使用内存列表。 |
+| 诊断记录                 | 仅保留当前页面内存中的最近 500 条事件，错误界面可主动复制。 |
+
+普通草稿的总预算为 **16 MiB**。保存时按使用顺序淘汰旧草稿；单份输入超额时，界面会提前提示离开后无法保留。
+
+诊断只记录任务、状态、耗时和错误编码等白名单字段，不包含输入输出、密码、文件名、异常堆栈或完整查询参数。
+
+### 计算边界
+
+- 正则计算超时 **2 秒**，最多展示 **500 条匹配**。
+- 其他后台任务默认超时 **30 秒**。
+- MD5/SHA 文件输入上限为 **20 MiB**。
+- 故障文字最多处理 **2,000 个字素**，并限制附加组合符和输出规模。
+- 文本统计、进制和浮点转换使用 **150 ms** 防抖；正则使用 **200 ms** 防抖。
+
+输入变化、取消或离开工具会使旧任务失效，迟到响应不会覆盖当前输入的结果。取消与超时会终止后台线程，并中止尚未完成的文件读取。
+
+## 开发命令
+
+| 命令                         | 用途                                                          |
+| ---------------------------- | ------------------------------------------------------------- |
+| `npm run dev`                | 生成工具入口并启动开发服务器。                                |
+| `npm run generate`           | 校验 JSON，生成目录、工具 ID 类型、视图加载器和 Worker 工厂。 |
+| `npm run typecheck`          | 生成目录与路由类型，执行严格 TypeScript 检查。                |
+| `npm run lint`               | 执行 ESLint 代码规范检查。                                    |
+| `npm run format:check`       | 检查源码、配置、文档与工作流的格式。                          |
+| `npm run check:architecture` | 检查分层依赖、跨工具引用和循环依赖。                          |
+| `npm test`                   | 执行类型检查、架构检查和单元测试。                            |
+| `npm run check`              | 执行类型、规范、架构、格式和单元测试检查。                    |
+| `npm run build`              | 执行完整检查，构建并预渲染，整理和验收静态产物。              |
+| `npm run pages:build`        | 与 `build` 相同，供 Pages 工作流使用。                        |
+| `npm run preview`            | 启动静态产物的本地预览服务器。                                |
+| `npm run test:e2e`           | 验证桌面和手机视图中的真实浏览器交互。                        |
+
+构建还会检查首页初始脚本及其静态依赖的 Gzip 总量不超过 **100 KiB**；工具专属解析器、压缩器和 WASM 按需加载。
+
+### 浏览器验证
+
+本地安装 Chrome 后执行：
+
+```bash
 npm run build
 npm run test:e2e
 ```
 
-截图与失败追踪默认保存在系统临时目录的 `rctools-quality`，不进入源码目录；可用 `QA_ARTIFACTS_DIR` 指定其他输出位置。
+CI 会先使用 `npx playwright install --with-deps chromium` 安装浏览器，再运行测试。浏览器用例覆盖直接访问与刷新、搜索分类、导航、草稿、后台任务、文件摘要、错误恢复及键盘操作。
 
-提交源码、配置、`quality` 验证、构建脚本和 `package-lock.json`。依赖目录、构建产物、生成目录、缓存、报告、日志和本地环境文件由 `.gitignore` 排除；生成文件会在开发、检查或构建时重新创建。
+截图、失败追踪和测试结果默认写入系统临时目录的 `rctools-quality`。`QA_ARTIFACTS_DIR` 可指定输出位置，`QA_BASE_URL` 可指定浏览器测试访问的地址。
 
-## 结构
+## 项目结构
 
 ```text
-src/
-├─ contracts/       # Schema、能力、结果、控制器与 Worker 协议
-├─ catalog/         # 分类/外链 JSON，纯目录查询
-├─ tools/<id>/      # tool.json / core / controller / view / worker
-├─ bindings/react/  # 生命周期订阅与能力注入
-├─ ui/              # 受控控件、布局与 CSS Modules
-├─ adapters/        # 浏览器能力与资源管理
-├─ app/             # Framework 路由、预渲染页面与工具宿主
-└─ generated/       # 自动生成，不提交、不手工编辑
-build/              # 配置生成、架构与静态产物检查
-quality/            # 新行为与浏览器验证
-dist/client/        # 唯一发布目录
+RCtools/
+├─ src/
+│  ├─ app/             # 应用入口、页面路由、工具宿主与异常恢复
+│  ├─ catalog/         # 分类和外链配置、目录查询
+│  ├─ contracts/       # 类型、能力接口、结果、控制器及 Worker 协议
+│  ├─ adapters/        # 存储、剪贴板、随机数、文件、模块和任务实现
+│  ├─ bindings/react/  # React 服务注入、状态订阅与生命周期绑定
+│  ├─ ui/              # 公共组件、页面外壳和 CSS Modules
+│  ├─ tools/<id>/      # 各工具的配置、核心算法、控制器和界面
+│  └─ generated/       # 配置派生的目录、视图加载器与 Worker 工厂
+├─ public/             # 站点图标等静态资源
+├─ build/              # 配置生成、架构检查与 Pages 产物整理
+├─ quality/
+│  ├─ unit/            # 核心算法、目录、任务生命周期和产物测试
+│  └─ browser/         # 桌面与手机浏览器测试
+├─ .github/workflows/  # 自动验证和 GitHub Pages 部署
+├─ README.md           # 项目介绍与运行入口
+├─ ARCHITECTURE.md     # 架构、状态、错误、日志和发布约束
+├─ ADDTOOL.md          # 新工具模板与接入步骤
+├─ FILE_GUIDE.md       # 逐文件说明、阅读顺序和配置字段介绍
+└─ dist/client/        # 静态网站发布产物
 ```
 
-新增工具只需要自身目录，具体模板见 [ADDTOOL.md](./ADDTOOL.md)。分类编辑 `src/catalog/categories.json`；外链编辑 `src/catalog/links.json`，字段模型与工具相同，并包含有效的 HTTP(S) `href`。不维护中央导入表、路由表或静态路径清单。
+### 技术栈
 
-## 输入和执行
+| 技术                           | 用途                               |
+| ------------------------------ | ---------------------------------- |
+| React 19、React Router 8       | 组件界面、路由导航和构建时预渲染。 |
+| TypeScript、Valibot            | 严格类型约束与工具配置校验。       |
+| Vite 8、CSS Modules            | 开发服务、按需分块构建与局部样式。 |
+| Web Worker、Web Crypto         | 后台计算与密码所需的安全随机源。   |
+| Prettier、CSSO、Terser、parse5 | 代码格式化、压缩与 HTML 解析。     |
+| hash-wasm                      | MD5 和 SHA 算法的字节摘要计算。    |
+| Vitest、Playwright             | 行为回归与真实浏览器验证。         |
 
-普通输入与选项在当前页面会话内恢复，刷新清除。密码、文件、结果、错误和运行任务不进入草稿。草稿总预算 16 MiB，超额淘汰最久未使用项，单份过大输入会提示离开后不保留。
+## 添加工具
 
-重计算在 Worker 执行，支持取消、超时和旧结果隔离。正则超时 2 秒，其他任务默认 30 秒；文件哈希保留 20 MiB 上限。最近使用保留原存储键，去重后最多展示 3 项，存储不可用时降级到内存。
+工具以自己的目录为单位接入：
 
-生产诊断仅保留页面内存最近 500 条白名单事件，错误界面可主动复制；不包含输入、输出、密码、文件名、异常堆栈或完整查询参数。
+```text
+src/tools/example/
+├─ tool.json           # 名称、分类、搜索词、排序和草稿策略
+├─ core.ts             # 输入解析与算法
+├─ controller.ts       # 输入、动作、结果与任务生命周期
+├─ view.tsx            # 默认导出的 React 工具视图
+├─ worker.ts           # 后台计算入口，重计算时使用
+└─ styles.module.css   # 工具专用样式，按需添加
+```
 
-## 静态发布
+1. 创建 `src/tools/<id>/`，让 `tool.json` 的 `id` 与目录名一致，并关联已有分类。
+2. 编写核心算法、控制器和视图，计算量较大时增加 `worker.ts`。
+3. 在 `quality/unit/` 或 `quality/browser/` 补充对应行为与边界验证。
+4. 运行 `npm run generate` 和 `npm run build`；界面交互变化时运行浏览器测试。
 
-React Router 8.4.0 Framework 使用 `ssr: false`、`routeDiscovery: initial`，构建时生成首页和全部工具页的标题、简介、导航、目录或交互占位。发布目录是 **dist/client**，不发布临时服务器产物。
+生成器扫描元数据与约定入口，统一派生目录、视图加载器、Worker 工厂和预渲染路径。`src/generated/` 由生成流程维护，无需手工登记每个工具。
 
-默认域名仍为 `tool.raincither.top`。子路径发布可设置：
+分类编辑 `src/catalog/categories.json`，外链编辑 `src/catalog/links.json`。完整字段说明、实现模板和接入约束见 [添加工具指南](./ADDTOOL.md) 与 [文件指南](./FILE_GUIDE.md#17-中文注释与严格-json-配置说明)。
+
+## 部署
+
+### 静态托管
+
+执行 `npm run build` 后，将 **整个 `dist/client/`** 发布到静态托管服务。首页和全部工具页的标题、简介、导航或加载占位在构建时生成，工具交互在浏览器中加载。
+
+构建所需的 `dist/server/` 是框架预渲染辅助产物，发布目录为 `dist/client/`。源码、依赖和生成缓存分别由项目及包管理器维护。
+
+### GitHub Pages
+
+项目已提供 [.github/workflows/deploy-pages.yml](./.github/workflows/deploy-pages.yml)：
+
+| 触发方式                   | 构建与浏览器验证 | 部署           |
+| -------------------------- | ---------------- | -------------- |
+| 推送到 `dev`               | 执行             | 验证成功后部署 |
+| 面向 `dev` 的 Pull Request | 执行             | 不部署         |
+| 手动运行工作流             | 执行             | 验证成功后部署 |
+
+首次启用时，在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。发布源配置可参考 [GitHub 官方说明](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。
+
+工作流安装依赖、构建、运行浏览器验证，再上传 `dist/client/` 并交给 Pages 部署。手动运行时选择 `dev` 源码分支。发布采用 Actions 产物，旧 `main` 产物分支可保留。
+
+### 域名与子路径
+
+| 环境变量              | 默认值                | 用途                                                          |
+| --------------------- | --------------------- | ------------------------------------------------------------- |
+| `PAGES_BASE_PATH`     | `/`                   | 网站访问基础路径，可设为 `/RCtools`，子路径配置不带末尾斜杠。 |
+| `PAGES_CUSTOM_DOMAIN` | `tool.raincither.top` | 生成 `CNAME` 的域名，设为空字符串时不生成该文件。             |
+
+例如，以 `/RCtools/` 子路径构建且不使用自定义域名，在 PowerShell 中执行：
 
 ```powershell
 $env:PAGES_BASE_PATH = "/RCtools"
@@ -80,10 +233,34 @@ $env:PAGES_CUSTOM_DOMAIN = ""
 npm run build
 ```
 
-Base Path 同时控制资源、路由和预渲染。空自定义域名不生成 CNAME。未知地址的静态 404 提供返回首页的入口。
+这些变量在**构建时**生效，同时控制资源地址、路由和预渲染输出。CI 的值配置在工作流 `Build static site` 步骤中；变更部署地址时同步调整该处。使用自定义域名还需配置仓库 Pages 的域名设置。
 
-GitHub 工作流对 `dev` 的推送、PR 和手动触发执行验证；PR 只验证，推送和手动触发在成功后部署 Pages 产物。首次切换需在 Settings → Pages → Build and deployment 中选择 **GitHub Actions**。旧 `main` 的最后一份产物保留，工作流不再强推该分支。
+每次发布生成 `404.html`、`.nojekyll`、`tool-routes.json` 和 `build-info.json`。其中构建信息记录版本、源码提交与依赖锁文件摘要，便于定位部署和按稳定源码版本重建回滚。
 
-每次产物保存 `build-info.json`（构建版本、源码提交与锁文件摘要）。回滚稳定源码提交并使用对应锁文件重建，部署整套页面与资源。
+## 常见问题
 
-首屏脚本、模块预加载与静态依赖的 Gzip 总量限制为 100 KiB，重型解析器和 WASM 不得进入此加载链路。更多依赖、错误、日志和代码约束见 [ARCHITECTURE.md](./ARCHITECTURE.md)。
+**新增工具后没有出现在首页？**
+
+检查目录名与 ID、分类及 `view.tsx` 大小写和默认导出，然后执行 `npm run generate`。配置无效时生成器保留上一份合法结果，错误会出现在开发界面或命令输出中。
+
+**为什么切换工具后有输入，刷新后输入却消失？**
+
+普通草稿保存在页面会话内存中，导航时恢复、刷新时清除。最近使用采用浏览器本地存储，因此保留方式不同。
+
+**部署后资源丢失或直接访问工具显示 404？**
+
+确认发布的是完整 `dist/client/`，并且 `PAGES_BASE_PATH` 与实际站点路径一致。GitHub Pages 通过 Actions 部署，已知工具页拥有独立静态入口，未知地址的 404 页面会引导返回首页。
+
+**复制或后台计算失败如何处理？**
+
+界面会显示中文错误和可用的恢复操作。可以重试或刷新页面；后台计算超时时缩短输入或简化表达式。错误界面的“复制诊断信息”可用于排查。
+
+## 文档导航
+
+| 文档                            | 适合查看的内容                                           |
+| ------------------------------- | -------------------------------------------------------- |
+| [架构与约束](./ARCHITECTURE.md) | 模块依赖、状态归属、任务生命周期、错误、日志和发布要求。 |
+| [添加工具指南](./ADDTOOL.md)    | 元数据、算法、控制器、Worker 和 React 视图模板。         |
+| [项目文件指南](./FILE_GUIDE.md) | 每个文件的职责、常见修改入口和 JSON 配置字段。           |
+
+项目文本使用 UTF-8、LF 和两空格缩进；源码包含中文文件职责、主要函数和关键流程注释。依赖、生成代码、构建产物、缓存和测试报告由 `.gitignore` 管理。

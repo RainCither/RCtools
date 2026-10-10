@@ -1,3 +1,4 @@
+/** @file 使用 Prettier 格式化文档或片段；通过 parse5 保守压缩，保留文本空白及敏感内容，并按类型处理内嵌 CSS/JavaScript。 */
 /** 格式化或保守压缩 HTML，并按类型处理内嵌 CSS 与 JavaScript。 */
 import type { DefaultTreeAdapterTypes } from "parse5";
 import { parserFailure } from "../../contracts/parsing";
@@ -200,7 +201,7 @@ async function minifyTree(parent: ParentNode): Promise<void> {
 
     if (isElement(child)) {
       if (WHITESPACE_SENSITIVE_ELEMENTS.has(child.tagName)) {
-        // Keep the complete subtree, including comments, exactly as parse5 read it.
+        // pre/textarea 对原始内容敏感，完整保留 parse5 读取的子树及其中注释。
       } else if (child.tagName === "style") {
         if (isCssStyle(child)) await minifyStyleElement(child);
       } else if (child.tagName === "script") {

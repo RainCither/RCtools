@@ -1,3 +1,4 @@
+/** @file 展示精度和模式切换、输入说明、数值分类、浮点字段及各项结果复制。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

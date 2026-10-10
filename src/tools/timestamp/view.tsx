@@ -1,3 +1,4 @@
+/** @file 展示时间输入、转换和当前时间按钮，以及多种转换结果。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

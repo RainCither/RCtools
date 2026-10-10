@@ -1,6 +1,8 @@
+/** @file JSON、CSS、JavaScript 和 HTML 共用的编辑面板。展示输入、输出、格式化/压缩/清空/取消按钮、选项区和状态。 */
 import type { ReactNode } from "react";
 import styles from "./code-workspace.module.css";
 import { ToolStatus, uiClasses } from "./tool-ui";
+/** 以受控 input/output 渲染公共代码面板，操作通过回调交给控制器，settings 与 copy 由工具注入。 */
 export function CodeWorkspace({
   id,
   language,

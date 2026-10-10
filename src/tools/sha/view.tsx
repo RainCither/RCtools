@@ -1,3 +1,4 @@
+/** @file 展示算法选择、来源切换、文件信息、对应算法的摘要结果和校验界面。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

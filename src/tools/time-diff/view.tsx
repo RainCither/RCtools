@@ -1,3 +1,4 @@
+/** @file 展示模式设置、动态输入行、每项间隔和累计结果，处理键盘操作、新增行及清空后的焦点。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";
@@ -46,10 +47,12 @@ export default function ToolView() {
     },
     [],
   );
+  /** 等新行完成渲染后读取最新快照并聚焦 position 对应输入，避免焦点落到旧 DOM。 */
   function focusInput(position: "first" | "last") {
     if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
     focusFrame.current = requestAnimationFrame(() => {
       focusFrame.current = null;
+      // 新增动作完成后的下一帧读取最新行列表，避免闭包仍使用渲染前的旧输入。
       const current = controller.getSnapshot();
       const index = position === "first" ? 0 : -1;
       const entry =
@@ -57,10 +60,12 @@ export default function ToolView() {
       if (entry) inputRefs.current.get(entry.id)?.focus();
     });
   }
+  /** 按 id 登记或移除输入 element，供动态行的键盘焦点恢复使用。 */
   function registerInput(id: string, element: HTMLInputElement | null) {
     if (element) inputRefs.current.set(id, element);
     else inputRefs.current.delete(id);
   }
+  /** 在最后一行正向 Tab 时追加输入并聚焦新行，其他按键沿用浏览器行为。 */
   function handleContinuousKeyDown(event: KeyboardEvent<HTMLInputElement>, index: number) {
     if (event.key !== "Tab" || event.shiftKey || index !== entries.length - 1) {
       return;
@@ -69,6 +74,7 @@ export default function ToolView() {
     actions.addEntry();
     focusInput("last");
   }
+  /** 在最后一对的结束字段正向 Tab 时新增时间对并聚焦，保持连续键盘录入。 */
   function handlePairKeyDown(event: KeyboardEvent<HTMLInputElement>, index: number) {
     if (event.key !== "Tab" || event.shiftKey || index !== pairs.length - 1) {
       return;

@@ -1,6 +1,8 @@
+/** @file 校验 JSON 后只调整字符串外的空白，实现格式化和压缩；保留大整数、转义、键顺序及重复键原文。 */
 /** 校验 JSON 并只调整字符串外的空白，保留数字、转义、顺序与重复键原文。 */
 function jsonTokens(input: string): string[] {
   JSON.parse(input); // 仅校验；绝不将解析后的 Number 再序列化。
+  // 校验后保留原 token 原文；重新序列化解析值会损失大数精度和重复键。
   return input.match(/"(?:[^"\\]|\\[\s\S])*"|[{}\[\],:]|[^ \t\r\n{}\[\],:]+/g) ?? [];
 }
 

@@ -1,4 +1,4 @@
-/* 定义 MD5 文本/文件来源、摘要结果和校验反馈区域。 */
+/* @file 定义 MD5 文本/文件来源、摘要结果和校验反馈区域。 */
 .tool {
   gap: 14px;
 }
@@ -239,6 +239,7 @@
   color: #fff;
 }
 
+/* 窄屏下调整控件与结果布局，在 520px 以下保持内容可读和操作可达。 */
 @media (max-width: 520px) {
   .fileStatus {
     grid-template-columns: 1fr;

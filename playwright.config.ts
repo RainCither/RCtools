@@ -1,3 +1,4 @@
+/** @file 配置浏览器测试、预览服务器、桌面和手机视口、超时、重试以及失败截图和追踪文件的位置。 */
 import { defineConfig, devices } from "@playwright/test";
 import { resolve } from "node:path";
 import { tmpdir } from "node:os";

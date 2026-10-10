@@ -91,6 +91,7 @@ function formatBytes(bytes: Uint8Array) {
 
 /** 保留 -0、NaN 与无穷大的语义并格式化存储值。 */
 function formatStoredValue(value: number) {
+  // 普通字符串转换会把 -0 写成 0，需要保留符号位对应的特殊语义。
   if (Object.is(value, -0)) return "-0";
   if (Number.isNaN(value)) return "NaN";
   if (value === Number.POSITIVE_INFINITY) return "Infinity";
@@ -241,6 +242,7 @@ export function decodeFloatPattern(input: string, format: FloatFormat): FloatCon
     return resultFromBytes(bytesFromHex(digits), format);
   }
 
+  // 无前缀输入先按精确位宽识别二进制，再尝试十六进制，避免把短 0/1 串误判。
   if (/^[01]+$/.test(digits) && digits.length === definition.totalBits) {
     return resultFromBytes(bytesFromBinary(digits), format);
   }

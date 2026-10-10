@@ -1,3 +1,4 @@
+/** @file 通用工具详情页。按路由 ID 查找工具，展示标题、简介和分类，保留返回筛选页面的地址，记录最近使用并挂载工具宿主。 */
 import { useEffect } from "react";
 import { Link, Navigate, useLocation, useParams } from "react-router";
 import { useOptionalServices } from "../../bindings/react/services";
@@ -5,6 +6,7 @@ import { ToolMark } from "../../ui/mark";
 import { uiClasses } from "../../ui/tool-ui";
 import { useCatalog } from "../catalog-context";
 import { ToolHost } from "../tool-host";
+/** 按路径中的工具 ID 渲染详情外壳，验证返回地址并管理打开记录与标题焦点。 */
 export default function ToolPage() {
   const { categoryLabel, findTool } = useCatalog();
   const { toolId = "" } = useParams();
@@ -12,6 +14,7 @@ export default function ToolPage() {
   const services = useOptionalServices();
   const location = useLocation();
   const state: unknown = location.state;
+  // 只接受站内相对返回地址，拒绝以双斜杠开头的外部地址。
   const returnTo =
     typeof state === "object" &&
     state !== null &&
@@ -25,6 +28,7 @@ export default function ToolPage() {
     if (!tool || !services) return;
     services.recent.record(tool.id);
     services.logger.emit({ level: "info", event: "tool.open", toolId: tool.id });
+    // 等详情标题进入 DOM 后再聚焦，页面切换时撤销尚未执行的帧回调。
     const frame = requestAnimationFrame(() => document.getElementById("tool-page-title")?.focus());
     return () => cancelAnimationFrame(frame);
   }, [tool, services]);

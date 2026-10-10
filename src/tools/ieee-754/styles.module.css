@@ -1,4 +1,4 @@
-/* 定义 IEEE-754 模式选择、输入提示与位字段结果列表。 */
+/* @file 定义 IEEE-754 模式选择、输入提示与位字段结果列表。 */
 .tool {
   gap: 16px;
 }
@@ -172,6 +172,7 @@
   color: var(--muted);
 }
 
+/* 窄屏下调整控件与结果布局，在 640px 以下保持内容可读和操作可达。 */
 @media (max-width: 640px) {
   .settings {
     grid-template-columns: 1fr;

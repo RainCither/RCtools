@@ -1,4 +1,4 @@
-/* 定义 SHA 算法/来源选择、摘要结果和匹配校验反馈。 */
+/* @file 定义 SHA 算法/来源选择、摘要结果和匹配校验反馈。 */
 .tool {
   gap: 14px;
 }
@@ -277,6 +277,7 @@
   color: #fff;
 }
 
+/* 窄屏下调整控件与结果布局，在 520px 以下保持内容可读和操作可达。 */
 @media (max-width: 520px) {
   .algorithmControl {
     grid-template-columns: 1fr;

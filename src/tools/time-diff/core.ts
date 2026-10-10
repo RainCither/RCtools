@@ -75,6 +75,7 @@ export function calculateAdjacentDifference(
   endSeconds: number | null,
 ) {
   if (startSeconds === null || endSeconds === null) return null;
+  // 结束时刻早于开始时刻时按次日处理，使连续录入可自然跨午夜。
   const adjustedEnd = endSeconds < startSeconds ? endSeconds + SECONDS_PER_DAY : endSeconds;
   return adjustedEnd - startSeconds;
 }

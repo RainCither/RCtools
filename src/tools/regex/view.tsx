@@ -1,3 +1,4 @@
+/** @file 展示测试器、语法速查和常用正则三个页面，包含匹配高亮、捕获组、替换结果、复制及载入示例。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

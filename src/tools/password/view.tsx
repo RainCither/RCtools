@@ -1,3 +1,4 @@
+/** @file 展示 8–40 位长度滑块、字符类别开关、生成按钮、密码结果和复制按钮。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";
@@ -8,6 +9,7 @@ import styles from "./styles.module.css";
 
 /** 渲染密码规则选择器并生成满足每类至少一个字符的密码。 */
 import { PASSWORD_POOLS } from "./core";
+/** 渲染密码生成的受控界面，将状态读取和用户操作连接到当前工具控制器。 */
 export default function ToolView() {
   const usePorts = useServices();
   const { snapshot: model, actions } = useController(() => createController(usePorts));

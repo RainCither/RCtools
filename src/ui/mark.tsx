@@ -1,3 +1,4 @@
+/** @file 根据工具配置渲染图标文字，应用配置中的色调、字号和字体。 */
 import type { CSSProperties } from "react";
 import type { CatalogEntry } from "../contracts/catalog-schema";
 import { shellClasses as uiClasses } from "./shell-classes";
@@ -9,6 +10,7 @@ const colors = {
   yellow: ["#fff5dc", "#8c6921"],
   teal: ["#e9f7f6", "#397b76"],
 } as const;
+/** 根据 entry 的图标文字与外观配置返回装饰标记，集中保持目录和详情页显示一致。 */
 export function ToolMark({ entry }: { entry: CatalogEntry }) {
   const appearance = entry.appearance;
   const [background, color] = colors[appearance.tone];

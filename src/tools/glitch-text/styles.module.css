@@ -1,4 +1,4 @@
-/* 定义故障文字工具的预设、高级选项与字素安全预览样式。 */
+/* @file 定义故障文字工具的预设、高级选项与字素安全预览样式。 */
 .tool {
   gap: 15px;
 }
@@ -252,6 +252,7 @@
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
+/* 窄屏下调整控件与结果布局，在 640px 以下保持内容可读和操作可达。 */
 @media (max-width: 640px) {
   .presetGrid,
   .optionGrid,

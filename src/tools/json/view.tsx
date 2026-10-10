@@ -1,8 +1,10 @@
+/** @file 将 JSON 控制器接入公共代码面板，提供格式化、压缩、清空、取消与结果复制。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { CopyButton } from "../../bindings/react/tool-ui";
 import { CodeWorkspace } from "../../ui/code-workspace";
 import { createController } from "./controller";
+/** 渲染JSON 格式化的受控界面，将状态读取和用户操作连接到当前工具控制器。 */
 export default function ToolView() {
   const ports = useServices();
   const { snapshot: s, actions } = useController(() => createController(ports));

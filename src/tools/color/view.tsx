@@ -1,3 +1,4 @@
+/** @file 展示颜色选择器、HEX 输入、颜色预览和各颜色格式结果，提示无效输入。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

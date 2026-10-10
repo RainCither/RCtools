@@ -1,3 +1,4 @@
+/** @file 按需加载 Prettier/PostCSS 进行格式化，使用 CSSO 删除注释并压缩 CSS，统一处理解析错误。 */
 /** 通过按需加载的 Prettier/PostCSS 与 CSSO 格式化或压缩 CSS。 */
 const FORMAT_OPTIONS = {
   parser: "css",

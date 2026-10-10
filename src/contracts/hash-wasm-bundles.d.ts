@@ -1,3 +1,4 @@
+/** @file 为按算法拆分的 MD5、SHA-1、SHA-256、SHA-512 hash-wasm 包补充类型声明。 */
 /** 声明按算法拆分的 hash-wasm UMD 包，供动态导入保持完整类型。 */
 declare module "hash-wasm/dist/md5.umd.min.js" {
   const bundle: {

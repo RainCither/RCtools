@@ -124,6 +124,7 @@ export function executeRegex(
     matches.push(toRegexMatch(match));
     if (!regex.global) break;
 
+    // 原生 exec 的零长度全局匹配不会自动推进，需要按 Unicode 标志移动索引防止死循环。
     if (match[0] === "") {
       regex.lastIndex = advanceStringIndex(source, regex.lastIndex, regex.unicode);
     }

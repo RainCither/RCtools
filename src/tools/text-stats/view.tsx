@@ -1,3 +1,4 @@
+/** @file 展示文本输入框、统计状态和四项统计卡片，提示过大输入无法在离开后保留。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

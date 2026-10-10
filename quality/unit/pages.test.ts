@@ -1,8 +1,10 @@
+/** @file 验证子路径预渲染目录整理，特别是基础路径与工具 ID 相同时仍能保留页面和编译资源。 */
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { expect, it } from "vitest";
 import { flattenPages } from "../../build/flatten-pages.mts";
+/** 验证基础路径与工具 ID 相同时，目录整理仍保留首页、工具页和资源。 */
 it("flattens a basename that matches a tool directory and preserves compiled assets", async () => {
   const root = await mkdtemp(join(tmpdir(), "rctools-pages-"));
   try {

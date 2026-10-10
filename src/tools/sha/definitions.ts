@@ -1,3 +1,4 @@
+/** @file 定义 SHA-1、SHA-256、SHA-512 的选项顺序、算法类型和十六进制摘要长度。 */
 /** 工具支持的 SHA 算法及界面排列顺序。 */
 export const SHA_ALGORITHMS = ["SHA-1", "SHA-256", "SHA-512"] as const;
 

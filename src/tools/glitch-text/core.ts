@@ -347,6 +347,7 @@ export function generateGlitchTextResult(
     Math.trunc(options.maxOutputCodePoints ?? MAX_OUTPUT_CODE_POINTS),
   );
   const inputCodePoints = Array.from(input).length;
+  // 先为原文保留码点预算，再限制附加符号数量，确保输出上限不会裁掉输入文字。
   let remainingMarkBudget = Math.max(0, maxOutputCodePoints - inputCodePoints);
   let renderableGraphemes = 0;
   let marksAdded = 0;

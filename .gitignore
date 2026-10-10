@@ -1,16 +1,16 @@
-# Dependencies and generated build output
+# 依赖、构建产物与自动生成文件由开发命令恢复，不进入版本管理。
 /node_modules/
 /dist/
 /.react-router/
 /src/generated/
 
-# Caches and incremental compiler output
+# 本地缓存和增量编译数据。
 /.cache/
 /.vite/
 .eslintcache
 *.tsbuildinfo
 
-# Browser reports and coverage; keep quality/ source files
+# 浏览器报告和覆盖率产物；quality/ 内维护的测试源文件仍需保留。
 /playwright-report/
 /test-results/
 /blob-report/
@@ -18,7 +18,7 @@
 /coverage/
 /.nyc_output/
 
-# Local environment and agent/editor state
+# 本地环境配置及代理、编辑器状态，避免携带到其他开发环境。
 .env*
 !.env.example
 !.env.*.example
@@ -28,7 +28,7 @@
 /.history/
 /.vscode/*.local.*
 
-# Logs, editor backups, and operating-system metadata
+# 日志、编辑器备份和操作系统生成的辅助文件。
 *.log
 *.swp
 *.swo

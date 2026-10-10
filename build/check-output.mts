@@ -1,10 +1,13 @@
+/** @file 验收静态产物：检查首页与工具页内容、资源文件和 Pages 辅助文件；根据模块报告检查首页加载链路，并限制初始 JavaScript 的 Gzip 总量为 100 KiB。 */
 import { access, readFile, readdir } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
 import { gzipSync } from "node:zlib";
 import ts from "typescript";
 import { projectRoot, readCatalog } from "./catalog.mts";
 import { site } from "./site.mts";
+/** 验收 root 的预渲染页面、资源和初始脚本体积，成功返回工具数量与 Gzip 字节数。 */
 export async function checkOutput(root = projectRoot) {
+  /** 转义目录文字中的 HTML 特殊字符，使静态页面内容检查与实际渲染结果一致。 */
   const escape = (value: string) =>
     value
       .replaceAll("&", "&amp;")
@@ -34,7 +37,9 @@ export async function checkOutput(root = projectRoot) {
   }
   const assets = await readdir(join(output, "assets"));
   if (!assets.some((file) => file.endsWith(".js"))) throw new Error("Missing JavaScript output.");
+  // 体积按首页实际脚本及其静态依赖计量，按需工具分块不计入初始链路。
   const initial = new Set<string>();
+  /** 递归收集 file 的静态脚本依赖，并去重记录，供首页实际加载链路的体积检查使用。 */
   async function add(file: string) {
     if (initial.has(file)) return;
     initial.add(file);
@@ -71,6 +76,7 @@ export async function checkOutput(root = projectRoot) {
     const source = await readFile(join(output, file), "utf8");
     bytes += gzipSync(source).length;
     if (
+      // 同时验收模块归属，避免通过体积合格却把重型工具依赖提前加载。
       (report[file] ?? []).some(
         (module) =>
           module.startsWith("src/tools/") ||

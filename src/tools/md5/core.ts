@@ -1,3 +1,4 @@
+/** @file 使用 hash-wasm 计算 UTF-8 文本或字节的 MD5，校验 32 位十六进制目标摘要并比较结果。 */
 /** 计算 MD5 摘要并校验候选内容或既有摘要。 */
 import hashWasmMd5 from "hash-wasm/dist/md5.umd.min.js";
 

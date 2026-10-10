@@ -1,3 +1,4 @@
+/** @file 展示输入计数、强度预设、高级设置、生成/取消/重置按钮、故障效果预览和复制。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

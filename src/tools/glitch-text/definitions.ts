@@ -1,4 +1,6 @@
+/** @file 保存强度预设、组合符位置和 Unicode 范围选项，以及对应名称、说明和类型。 */
 import type { GlitchMarkPlacement, GlitchMarkRange, NoiseRange } from "./core";
+/** 故障强度预设标识，自定义模式表示当前数量不再跟随固定预设。 */
 export type IntensityPreset = "light" | "medium" | "heavy" | "eldritch" | "custom";
 export const PRESETS: ReadonlyArray<{
   id: Exclude<IntensityPreset, "custom">;

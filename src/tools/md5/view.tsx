@@ -1,3 +1,4 @@
+/** @file 展示来源切换、文本框、文件选择、大小信息、摘要结果、复制和匹配状态。 */
 import { useController } from "../../bindings/react/controller";
 import { useServices } from "../../bindings/react/services";
 import { uiClasses } from "../../ui/tool-ui";

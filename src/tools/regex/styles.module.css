@@ -1,4 +1,4 @@
-/* 定义正则测试器、标签页、匹配高亮与参考卡片布局。 */
+/* @file 定义正则测试器、标签页、匹配高亮与参考卡片布局。 */
 .tool {
   gap: 18px;
 }
@@ -459,6 +459,7 @@
   color: #592a20;
 }
 
+/* 零长度匹配没有可填充字符，用独立标记显示位置，避免高亮丢失。 */
 .zeroWidth {
   display: inline-block;
   width: 2px;
@@ -541,6 +542,7 @@
   min-height: 130px;
 }
 
+/* 窄屏下调整控件与结果布局，在 640px 以下保持内容可读和操作可达。 */
 @media (max-width: 640px) {
   .syntaxGrid,
   .commonGrid {
@@ -590,6 +592,7 @@
   }
 }
 
+/* 窄屏下调整控件与结果布局，在 360px 以下保持内容可读和操作可达。 */
 @media (max-width: 360px) {
   .flagGrid {
     grid-template-columns: 1fr;

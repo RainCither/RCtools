@@ -1,8 +1,11 @@
+/** @file 用 TypeScript 语法树检查模块依赖、跨工具引用、循环依赖和浏览器能力边界，防止算法与控制器依赖页面或 DOM。 */
 import { readdir, readFile } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
 import ts from "typescript";
 import { projectRoot } from "./catalog.mts";
+/** 架构检查发现的文件与说明，用于向构建输出精确违规位置。 */
 export type Violation = { file: string; message: string };
+/** 递归收集 directory 中参与架构检查的实现文件，排除声明文件，返回完整路径列表。 */
 async function files(directory: string): Promise<string[]> {
   return (
     await Promise.all(
@@ -16,9 +19,11 @@ async function files(directory: string): Promise<string[]> {
     )
   ).flat();
 }
+/** 从项目相对路径 file 中提取模块分层名称，供依赖规则判断使用。 */
 function part(file: string) {
   return file.replaceAll("\\", "/").split("/")[1] ?? "";
 }
+/** 判断 file 是否属于可移植算法或契约层，作为浏览器能力和 React 依赖的检查边界。 */
 function portable(file: string) {
   return (
     file.startsWith("src/contracts/") ||
@@ -28,6 +33,7 @@ function portable(file: string) {
       !/\/use-[^/]+\.ts$/.test(file))
   );
 }
+/** 依据 from 与 target 的分层和工具 ID 判定依赖是否合法，返回是否允许导入。 */
 function allowed(from: string, target: string) {
   const source = part(from),
     destination = part(target);
@@ -67,6 +73,7 @@ function allowed(from: string, target: string) {
   }
   return false;
 }
+/** 扫描 root 的语法树与依赖图，返回违规列表；同时检查动态导入、能力边界和循环依赖。 */
 export async function checkArchitecture(root = projectRoot): Promise<Violation[]> {
   const sourceFiles = await files(join(root, "src"));
   const paths = new Set(sourceFiles.map((file) => resolve(file)));
@@ -83,7 +90,9 @@ export async function checkArchitecture(root = projectRoot): Promise<Violation[]
       true,
       file.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
     );
+    // 收集真实解析后的依赖边，类型导入和别名也参与分层与循环检查。
     const edges: string[] = [];
+    /** 解析 specifier 的实际文件与别名，记录依赖边及违规；dynamic 标记动态导入边界。 */
     function inspectImport(specifier: string, dynamic = false) {
       const resolved = ts.resolveModuleName(specifier, file, compiler, ts.sys).resolvedModule
         ?.resolvedFileName;
@@ -127,6 +136,7 @@ export async function checkArchitecture(root = projectRoot): Promise<Violation[]
         });
       edges.push(destination);
     }
+    /** 递归访问当前语法节点，识别各种导入方式与被禁止的浏览器能力引用。 */
     function visit(node: ts.Node) {
       if (
         (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
@@ -198,7 +208,9 @@ export async function checkArchitecture(root = projectRoot): Promise<Violation[]
   }
   const visited = new Set<string>(),
     active = new Set<string>();
+  /** 沿依赖图进行深度优先检查，用当前访问链识别循环并保留完整路径说明。 */
   function walk(name: string, chain: string[]) {
+    // 当前递归栈中的重复节点才是循环；已检查节点只用于减少重复遍历。
     if (active.has(name)) {
       violations.push({
         file: name,

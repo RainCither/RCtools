@@ -1,12 +1,15 @@
+/** @file 将 JSON/CSS/JavaScript/HTML 解析器异常转换为统一中文提示，提取可用行列信息，并保留资源加载失败分类。 */
 import type { AppError } from "./result";
 import { isAppError, normalizeError } from "./result";
+/** 将 value 收窄为可读取属性的对象，无法识别的值返回空对象供错误位置解析使用。 */
 function object(value: unknown): Record<string, unknown> {
   return typeof value === "object" && value !== null ? (value as Record<string, unknown>) : {};
 }
-/** Parser locations are useful; source excerpts and library messages are not UI contracts. */
+/** 将 cause 转为 namespace 对应的中文解析错误；input 仅用于换算行列，返回值不携带源码摘录。 */
 export function parserFailure(cause: unknown, namespace: string, input?: string): AppError {
   if (isAppError(cause)) return cause;
   const normalized = normalizeError(cause);
+  // 资源下载失败属于可重试加载问题，不能被包装成用户输入的语法错误。
   if (normalized.kind === "resource") return normalized;
   const details = object(cause);
   const loc = object(details.loc);
@@ -27,6 +30,7 @@ export function parserFailure(cause: unknown, namespace: string, input?: string)
     line = Number(messageLocation[1]);
     column = Number(messageLocation[2]);
   }
+  // 把解析器的字符偏移换成行列，输入只用于定位，不拼入用户提示。
   if (input !== undefined && position !== undefined) {
     const prefix = input.slice(0, Number(position));
     line = prefix.split("\n").length;

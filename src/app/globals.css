@@ -1,4 +1,5 @@
-/* 定义工具匣全站主题变量、布局、通用控件及响应式样式。 */
+/* @file 定义工具匣全站主题变量、布局、通用控件及响应式样式。 */
+/* 集中定义主题变量，公共控件和工具局部样式共用同一色彩与字体体系。 */
 :root {
   --page: #faf7f2;
   --surface: #fffdfb;
@@ -57,11 +58,13 @@ button:disabled {
   opacity: 0.48;
 }
 
+/* 为键盘导航提供统一可见焦点，不干扰普通指针操作。 */
 :focus-visible {
   outline: 3px solid rgb(242 107 77 / 0.36);
   outline-offset: 3px;
 }
 
+/* 保留辅助技术可读内容，同时避免隐藏标签占用页面布局。 */
 .visually-hidden {
   position: absolute;
   width: 1px;

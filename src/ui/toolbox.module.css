@@ -1,3 +1,4 @@
+/* @file 工具详情页和通用表单样式，包括返回入口、标题区、输入框、操作栏、加载/错误提示和结果列表。 */
 .button-primary {
   background: var(--accent);
   color: #fff;
@@ -105,6 +106,7 @@
   gap: 12px;
 }
 
+/* 工具模块尚未加载时的占位，保持可识别的加载状态与空间。 */
 .tool-loading {
   display: flex;
   min-height: 260px;
@@ -124,6 +126,7 @@
   animation: tool-loading-spin 700ms linear infinite;
 }
 
+/* 加载或渲染失败的恢复操作区，与正常结果状态分开显示。 */
 .tool-load-error {
   display: flex;
   min-height: 260px;
@@ -242,6 +245,7 @@
   overflow-wrap: anywhere;
 }
 
+/* 窄屏下调整控件与结果布局，在 640px 以下保持内容可读和操作可达。 */
 @media (max-width: 640px) {
   .tool-page-shell {
     width: min(100% - 28px, 960px);

@@ -1,14 +1,17 @@
+/** @file 验证目录扫描、工具顺序、草稿策略、自动发现、配置错误及架构检查器对别名、转导出、动态导入和循环依赖的识别。 */
 import { mkdir, mkdtemp, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { expect, it } from "vitest";
 import { generateCatalog, readCatalog } from "../../build/catalog.mts";
 import { checkArchitecture } from "../../build/check-architecture.mts";
+/** 确认 root 是本次测试创建的临时目录后删除，避免测试清理误伤其他文件。 */
 async function removeFixture(root: string) {
   if (dirname(resolve(root)) !== resolve(tmpdir()) || !root.startsWith(join(tmpdir(), "rctools-")))
     throw new Error("Unsafe fixture path");
   await rm(root, { recursive: true, force: true });
 }
+/** 验证全部工具的 ID、排序和草稿策略与目录约定一致。 */
 it("reads all migrated tools with deterministic ordering and safe policies", async () => {
   const catalog = await readCatalog();
   const compatibility = [
@@ -35,6 +38,7 @@ it("reads all migrated tools with deterministic ordering and safe policies", asy
   expect(catalog.tools.find((tool) => tool.id === "password")?.draft).toBe("none");
   expect(await checkArchitecture()).toEqual([]);
 });
+/** 创建工具夹具，验证自动发现以及非法配置不会替换上一份合法生成结果。 */
 it("discovers a new tool without a central registration edit and rejects invalid config", async () => {
   const root = await mkdtemp(join(tmpdir(), "rctools-catalog-"));
   try {
@@ -108,6 +112,7 @@ it("discovers a new tool without a central registration edit and rejects invalid
     await removeFixture(root);
   }
 });
+/** 验证架构检查覆盖别名、转导出、动态导入、可移植辅助函数与循环。 */
 it("checks aliases, re-exports, dynamic imports, portable helpers and cycles", async () => {
   const root = await mkdtemp(join(tmpdir(), "rctools-architecture-"));
   try {

@@ -1,3 +1,4 @@
+/** @file Worker 任务执行器。创建和复用后台线程，校验任务响应标识，处理取消、超时、文件读取准备、缓冲区转移及资源释放。 */
 import type {
   ClockPort,
   Logger,
@@ -10,7 +11,9 @@ import type {
 } from "../contracts/ports";
 import type { Result } from "../contracts/result";
 import { failure, isAppError, normalizeError } from "../contracts/result";
+/** 按任务作用域保存可复用 Worker 与当前待完成任务，释放时一起清理。 */
 type Slot = { worker: WorkerPort; pending: { id: string; cancel(): void } | null };
+/** 通过 factories、logger 和 clock 运行后台任务，返回按作用域取消、复用和释放 Worker 的执行接口。 */
 export function createTaskExecutor(
   factories: Readonly<Record<string, WorkerFactory>>,
   logger: Logger,
@@ -18,13 +21,15 @@ export function createTaskExecutor(
 ): TaskExecutor {
   const slots = new Map<string, Slot>();
   let sequence = 0;
+  /** 隔离诊断写入失败，确保任务的成功、失败和资源清理不依赖日志能力。 */
   function record(event: Parameters<Logger["emit"]>[0]) {
     try {
       logger.emit(event);
     } catch {
-      /* Logging must not change a task's outcome. */
+      /* 日志失败不应改变任务结果，否则诊断故障会连带中断正常计算。 */
     }
   }
+  /** 终止 scope 的当前任务和 Worker 并删除槽位，供取消后的清理或页面离开调用。 */
   function release(scope: string) {
     const slot = slots.get(scope);
     if (!slot) return;
@@ -33,7 +38,9 @@ export function createTaskExecutor(
     slots.delete(scope);
   }
   return {
+    /** 按 request 的作用域执行最新任务，验证 Worker 响应与输入版本，返回可取消句柄及结果 Promise。 */
     run<I, O>(request: TaskRequest<I>): TaskHandle<O> {
+      // 同一作用域只运行最新请求，先取消旧任务才能避免并发响应混写。
       slots.get(request.scope)?.pending?.cancel();
       const id = `${request.scope}:${++sequence}`;
       const started = clock.monotonic();
@@ -45,16 +52,19 @@ export function createTaskExecutor(
         finish = resolve;
       });
       let slot = slots.get(request.scope);
+      /** 只结算一次 outcome，清理超时和回调；terminate 决定是否中止准备资源并销毁 Worker。 */
       function complete(outcome: Result<O>, terminate = false) {
+        // 取消、超时和线程响应可能竞争，结果只能结算一次。
         if (settled) return;
         settled = true;
         clearTimeout(timer);
+        // 终止分支同时通知准备阶段取消，文件读取也必须随任务结束。
         if (terminate) {
           for (const listener of cancellation) {
             try {
               listener();
             } catch {
-              /* Continue releasing all resources. */
+              /* 单个取消回调失败后继续清理，确保其他读取和线程资源仍被释放。 */
             }
           }
         }
@@ -64,6 +74,7 @@ export function createTaskExecutor(
           slot.worker.onmessage = null;
           slot.worker.onerror = null;
           slot.worker.onmessageerror = null;
+          // 正常完成保留线程供后续复用，取消、超时或协议故障则销毁该通道。
           if (terminate) {
             slot.worker.terminate();
             slots.delete(request.scope);
@@ -89,6 +100,7 @@ export function createTaskExecutor(
         });
         finish(outcome);
       }
+      /** 中止指定作用域或当前任务并归为正常取消，终止 Worker 以停止不可协作的计算。 */
       const cancel = () =>
         complete({ ok: false, error: failure("cancelled", "task.cancelled", "已取消。") }, true);
       try {
@@ -112,6 +124,7 @@ export function createTaskExecutor(
             return;
           }
           const response = data as WorkerResponse;
+          // 校验完整任务信封，任何标识或输入版本不匹配的旧响应都不提交。
           if (
             response.taskId !== id ||
             response.scope !== request.scope ||
@@ -120,6 +133,7 @@ export function createTaskExecutor(
             response.operation !== request.operation
           )
             return;
+          // 将畸形结果视为协议故障并隔离线程，防止未知结构进入控制器快照。
           if (
             !response.result ||
             typeof response.result.ok !== "boolean" ||
@@ -158,6 +172,7 @@ export function createTaskExecutor(
             },
             true,
           );
+        // 为准备与计算整体设置截止时间，卡住的读取或正则都能由拥有者中止。
         timer = setTimeout(
           () =>
             complete(
@@ -187,9 +202,11 @@ export function createTaskExecutor(
           .then(async () => {
             const prepared = request.prepare
               ? await request.prepare({
+                  /** 读取任务是否已结算，供异步准备阶段判断取消、超时或其他结束路径。 */
                   get aborted() {
                     return settled;
                   },
+                  /** 注册 listener 并返回退订函数，使文件读取等准备资源能跟随任务取消一起释放。 */
                   onCancel(listener) {
                     cancellation.add(listener);
                     return () => {
@@ -198,6 +215,7 @@ export function createTaskExecutor(
                   },
                 })
               : { input: request.input, transfer: request.transfer };
+            // 异步读取完成后再次检查结算状态，防止取消后仍把字节发送给线程。
             if (!settled)
               worker.postMessage(
                 {
@@ -227,6 +245,7 @@ export function createTaskExecutor(
       }
       return { id, cancel, result };
     },
+    /** 中止指定作用域或当前任务并归为正常取消，终止 Worker 以停止不可协作的计算。 */
     cancel(scope) {
       slots.get(scope)?.pending?.cancel();
     },
