@@ -235,6 +235,7 @@ describe("2048 controller", () => {
       version: 1,
       ...latest.game,
       bestScore: 4,
+      soundEnabled: true,
     });
     env.controller.actions.restart();
     expect(env.controller.getSnapshot().game?.score).toBe(0);
@@ -270,6 +271,45 @@ describe("2048 controller", () => {
     ended.controller.activate();
     expect(gameStatus(currentGame(ended.controller.getSnapshot().game))).toBe("over");
     expect(ended.ports.random.index).not.toHaveBeenCalled();
+  });
+
+  /** 新设置兼容旧存档；独立校验偏好，即使棋局损坏也能保留已关闭的声音。 */
+  it.each([undefined, true, false, "false"])(
+    "restores sound preference %j safely",
+    (soundEnabled) => {
+      const env = environment({ version: 1, ...game(), soundEnabled });
+      env.controller.activate();
+      expect(env.controller.getSnapshot().soundEnabled).toBe(soundEnabled !== false);
+      const damaged = environment({ version: 1, board: [3], soundEnabled: false });
+      damaged.controller.activate();
+      expect(damaged.controller.getSnapshot().soundEnabled).toBe(false);
+    },
+  );
+
+  /** 静音立即保存且不移动棋盘，后续移动、重开、继续和生命周期重放均不能重置偏好。 */
+  it("persists mute without changing play and retains it across all game actions", () => {
+    const env = environment({ version: 1, ...game({ board: board([1024, 1024]) }) });
+    env.controller.activate();
+    const before = env.controller.getSnapshot();
+    env.controller.actions.toggleSound();
+    expect(env.controller.getSnapshot()).toMatchObject({
+      game: before.game,
+      bestScore: before.bestScore,
+      turn: before.turn,
+      soundEnabled: false,
+    });
+    expect(env.ports.random.index).not.toHaveBeenCalled();
+    expect(JSON.parse(env.values.get(SAVE_KEY) ?? "null").soundEnabled).toBe(false);
+    env.controller.actions.move("left");
+    env.controller.actions.continuePlaying();
+    expect(env.controller.getSnapshot().soundEnabled).toBe(false);
+    env.controller.actions.restart();
+    env.controller.dispose();
+    env.controller.actions.toggleSound();
+    env.controller.activate();
+    expect(env.controller.getSnapshot().soundEnabled).toBe(false);
+    env.controller.actions.toggleSound();
+    expect(env.controller.getSnapshot().soundEnabled).toBe(true);
   });
 
   /** 持久化被拒绝时仍能操作并在站内恢复；之后写入成功会解除提示。 */

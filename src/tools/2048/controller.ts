@@ -9,6 +9,7 @@ import type { Direction, GameState } from "./core";
 type Frame = {
   game: GameState | null;
   bestScore: number;
+  soundEnabled: boolean;
   turn: number;
   merged: readonly number[];
   spawned: readonly number[];
@@ -20,6 +21,7 @@ type Frame = {
 const initial: Frame = {
   game: null,
   bestScore: 0,
+  soundEnabled: true,
   turn: 0,
   merged: [],
   spawned: [],
@@ -41,6 +43,7 @@ export function createController(
       version: 1,
       ...frame.game,
       bestScore: frame.bestScore,
+      soundEnabled: frame.soundEnabled,
     });
     return { ...frame, storageWarning: result.ok ? "" : result.error.message };
   }
@@ -61,6 +64,7 @@ export function createController(
               ...initial,
               game: result.game,
               bestScore: Math.max(frame.bestScore, result.game.score),
+              soundEnabled: frame.soundEnabled,
               turn: frame.turn + 1,
               merged: result.merged,
               spawned: result.spawned,
@@ -82,6 +86,7 @@ export function createController(
               ...initial,
               game,
               bestScore: frame.bestScore,
+              soundEnabled: frame.soundEnabled,
               turn: frame.turn + 1,
               spawned: game.board.flatMap((value, index) => (value ? [index] : [])),
             }),
@@ -104,6 +109,11 @@ export function createController(
           }),
         );
       },
+      /** 声音偏好随存档保存，切换时不重建棋局、不消耗随机源，也不触发方块动画。 */
+      toggleSound() {
+        if (!active) return;
+        set("frame", save({ ...frame, soundEnabled: !frame.soundEnabled }));
+      },
     }),
     ports,
     // 游戏使用独立、带版本的存档，不把棋盘或分数混入普通工具输入草稿。
@@ -118,6 +128,15 @@ export function createController(
       model.activate();
       const result = ports.storage.read(SAVE_KEY);
       const restored = restoreGame(result.ok ? result.value : null);
+      // 旧存档没有声音字段时默认开启；只接受布尔值，避免把损坏数据当作偏好。
+      const saved = result.ok ? result.value : null;
+      const soundEnabled =
+        typeof saved === "object" &&
+        saved !== null &&
+        "soundEnabled" in saved &&
+        typeof saved.soundEnabled === "boolean"
+          ? saved.soundEnabled
+          : true;
       try {
         const game = restored.game ?? createGame(ports.random);
         model.actions.set(
@@ -126,6 +145,7 @@ export function createController(
             ...initial,
             game,
             bestScore: restored.bestScore,
+            soundEnabled,
             recoveryMessage: restored.invalid
               ? "存档中的棋局无效，已重新开始并保留有效最高分。"
               : "",
@@ -138,6 +158,7 @@ export function createController(
         model.actions.set("frame", {
           ...initial,
           bestScore: restored.bestScore,
+          soundEnabled,
           error: normalizeError(error).message,
         });
       }

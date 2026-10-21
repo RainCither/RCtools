@@ -244,13 +244,37 @@
   background: #fff5e6;
   color: #85551e;
 }
+.utilities {
+  position: relative;
+}
+.soundToggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+}
+.soundToggle svg {
+  width: 18px;
+  height: 18px;
+}
+.soundToggle:hover {
+  color: var(--accent-dark);
+}
 .help > summary {
   display: flex;
-  min-height: 36px;
+  min-height: 44px;
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
-  padding: 6px 0;
+  padding: 6px 0 6px 90px;
   color: var(--muted);
   font-size: 12px;
   cursor: pointer;

@@ -7,6 +7,8 @@ import { uiClasses } from "../../ui/tool-ui";
 import { createController } from "./controller";
 import { BOARD_SIZE, gameStatus } from "./core";
 import type { Direction } from "./core";
+import { useGameSound } from "./use-sound";
+import type { GameSound } from "./use-sound";
 import styles from "./styles.module.css";
 
 const keys: Readonly<Record<string, Direction>> = {
@@ -30,7 +32,8 @@ const emptyBoard = Array<number>(BOARD_SIZE * BOARD_SIZE).fill(0);
 /** 渲染可聚焦的棋盘；输入事件只在当前游戏区域生效，不注册全局键盘监听。 */
 export default function Game2048() {
   const ports = useServices();
-  const { snapshot, actions } = useController(() => createController(ports));
+  const { snapshot, actions, controller } = useController(() => createController(ports));
+  const sound = useGameSound(ports.logger);
   const boardRef = useRef<HTMLDivElement>(null);
   const gesture = useRef<{ id: number; x: number; y: number } | null>(null);
   const game = snapshot.game;
@@ -42,9 +45,33 @@ export default function Game2048() {
   function focusBoard() {
     boardRef.current?.focus({ preventScroll: true });
   }
+  /** 在用户事件中读取最新偏好，避免快速操作读到上一帧的静音状态。 */
+  function playSound(cue: GameSound) {
+    if (controller.getSnapshot().soundEnabled) sound.player.play(cue);
+  }
+  /** 只有有效移动才发声；胜负音替代普通移动/合并音，避免同一回合重复播放。 */
+  function move(direction: Direction) {
+    const before = controller.getSnapshot();
+    actions.move(direction);
+    const after = controller.getSnapshot();
+    if (before.turn === after.turn || !after.game) return;
+    const status = gameStatus(after.game);
+    playSound(
+      status === "won" ? "win" : status === "over" ? "over" : after.gain ? "merge" : "move",
+    );
+  }
+  /** 关闭时立即取消排程；开启时用短音确认，并随棋局保存声音偏好。 */
+  function toggleSound() {
+    actions.toggleSound();
+    sound.clearWarning();
+    if (controller.getSnapshot().soundEnabled) playSound("move");
+    else sound.player.stop();
+  }
   /** 用户主动重开一局，保留最高分；触屏和键盘随后都可继续控制棋盘。 */
   function restart() {
+    const before = controller.getSnapshot().turn;
     actions.restart();
+    if (controller.getSnapshot().turn !== before) playSound("restart");
     focusBoard();
   }
   /** 保留组合键与编辑控件的原生行为，只阻止游戏方向键造成页面滚动。 */
@@ -60,7 +87,7 @@ export default function Game2048() {
     const direction = keys[event.key.toLowerCase()];
     if (!direction || !canPlay) return;
     event.preventDefault();
-    actions.move(direction);
+    move(direction);
   }
   /** 只跟踪单指或触控笔；多指与按钮点击取消手势，避免误触发移动。 */
   function onPointerDown(event: PointerEvent<HTMLDivElement>) {
@@ -82,9 +109,7 @@ export default function Game2048() {
     const dx = event.clientX - start.x;
     const dy = event.clientY - start.y;
     if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
-    actions.move(
-      Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up",
-    );
+    move(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up");
   }
   const message = !game
     ? "正在准备棋盘…"
@@ -233,86 +258,118 @@ export default function Game2048() {
               {snapshot.storageWarning}
             </p>
           ) : null}
-        </div>
-        {/* 帮助默认收起，保留说明和方向按钮的入口，让棋盘成为主界面的中心。 */}
-        <details id="game-2048-help" className={styles.help}>
-          <summary>帮助</summary>
-          <aside className={styles.guide} aria-label="玩法说明">
-            <h2>玩法说明</h2>
-            <ol className={styles.rules}>
-              <li>
-                <span>01</span>
-                <div>
-                  <strong>向一个方向移动</strong>
-                  <p>所有方块会一起滑向棋盘边缘。</p>
-                </div>
-              </li>
-              <li>
-                <span>02</span>
-                <div>
-                  <strong>相同数字，合二为一</strong>
-                  <p>2 + 2 变成 4，4 + 4 变成 8。合并的数字会累加到得分。</p>
-                </div>
-              </li>
-              <li>
-                <span>03</span>
-                <div>
-                  <strong>留出空间，继续挑战</strong>
-                  <p>有效移动后出现一个新方块。合成 2048 即获胜，也可以继续创造新纪录。</p>
-                </div>
-              </li>
-            </ol>
-            <div className={styles.belowBoard}>
-              <h2>操作方式</h2>
-              <p id="game-2048-controls">
-                点击棋盘后按方向键或 WASD，也可以在棋盘上滑动，或使用下方按钮。
-              </p>
-              <div className={styles.directionPad} role="group" aria-label="移动方向">
-                {controls.map(({ direction, label, glyph }) => (
-                  <button
-                    key={direction}
-                    type="button"
-                    className={styles.direction}
-                    data-direction={direction}
-                    aria-label={label}
-                    disabled={!canPlay}
-                    onClick={() => {
-                      actions.move(direction);
-                      focusBoard();
-                    }}
-                  >
-                    <span aria-hidden="true">{glyph}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className={styles.saveNote}>
-              <span className={styles.saveDot} aria-hidden="true" />
-              <div>
-                <strong>{snapshot.storageWarning ? "当前页面内保留" : "进度自动保存"}</strong>
-                <p>
-                  {snapshot.storageWarning
-                    ? "浏览器存储受限，刷新后可能丢失。"
-                    : "棋局和最高分保存在此浏览器，下次打开接着玩。"}
-                </p>
-              </div>
-            </div>
-            <p className={styles.credit}>
-              参考{" "}
-              <a href="https://github.com/gabrielecirulli/2048" target="_blank" rel="noreferrer">
-                Gabriele Cirulli / 2048
-              </a>
-              <br />
-              <a
-                href={`${import.meta.env.BASE_URL}licenses/2048-MIT.txt`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                MIT 开源许可
-              </a>
+          {sound.warning ? (
+            <p className={styles.note} role="status">
+              {sound.warning}
             </p>
-          </aside>
-        </details>
+          ) : null}
+        </div>
+        <div className={styles.utilities}>
+          <button
+            type="button"
+            className={styles.soundToggle}
+            aria-label="游戏音效"
+            aria-pressed={snapshot.soundEnabled}
+            title={snapshot.soundEnabled ? "关闭音效" : "开启音效"}
+            onClick={toggleSound}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              aria-hidden="true"
+            >
+              <path d="M11 5 6 9H3v6h3l5 4V5Z" strokeLinejoin="round" />
+              {snapshot.soundEnabled ? (
+                <path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" strokeLinecap="round" />
+              ) : (
+                <path d="m16 9 6 6m0-6-6 6" strokeLinecap="round" />
+              )}
+            </svg>
+            音效{snapshot.soundEnabled ? "开" : "关"}
+          </button>
+          {/* 帮助默认收起，保留说明和方向按钮的入口，让棋盘成为主界面的中心。 */}
+          <details id="game-2048-help" className={styles.help}>
+            <summary>帮助</summary>
+            <aside className={styles.guide} aria-label="玩法说明">
+              <h2>玩法说明</h2>
+              <ol className={styles.rules}>
+                <li>
+                  <span>01</span>
+                  <div>
+                    <strong>向一个方向移动</strong>
+                    <p>所有方块会一起滑向棋盘边缘。</p>
+                  </div>
+                </li>
+                <li>
+                  <span>02</span>
+                  <div>
+                    <strong>相同数字，合二为一</strong>
+                    <p>2 + 2 变成 4，4 + 4 变成 8。合并的数字会累加到得分。</p>
+                  </div>
+                </li>
+                <li>
+                  <span>03</span>
+                  <div>
+                    <strong>留出空间，继续挑战</strong>
+                    <p>有效移动后出现一个新方块。合成 2048 即获胜，也可以继续创造新纪录。</p>
+                  </div>
+                </li>
+              </ol>
+              <div className={styles.belowBoard}>
+                <h2>操作方式</h2>
+                <p id="game-2048-controls">
+                  点击棋盘后按方向键或 WASD，也可以在棋盘上滑动，或使用下方按钮。
+                </p>
+                <div className={styles.directionPad} role="group" aria-label="移动方向">
+                  {controls.map(({ direction, label, glyph }) => (
+                    <button
+                      key={direction}
+                      type="button"
+                      className={styles.direction}
+                      data-direction={direction}
+                      aria-label={label}
+                      disabled={!canPlay}
+                      onClick={() => {
+                        move(direction);
+                        focusBoard();
+                      }}
+                    >
+                      <span aria-hidden="true">{glyph}</span>
+                    </button>
+                  ))}
+                </div>
+                <p>棋盘下方可开关音效，选择会自动保存；刷新恢复棋局时不会自动播放。</p>
+              </div>
+              <div className={styles.saveNote}>
+                <span className={styles.saveDot} aria-hidden="true" />
+                <div>
+                  <strong>{snapshot.storageWarning ? "当前页面内保留" : "进度自动保存"}</strong>
+                  <p>
+                    {snapshot.storageWarning
+                      ? "浏览器存储受限，刷新后可能丢失。"
+                      : "棋局和最高分保存在此浏览器，下次打开接着玩。"}
+                  </p>
+                </div>
+              </div>
+              <p className={styles.credit}>
+                参考{" "}
+                <a href="https://github.com/gabrielecirulli/2048" target="_blank" rel="noreferrer">
+                  Gabriele Cirulli / 2048
+                </a>
+                <br />
+                <a
+                  href={`${import.meta.env.BASE_URL}licenses/2048-MIT.txt`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  MIT 开源许可
+                </a>
+              </p>
+            </aside>
+          </details>
+        </div>
       </div>
     </section>
   );

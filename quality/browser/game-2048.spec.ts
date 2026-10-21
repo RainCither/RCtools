@@ -9,6 +9,57 @@ const basePath = process.env.PAGES_BASE_PATH ?? "/";
 const sitePath = (path: string) => `${basePath === "/" ? "" : basePath}${path}`;
 const artifacts = resolve(process.env.QA_ARTIFACTS_DIR ?? resolve(tmpdir(), "rctools-quality"));
 const errors = new WeakMap<Page, string[]>();
+type AudioProbe = { contexts: number; started: number; closed: number; peak: number };
+
+/** 观察真实 Web Audio 图及输出采样，不替换浏览器的音频处理或自动播放策略。 */
+async function observeAudio(page: Page) {
+  await page.addInitScript(() => {
+    const probe: AudioProbe = { contexts: 0, started: 0, closed: 0, peak: 0 };
+    (window as Window & { audioProbe?: AudioProbe }).audioProbe = probe;
+    const NativeAudioContext = window.AudioContext;
+    window.AudioContext = class extends NativeAudioContext {
+      constructor(options?: AudioContextOptions) {
+        super(options);
+        probe.contexts++;
+        this.addEventListener("statechange", () => {
+          if (this.state === "closed") probe.closed++;
+        });
+      }
+      override createOscillator() {
+        const oscillator = super.createOscillator();
+        const start = oscillator.start.bind(oscillator);
+        oscillator.start = (when?: number) => {
+          probe.started++;
+          start(when);
+        };
+        return oscillator;
+      }
+      override createGain() {
+        const gain = super.createGain();
+        const analyser = this.createAnalyser();
+        gain.connect(analyser);
+        const samples = new Float32Array(analyser.fftSize);
+        const timer = window.setInterval(() => {
+          analyser.getFloatTimeDomainData(samples);
+          for (const value of samples) probe.peak = Math.max(probe.peak, Math.abs(value));
+        }, 5);
+        window.setTimeout(() => {
+          clearInterval(timer);
+          analyser.disconnect();
+        }, 700);
+        return gain;
+      }
+    };
+  });
+}
+/** 只向测试返回统计值，音频节点及上下文继续由游戏拥有并负责释放。 */
+async function audioProbe(page: Page) {
+  return page.evaluate(() => {
+    const probe = (window as Window & { audioProbe?: AudioProbe }).audioProbe;
+    if (!probe) throw new Error("音频观察尚未初始化。");
+    return probe;
+  });
+}
 
 /** 固定局面用于验证真实输入后的结果；随机新块不会改变已合并位置的断言。 */
 function savedGame(patch: Record<string, unknown> = {}) {
@@ -207,6 +258,7 @@ test("mobile touch swipes merge tiles while taps do not move", async ({
   isMobile,
 }) => {
   test.skip(!isMobile, "真实滑动在手机触摸设备上验证。");
+  await observeAudio(page);
   await openGame(page);
   const grid = page.getByRole("grid", { name: "2048 棋盘" });
   const box = await grid.boundingBox();
@@ -226,9 +278,11 @@ test("mobile touch swipes merge tiles while taps do not move", async ({
   await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   await session.detach();
   await expect(page.getByLabel("当前得分", { exact: true })).toHaveText("4");
+  await expect.poll(async () => (await audioProbe(page)).started).toBe(2);
   const current = await readBoard(page);
   await page.touchscreen.tap(box.x + box.width / 2, y);
   expect(await readBoard(page)).toEqual(current);
+  expect((await audioProbe(page)).started).toBe(2);
 });
 
 /** 保存桌面与手机截图，并检查 320 像素布局、页面身份、无错误遮罩与许可静态资源。 */
@@ -285,4 +339,94 @@ test("2048 layout, accessibility states and attribution render correctly", async
   const grid = page.getByRole("grid", { name: "2048 棋盘" });
   await expect(grid).toHaveCSS("touch-action", "none");
   await expect(grid.locator("[data-value='1024'] > span")).toHaveCSS("animation-name", "none");
+});
+
+/** 操作后验证真实非零采样；静音关闭上下文并随棋局恢复，开关不改变棋局或最高分。 */
+test("sound starts on effective play and mute persists through reload and navigation", async ({
+  page,
+}) => {
+  await observeAudio(page);
+  await openGame(page, savedGame({ board: [2, 4, ...Array<number>(14).fill(0)], bestScore: 256 }));
+  const toggle = page.getByRole("button", { name: "游戏音效", exact: true });
+  const grid = page.getByRole("grid", { name: "2048 棋盘" });
+  await expect(toggle).toHaveAttribute("aria-pressed", "true");
+  expect(await audioProbe(page)).toMatchObject({ contexts: 0, started: 0 });
+  await grid.press("ArrowLeft");
+  expect((await audioProbe(page)).started).toBe(0);
+  await grid.press("ArrowRight");
+  await expect.poll(async () => (await audioProbe(page)).started).toBe(1);
+  await expect.poll(async () => (await audioProbe(page)).peak).toBeGreaterThan(0.0001);
+  const current = await readBoard(page);
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+  expect(await readBoard(page)).toEqual(current);
+  await expect.poll(async () => (await audioProbe(page)).closed).toBe(1);
+  await grid.press("ArrowLeft");
+  expect((await audioProbe(page)).started).toBe(1);
+  const mutedBoard = await readBoard(page);
+  await page.reload();
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+  expect(await readBoard(page)).toEqual(mutedBoard);
+  expect(await audioProbe(page)).toMatchObject({ contexts: 0, started: 0 });
+  await page.getByRole("link", { name: "返回全部工具" }).click();
+  await page.locator("#tool-card-2048").click();
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+  await toggle.click();
+  await expect.poll(async () => (await audioProbe(page)).started).toBe(1);
+  await page.getByRole("button", { name: "重新开始", exact: true }).click();
+  await expect.poll(async () => (await audioProbe(page)).started).toBe(3);
+  await expect(page.getByLabel("最高分", { exact: true })).toHaveText("256");
+  await page.getByRole("link", { name: "返回全部工具" }).click();
+  await expect.poll(async () => (await audioProbe(page)).closed).toBe(1);
+});
+
+/** 合并和胜利分别播放一组音符；刷新、恢复胜利遮罩与继续挑战均不重播胜利音。 */
+test("merges and victory have distinct cues without replaying on restore", async ({ page }) => {
+  await observeAudio(page);
+  await openGame(page);
+  await openHelp(page);
+  await page.getByRole("button", { name: "向左移动", exact: true }).click();
+  await expect(page.getByLabel("当前得分", { exact: true })).toHaveText("4");
+  await expect.poll(async () => (await audioProbe(page)).started).toBe(2);
+  await openGame(page, savedGame({ board: [1024, 1024, ...Array<number>(14).fill(0)] }));
+  await page.getByRole("grid", { name: "2048 棋盘" }).press("ArrowLeft");
+  await expect(page.getByRole("group", { name: "游戏胜利" })).toBeVisible();
+  await expect.poll(async () => (await audioProbe(page)).started).toBe(4);
+  await page.reload();
+  await expect(page.getByRole("group", { name: "游戏胜利" })).toBeVisible();
+  expect((await audioProbe(page)).contexts).toBe(0);
+  await page.getByRole("button", { name: "继续挑战", exact: true }).click();
+  expect((await audioProbe(page)).started).toBe(0);
+});
+
+/** 右移填满后，无论随机新块为 2 还是 4 都结束；终局声音只在进入结束状态时播放。 */
+test("game over plays once and remains silent after reloading a finished game", async ({
+  page,
+}) => {
+  await observeAudio(page);
+  await openGame(page, savedGame({ board: [2, 4, 8, 16, 16, 8, 4, 2, 8, 4, 2, 16, 16, 8, 4, 0] }));
+  await page.getByRole("grid", { name: "2048 棋盘" }).press("ArrowRight");
+  await expect(page.getByRole("group", { name: "游戏结束" })).toBeVisible();
+  await expect.poll(async () => (await audioProbe(page)).started).toBe(3);
+  await page.reload();
+  await expect(page.getByRole("group", { name: "游戏结束" })).toBeVisible();
+  expect((await audioProbe(page)).contexts).toBe(0);
+});
+
+/** 缺少音频能力不会破坏移动、保存和按钮；用户可静音清除提示并继续游戏。 */
+test("unavailable audio gives a readable message while gameplay still works", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "AudioContext", { configurable: true, value: undefined });
+  });
+  await openGame(page);
+  await page.getByRole("grid", { name: "2048 棋盘" }).press("ArrowLeft");
+  await expect(page.getByLabel("当前得分", { exact: true })).toHaveText("4");
+  const warning = page.getByText("音效暂时不可用，请检查浏览器声音设置，或关闭后重新开启音效。");
+  await expect(warning).toBeVisible();
+  await expect(warning).toHaveAttribute("role", "status");
+  await page.getByRole("button", { name: "游戏音效", exact: true }).click();
+  await expect(warning).toHaveCount(0);
+  await page.getByRole("button", { name: "重新开始", exact: true }).click();
+  await expect(page.getByLabel("当前得分", { exact: true })).toHaveText("0");
+  await expect(page.getByLabel("最高分", { exact: true })).toHaveText("4");
 });
