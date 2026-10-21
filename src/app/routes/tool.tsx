@@ -28,8 +28,11 @@ export default function ToolPage() {
     if (!tool || !services) return;
     services.recent.record(tool.id);
     services.logger.emit({ level: "info", event: "tool.open", toolId: tool.id });
-    // 等详情标题进入 DOM 后再聚焦，页面切换时撤销尚未执行的帧回调。
-    const frame = requestAnimationFrame(() => document.getElementById("tool-page-title")?.focus());
+    // 只在用户尚未聚焦控件时引导到标题，避免异步加载后抢走棋盘等交互区域的焦点。
+    const frame = requestAnimationFrame(() => {
+      if (document.activeElement === document.body)
+        document.getElementById("tool-page-title")?.focus();
+    });
     return () => cancelAnimationFrame(frame);
   }, [tool, services]);
   if (!tool) return <Navigate to="/" replace />;

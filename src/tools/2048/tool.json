@@ -1,0 +1,11 @@
+{
+  "id": "2048",
+  "title": "2048",
+  "summary": "移动数字方块，合成 2048，继续挑战更高分。",
+  "category": "game",
+  "mark": "2048",
+  "searchTerms": ["游戏", "数字", "合并", "益智", "game", "2048"],
+  "order": 170,
+  "draft": "none",
+  "appearance": { "tone": "yellow", "size": 14, "font": "mono" }
+}

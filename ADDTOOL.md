@@ -138,6 +138,8 @@ export default function ExampleTool() {
 
 `useServices` 提供能力，`useController` 管理订阅与释放。公共 UI 只接收展示值和回调；控件不能调用浏览器存储或业务算法。渲染期间不得创建 Worker、写存储或设置定时器。错误应关联输入标签和说明，运行及错误状态应能够被辅助技术播报。
 
+需要跨刷新保留独立业务状态时，可参考 2048：声明 `draft: "none"`，控制器通过注入的 `PersistentStore` 读写版本化 JSON 存档。存储访问放在激活或用户动作中，校验 `unknown` 后才恢复；适配器负责页面内回退和存储错误，不能把普通工具的结果改为持久草稿。
+
 自动计算工具使用 `automatic` 与 `debounceMs`；正则使用 200 ms/2 秒，其余自动计算使用 150 ms/30 秒。文件读取通过适配能力和 `TaskPreparation`，提供取消信号并转移 ArrayBuffer；不在控制器保存文件缓冲区。
 
 ## 验证与约束

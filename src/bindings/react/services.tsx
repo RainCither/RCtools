@@ -6,6 +6,7 @@ import type {
   ClockPort,
   ControllerPorts,
   ModuleLoader,
+  PersistentStore,
   RandomPort,
   RecentStore,
 } from "../../contracts/ports";
@@ -14,6 +15,7 @@ export type BrowserServices = ControllerPorts & {
   clipboard: ClipboardPort;
   clock: ClockPort;
   random: RandomPort;
+  storage: PersistentStore;
   recent: RecentStore;
   files: { wrap(file: File): import("../../contracts/files").FileResource };
   modules: ModuleLoader<{ default: ComponentType }>;

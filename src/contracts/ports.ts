@@ -50,6 +50,13 @@ export interface DraftStore {
   /** 移除指定 id 的草稿，供显式清空和恢复默认状态使用。 */
   delete(id: string): void;
 }
+/** 独立于普通输入草稿的 JSON 存档能力；失败使用统一错误，浏览器实现负责会话内回退。 */
+export interface PersistentStore {
+  /** 读取 key 的独立数据副本；没有存档时成功返回 null，不在创建服务时读取外部状态。 */
+  read(key: string): Result<unknown>;
+  /** 缓存 value 的 JSON 副本并尝试持久保存；失败后仍允许当前页面内恢复，返回存储错误。 */
+  write(key: string, value: unknown): Result<void>;
+}
 /** 最近使用列表的订阅与生命周期接口，激活后读取存储并同步变化。 */
 export interface RecentStore {
   /** 返回引用稳定的当前只读快照，只有发布状态时才变化，供外部状态订阅比较使用。 */

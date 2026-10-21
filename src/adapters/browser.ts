@@ -7,6 +7,7 @@ import { readFileBytes } from "./files";
 import { createLogger } from "./logger";
 import { createModuleLoader } from "./modules";
 import { createRecentStore } from "./recent";
+import { createPersistentStore } from "./storage";
 import { createTaskExecutor } from "./tasks";
 /** 根据 options 注入的加载器、工厂和策略装配浏览器能力，返回工具可共用的服务集合。 */
 export function createBrowserServices(options: {
@@ -40,6 +41,7 @@ export function createBrowserServices(options: {
     recent,
     // 草稿只保存在当前页面会话内，密码等配置排除项不会进入缓存。
     drafts: createDraftStore(16 * 1024 * 1024, options.excludedDrafts),
+    storage: createPersistentStore(() => window.localStorage, logger),
     tasks: createTaskExecutor(options.workers, logger, clock),
     modules: createModuleLoader(options.loaders, logger),
     files: {
